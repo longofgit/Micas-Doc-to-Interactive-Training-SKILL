@@ -1,0 +1,196 @@
+name: Apply v2.3.1 navigation patch
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/patch-v2.3.1.yml
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Apply targeted documentation patch
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          def read(path):
+              return Path(path).read_text(encoding='utf-8')
+
+          def write(path, text):
+              Path(path).write_text(text, encoding='utf-8')
+
+          def replace_once(text, old, new, label):
+              count = text.count(old)
+              if count != 1:
+                  raise RuntimeError(f'{label}: expected exactly one match, found {count}')
+              return text.replace(old, new, 1)
+
+          # SKILL.md
+          p = 'SKILL.md'
+          s = read(p)
+          s = replace_once(s, 'version: 2.3.0', 'version: 2.3.1', 'SKILL version')
+          s = replace_once(
+              s,
+              '- **Assessment:** module checks, a dedicated assessment-introduction scene, final assessment, score, and completion scene\n',
+              '- **Assessment:** module checks, a dedicated assessment-introduction scene, final assessment, score, and completion scene\n- **Sequential navigation:** Next always advances through the global scene sequence; module and assessment boundaries never disable it\n',
+              'SKILL defaults navigation'
+          )
+          s = replace_once(
+              s,
+              'Recommended structure:\n\n- left: Course Menu and scene counter;\n- middle-left: prominent progress group;\n- center: labeled Previous and Next buttons;\n- right: narration and audio settings.\n',
+              'Recommended structure:\n\n- **left:** Course Menu, scene counter, and the prominent progress group;\n- **right:** one fixed control cluster in this exact order: Previous, Next, narration, Audio settings.\n\nDo not center, scatter, or reorder the four right-side controls.\n',
+              'SKILL footer structure'
+          )
+          marker = '5. All controls remain visible and easy to hit.\n\n# 10. Narration and Google-First Voice Policy'
+          nav_contract = '''5. All controls remain visible and easy to hit.\n\n## Global Sequential Navigation Contract\n\nThe full course is one globally ordered scene sequence. Module boundaries, module checks, and assessment questions do not create navigation dead ends.\n\n1. When `currentSceneIndex < scenes.length - 1`, the Next button must be enabled and must open `currentSceneIndex + 1`.\n2. The final scene of a module must advance directly to the first scene of the next module.\n3. Every module-check and final-assessment question must allow Next before or after an answer is selected. An unanswered question remains unanswered and may be revisited; it must not block navigation.\n4. Answer validation, feedback visibility, scoring state, completion state, narration state, animation state, and module progress must never control `nextButton.disabled`.\n5. Only the absolute terminal completion scene may disable, hide, or replace Next because no following scene exists.\n6. Previous is enabled whenever `currentSceneIndex > 0`.\n7. Keyboard navigation and Video mode must call the same `goNext()` / `goPrevious()` functions as the visible buttons.\n8. Do not implement per-module `isComplete`, `answered`, `submitted`, or `passed` gates on scene navigation.\n\nRecommended state logic:\n\n```js\nfunction updateNavigationState() {\n  previousButton.disabled = currentSceneIndex <= 0;\n  nextButton.disabled = currentSceneIndex >= scenes.length - 1;\n}\n\nfunction goNext() {\n  if (currentSceneIndex < scenes.length - 1) {\n    showScene(currentSceneIndex + 1);\n  }\n}\n```\n\n# 10. Narration and Google-First Voice Policy'''
+          s = replace_once(s, marker, nav_contract, 'SKILL navigation contract')
+          s = replace_once(
+              s,
+              '- large labeled desktop Previous/Next buttons;\n- prominent progress bar;\n',
+              '- large labeled desktop Previous/Next buttons;\n- global sequential navigation with no module or assessment gating;\n- right-aligned control cluster ordered Previous, Next, narration, Audio settings;\n- prominent progress bar;\n',
+              'SKILL implementation navigation'
+          )
+          s = replace_once(
+              s,
+              '- verify no diagnostic badge exists in learner mode.\n',
+              '- verify no diagnostic badge exists in learner mode;\n- verify Next is enabled on every nonterminal scene, including module-ending scenes and unanswered assessment questions;\n- verify the right-side footer order is Previous, Next, narration, Audio settings.\n',
+              'SKILL automated QA navigation'
+          )
+          s = replace_once(
+              s,
+              '- tiny/shrunken primary controls;\n- first exam question appears without an assessment-introduction scene;\n',
+              '- tiny/shrunken primary controls;\n- Next is disabled while a following scene exists;\n- module or assessment answer state blocks scene navigation;\n- footer controls are not right-aligned or are reordered;\n- first exam question appears without an assessment-introduction scene;\n',
+              'SKILL release blockers navigation'
+          )
+          write(p, s)
+
+          # UI_DESIGN_SPEC.md
+          p = 'UI_DESIGN_SPEC.md'
+          s = read(p)
+          s = replace_once(s, 'Version: **2.3.0**', 'Version: **2.3.1**', 'UI version')
+          s = replace_once(
+              s,
+              'Recommended layout:\n\n- left: Course Menu and scene count;\n- middle-left: prominent progress group;\n- center: Previous and Next;\n- right: narration and audio settings.\n',
+              'Required layout:\n\n- **left group:** Course Menu, scene count, and prominent progress;\n- **right group:** Previous, Next, narration, Audio settings—in that exact order.\n\nPrevious/Next are no longer centered. All four action controls stay together and align to the far right.\n',
+              'UI footer layout'
+          )
+          s = replace_once(
+              s,
+              'Desktop controls must remain substantial.\n\n```css\n.footer-control,\n',
+              '''Desktop controls must remain substantial.\n\n```css\n.footer-rail {\n  display: flex;\n  align-items: center;\n  gap: 16px;\n}\n\n.footer-meta {\n  display: flex;\n  align-items: center;\n  gap: 16px;\n  min-width: 0;\n}\n\n.footer-actions {\n  margin-left: auto;\n  display: flex;\n  align-items: center;\n  justify-content: flex-end;\n  gap: 12px;\n  flex: 0 0 auto;\n}\n\n.footer-control,\n''',
+              'UI footer CSS'
+          )
+          s = replace_once(
+              s,
+              '- Controls remain visible at all required viewports.\n\n# 11. Course Menu',
+              '''- Controls remain visible at all required viewports.\n- The DOM and visual order must remain: Previous → Next → narration → Audio settings.\n- The entire `.footer-actions` group is right-aligned with `margin-left: auto`; none of its controls may be moved to the center or left.\n\n## Sequential Navigation Availability\n\n- Next is enabled on every scene that has a following global scene.\n- The last scene in a module advances to the first scene in the next module.\n- Module-check and final-assessment pages do not require an answer before Next becomes available.\n- Unanswered questions are stored as unanswered and may be revisited; navigation remains available.\n- Feedback, score, pass/fail, submitted state, narration, and animation must not gate Next.\n- Only the absolute final completion scene may disable or replace Next.\n- Previous is enabled on every scene except the first global scene.\n- Visible buttons, keyboard arrows, and Video mode share the same navigation functions.\n\n# 11. Course Menu''',
+              'UI navigation availability'
+          )
+          s = replace_once(
+              s,
+              '- Previous/Next or audio controls are tiny on desktop;\n- English visual quality was weakened for multilingual uniformity;\n',
+              '- Previous/Next or audio controls are tiny on desktop;\n- Next is disabled on a nonterminal scene, at a module boundary, or on an unanswered assessment question;\n- Previous, Next, narration, and Audio settings are not grouped at the far right in the required order;\n- English visual quality was weakened for multilingual uniformity;\n',
+              'UI acceptance navigation'
+          )
+          write(p, s)
+
+          # MASTER_PROMPT.md
+          p = 'MASTER_PROMPT.md'
+          s = read(p)
+          s = replace_once(
+              s,
+              '- Course Menu and scene count on the left;\n- a prominent progress bar;\n- labeled Previous and Next buttons in the center;\n- narration and audio settings on the right.\n',
+              '- Course Menu, scene count, and the prominent progress bar on the left;\n- one far-right control cluster in this exact order: Previous, Next, narration, Audio settings.\n\nDo not center Previous/Next and do not move narration/settings away from the right edge.\n',
+              'MASTER footer layout'
+          )
+          anchor = 'Desktop Previous/Next must use labels plus arrows. Tiny arrow-only squares are allowed only in compact/mobile mode.\n\n## Narration and Google-First Voices'
+          replacement = '''Desktop Previous/Next must use labels plus arrows. Tiny arrow-only squares are allowed only in compact/mobile mode.\n\n## Sequential Navigation Logic\n\n- Treat all scenes as one global ordered sequence.\n- Next must be enabled whenever a following scene exists.\n- A module-ending scene must advance to the next module.\n- Module checks and final-assessment questions must allow Next even when unanswered.\n- Do not gate Next on `answered`, `submitted`, `passed`, feedback, score, or module-completion state.\n- Preserve unanswered questions as unanswered so the learner can revisit them.\n- Only the absolute final completion scene may disable or replace Next.\n- Keep the right-side control order: Previous → Next → narration → Audio settings.\n\n## Narration and Google-First Voices'''
+          s = replace_once(s, anchor, replacement, 'MASTER navigation logic')
+          s = replace_once(
+              s,
+              '- final assessment has a transition scene;\n- English remains the strongest visual master;\n',
+              '- final assessment has a transition scene;\n- Next works across every module boundary and every unanswered assessment page;\n- the footer action group is right-aligned in the order Previous, Next, narration, Audio settings;\n- English remains the strongest visual master;\n',
+              'MASTER QA navigation'
+          )
+          write(p, s)
+
+          # QUICK_PROMPT.md
+          p = 'QUICK_PROMPT.md'
+          s = read(p)
+          s = replace_once(
+              s,
+              '- 课程目录放在左下角，默认隐藏目录抽屉。\n- 桌面端Previous和Next必须使用较大的文字按钮加箭头，不要默认只显示小箭头方块。\n',
+              '- 课程目录、场景编号和进度条放在底部左侧。\n- 底部右侧把4个按钮组成固定按钮组，顺序必须是：Previous → Next → 语音播放 → Audio settings。\n- Previous和Next不要居中，也不要把语音按钮移到其他位置。\n- 桌面端Previous和Next必须使用较大的文字按钮加箭头，不要默认只显示小箭头方块。\n',
+              'QUICK footer layout'
+          )
+          insert_before = '## 语言按钮\n'
+          navigation_cn = '''## 翻页逻辑\n\n- 整门课程必须使用一条连续的全局页面序列。\n- 只要后面还有页面，Next就必须可点击。\n- 每个章节的最后一页必须直接进入下一章节的第一页。\n- 模块测验和结业考试的每道题，即使尚未答题，Next也必须可点击。\n- 未答题可以记录为未作答，允许之后返回补答，但不能阻塞翻页。\n- 禁止使用`answered`、`submitted`、`passed`、得分、反馈或章节完成状态来禁用Next。\n- 只有整门课程绝对最后的完成页可以禁用或替换Next。\n- 键盘方向键、Video模式和页面按钮必须调用同一套翻页逻辑。\n\n'''
+          if insert_before not in s:
+              raise RuntimeError('QUICK language heading not found')
+          s = s.replace(insert_before, navigation_cn + insert_before, 1)
+          s = replace_once(
+              s,
+              '- 所有桌面按钮尺寸正常；\n- 英文页面视觉效果最佳；\n',
+              '- 所有桌面按钮尺寸正常；\n- 所有非最终页面的Next都可用，包括章节末页和未答考试题；\n- Previous、Next、语音播放、Audio settings按固定顺序靠右；\n- 英文页面视觉效果最佳；\n',
+              'QUICK QA navigation'
+          )
+          write(p, s)
+
+          # README.md
+          p = 'README.md'
+          s = read(p)
+          s = replace_once(s, 'Version: **2.3.0**', 'Version: **2.3.1**', 'README version')
+          s = replace_once(
+              s,
+              '- Previous/Next: substantial labeled desktop buttons\n- Narration: compact icon controls with a curated popover\n',
+              '- Previous/Next: substantial labeled desktop buttons with uninterrupted global sequential navigation\n- Footer actions: right-aligned in the order Previous, Next, narration, Audio settings\n- Narration: compact icon controls with a curated popover\n',
+              'README defaults navigation'
+          )
+          section_anchor = '## v2.3.0 Production Rules\n'
+          section = '''## v2.3.1 Navigation and Footer Fix\n\n- Next remains enabled on every scene that has a following global scene.\n- Module-ending scenes advance directly into the next module.\n- Module checks and final-assessment questions do not gate Next on answer state.\n- Unanswered questions remain revisit-able without blocking navigation.\n- Only the absolute terminal completion scene may disable or replace Next.\n- Footer actions are grouped at the far right in the fixed order: Previous, Next, narration, Audio settings.\n- No other UI, image, language, voice, or visual-design rules were changed in this release.\n\n'''
+          if section_anchor not in s:
+              raise RuntimeError('README v2.3.0 anchor not found')
+          s = s.replace(section_anchor, section + section_anchor, 1)
+          s = replace_once(
+              s,
+              '- substantial controls;\n- correct language behavior;\n',
+              '- substantial controls;\n- Next enabled on every nonterminal scene, including module endings and unanswered assessment questions;\n- right-aligned footer actions in the required order;\n- correct language behavior;\n',
+              'README QA navigation'
+          )
+          s = replace_once(
+              s,
+              '- tiny/shrunken desktop controls;\n- final exam begins without an introduction scene;\n',
+              '- tiny/shrunken desktop controls;\n- Next disabled while a following scene exists;\n- module or assessment state blocks navigation;\n- footer actions are not right-aligned or are reordered;\n- final exam begins without an introduction scene;\n',
+              'README blockers navigation'
+          )
+          write(p, s)
+
+          # CHANGELOG.md
+          p = 'CHANGELOG.md'
+          s = read(p)
+          entry = '''# Changelog\n\n## 2.3.1\n\n### Sequential Navigation\n\n- Required Next to remain enabled on every scene with a following global scene.\n- Fixed module-ending scenes so they advance directly to the next module.\n- Removed answer, submission, feedback, score, pass/fail, and module-completion gates from Next.\n- Required every module-check and final-assessment question to allow Next even when unanswered.\n- Kept unanswered questions revisit-able without blocking navigation.\n- Limited Next disabling/replacement to the absolute terminal completion scene.\n\n### Footer Alignment\n\n- Moved Previous and Next into the right-side action cluster.\n- Kept narration and Audio settings at the far right.\n- Fixed the action order as Previous → Next → narration → Audio settings.\n- Left Course Menu, scene count, and progress on the left.\n\n### Scope\n\n- Made no other UI, image, language, voice, visual hierarchy, or course-structure changes.\n\n'''
+          if not s.startswith('# Changelog\n\n'):
+              raise RuntimeError('Unexpected changelog header')
+          s = entry + s[len('# Changelog\n\n'):]
+          write(p, s)
+          PY
+
+      - name: Commit targeted patch and remove workflow
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/workflows/patch-v2.3.1.yml
+          git add SKILL.md UI_DESIGN_SPEC.md MASTER_PROMPT.md QUICK_PROMPT.md README.md CHANGELOG.md
+          git commit -m "Release v2.3.1 navigation continuity and footer alignment"
+          git push origin main
