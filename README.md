@@ -1,4 +1,4 @@
-# Micas Doc-to- Interactive-Training Skill
+# Micas Doc-to-Interactive-Training Skill
 
 Version: **2.1.0**
 
