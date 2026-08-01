@@ -1,10 +1,10 @@
-# Master Prompt — Micas Doc-to- Interactive-Training
+# Master Prompt — Micas Doc-to-Interactive-Training
 
-Attach the source documents, then use this prompt and replace bracketed variables where needed.
+Attach the source documents, replace the bracketed variables, and execute the complete project.
 
 ---
 
-You are an instructional designer, technical trainer, UX designer, multilingual content engineer, and front-end developer.
+You are an instructional designer, technical trainer, UX designer, multilingual content engineer, front-end developer, and production QA reviewer.
 
 Transform the attached source documents into a complete, source-grounded, premium Micas interactive training course.
 
@@ -15,356 +15,333 @@ Transform the attached source documents into a complete, source-grounded, premiu
 - Learning goal: `[LEARNING GOAL]`
 - Desired duration: `[E.G. 30–45 MINUTES]`
 - Assessment level: `[BASIC / INTERMEDIATE / CERTIFICATION-STYLE]`
-- Output: `[DEFAULT: ONE SELF-CONTAINED OFFLINE HTML FILE]`
 - Brand: `Micas Networks`
-- Primary brand color: `#00899F`
+- Primary color: `#00899F`
+- Visual master locale: `English`
 - Default language: `English`
 - Required languages: `English / 简体中文 / 繁體中文 / 日本語`
-- Tone: `Professional, practical, engaging, not childish`
+- Output: `One self-contained offline HTML plus Course Map, QA Report, and README`
 
-## Source and Accuracy Rules
+## Source and Accuracy
 
 1. Use the attached files as the primary and authoritative basis.
 2. Read complete relevant material, including tables, figures, screenshots, warnings, procedures, appendices, and embedded images.
 3. Preserve exact terminology, product names, numerical limits, procedure order, warnings, and operational boundaries.
-4. Do not silently add unsupported claims or correct suspected source errors.
+4. Do not silently invent unsupported technical information or correct suspected source errors.
 5. Flag ambiguity or inconsistency in the QA Report.
 6. Maintain source mapping from every scene and assessment item to a source section, page, table, or figure.
-7. Keep source mapping in course data, Course Map, and QA Report—not in normal presentation pages.
-8. Preserve the seriousness and exact action of safety-critical content.
+7. Keep source mapping in course data, Course Map, and QA Report—not in learner presentation pages.
 
 ## Learning Architecture
 
-Do not convert the source page by page. Reorganize it into a coherent learning journey.
+Do not convert the source page by page. Reorganize it around learner competencies.
 
 Create:
 
-- welcome and learning outcomes;
-- competency-based modules;
-- focused scenes, each teaching one primary objective;
-- authentic visual explanations using source figures;
+- orientation and learning outcomes;
+- focused competency modules;
+- scenes with one primary objective each;
+- authentic visual explanations;
 - step-by-step procedures;
 - realistic troubleshooting and safety decisions;
-- short module checks;
+- module checks;
+- learning review;
+- a dedicated final-assessment introduction scene;
 - final assessment with explanatory feedback;
-- completion scene and review guidance.
+- completion and next-actions scene.
 
-Prioritize what learners must perform, recognize, and understand. Keep reference-only detail searchable or in dedicated reference scenes.
+Before laying out each scene, define:
 
-## Mandatory Message Hierarchy
+- `primaryMessage`;
+- `supportingPoints`;
+- `referenceDetails`;
+- `focalVisual`;
+- English `layoutVariant`;
+- any required locale-specific variants.
 
-Before laying out each scene, identify:
+Every scene must have one visually dominant element. Do not make all cards and text blocks look equally important.
 
-- `primaryMessage`: the one fact, action, or decision learners must remember;
-- `supportingPoints`: normally two to four concise points;
-- `referenceDetails`: material moved to another scene/report;
-- `focalVisual`: the image, key number, warning, or active step deserving the most space.
+## English-First Visual Master
 
-Every scene must have one visually dominant element. Do not make all cards, paragraphs, and titles look equally important.
+Design English first for the strongest composition, title scale, spacing, image size, and line breaks.
 
-## Mandatory PPT-Like Viewport Behavior
+Other locales may use:
 
-The final course behaves like a presentation deck, not a scrolling webpage.
+- shorter authored wording with identical meaning;
+- deliberate line breaks;
+- slightly adjusted readable typography;
+- different column proportions;
+- locale-specific layout variants;
+- additional semantic sub-scenes when necessary.
+
+Do not weaken the English page merely to force identical multilingual density. All locales must still pass functional and viewport QA.
+
+## Mandatory PPT-Like Behavior
+
+The course behaves like a presentation deck, not a scrolling webpage.
 
 1. One scene occupies one complete browser viewport.
 2. Header, stage, and footer fit within `100dvh`.
 3. Body and normal scene stage use `overflow: hidden`.
 4. No normal learner scene requires vertical scrolling.
-5. Previous/Next, progress, Course Menu, and narration remain visible.
+5. Previous/Next, progress, Course Menu, narration, and settings remain visible.
 6. Long content is divided into additional scenes.
-7. Do not solve overflow by making text unreadably small.
+7. Do not solve overflow by clipping content, clipping images, or making text unreadably small.
 8. Validate at 100% zoom for 1920×1080, 1600×900, and 1366×768.
-9. Validate English, Simplified Chinese, Traditional Chinese, and Japanese separately.
-10. Mobile uses compact alternate layouts, tabs, or additional scenes—not a long stacked article.
+9. Validate English first, then Simplified Chinese, Traditional Chinese, and Japanese.
 
-Recommended shell:
-
-```css
-html, body {
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  overflow: hidden;
-}
-
-.course-shell {
-  height: 100dvh;
-  min-height: 100vh;
-  display: grid;
-  grid-template-rows: var(--header-h) minmax(0, 1fr) var(--footer-h);
-  overflow: hidden;
-}
-
-.scene-stage,
-.scene {
-  min-height: 0;
-  overflow: hidden;
-}
-```
-
-Programmatically verify:
+Recommended checks:
 
 ```js
 const sceneFits = activeScene.scrollHeight <= activeScene.clientHeight + 1;
 const pageFits = document.documentElement.scrollHeight <= window.innerHeight + 1;
 ```
 
-A failed fit check is a production defect. Split or redesign the scene.
+## Strict Production Overflow Policy
 
-## Mandatory UI Direction
+The final learner UI must never display:
 
-Use a unified preview-style Micas design:
+- `Layout overflow detected`;
+- overflow or fit warnings;
+- debug badges;
+- source-review messages;
+- QA metadata;
+- authoring diagnostics.
 
-- dark navy full-page environment;
-- Micas cyan `#00899F` as the primary accent;
-- large high-impact typography where content is important;
-- one dominant focal element per scene;
-- large authentic images in carefully designed frames;
-- rounded dark/blue translucent cards;
-- coherent header, stage, and footer;
-- restrained professional animation;
-- PPT-like one-screen composition.
+Overflow diagnostics may exist only in explicit reviewer mode and must be off by default.
 
-Do not create a generic LMS appearance.
+If a scene fails fit checks:
 
-### Visual Hierarchy
+1. shorten nonessential presentation wording;
+2. redesign the composition;
+3. move secondary details to another scene;
+4. split the scene;
+5. rerender and retest.
 
-Use meaningful scale contrast:
+A visible overflow notice or an overflowing scene is a release-blocking defect.
+
+## Stage Utilization
+
+Do not produce pages with one populated side and a large accidental blank half.
+
+- Never render an empty image frame, blank column, or placeholder card.
+- Use two columns only when both contain meaningful teaching content.
+- If a planned visual is missing, use a purposeful single-column composition.
+- Meaningful content should normally occupy roughly 65–90% of the usable stage.
+- Avoidable empty regions of about one-third or more of the stage fail visual QA.
+- Intentional whitespace is allowed only when it strengthens the focal message.
+
+## Visual Direction
+
+Use the successful Micas preview style:
+
+- deep-navy unified shell;
+- Micas cyan `#00899F`;
+- large selective typography;
+- one strong focal element;
+- asymmetric 55/45, 58/42, or 60/40 layouts where appropriate;
+- one primary card or visual larger than supporting elements;
+- rounded blue-tinted translucent cards;
+- restrained professional motion;
+- no generic LMS look;
+- no dominant plain-white body panel;
+- no accidental white logo rectangle.
+
+Suggested typography:
 
 ```css
-.hero-title {
-  font-size: clamp(56px, 6vw, 96px);
-  line-height: .98;
-  font-weight: 800;
-}
-
-.scene-title {
-  font-size: clamp(40px, 4.2vw, 68px);
-  line-height: 1.04;
-  font-weight: 780;
-}
-
-.key-metric {
-  font-size: clamp(52px, 5.5vw, 88px);
-  line-height: 1;
-  font-weight: 820;
-}
+.hero-title { font-size: clamp(56px, 6vw, 96px); }
+.scene-title { font-size: clamp(40px, 4.2vw, 68px); }
+.key-metric { font-size: clamp(52px, 5.5vw, 88px); }
 ```
 
-Rules:
+Do not use repetitive equal-sized grids as the default layout.
 
-- use one dominant title, image, key value, warning, or active step;
-- prefer asymmetric `58/42`, `60/40`, or `55/45` layouts;
-- use one primary card larger than secondary cards;
-- use equal card grids only for genuinely equal comparisons;
-- do not repeat flat 2×2 grids across most scenes;
-- keep intentional whitespace around important content;
-- hero scenes should feel like premium product-launch slides.
+## Technical Image Integrity
 
-### Forbidden UI Outcomes
+Technical images must be complete and useful.
 
-- vertically scrolling normal scene;
-- flat scenes where everything has similar visual weight;
-- repetitive equal-card grids on most pages;
-- white rectangular logo on the dark header;
-- dominant plain-white main content block;
-- permanently visible course directory;
-- Course Menu in the top-left header;
-- language control containing a `Language` prefix;
-- full voice dropdown or voice name permanently visible in the footer;
-- large `Narrate` / `语音讲解` button;
-- learner-visible Source mapping / 源内容映射;
-- learner-visible Narration transcript / 旁白文本;
-- cropped or half-visible technical images;
-- tiny images floating in large unused frames;
-- generic blue replacing `#00899F`.
+- Use authentic source figures.
+- Pre-crop source page margins, headers, footers, and irrelevant whitespace.
+- Use `object-fit: contain` for products, diagrams, screenshots, and installation figures.
+- Never use `cover` for technical content.
+- Preserve the full device, labels, arrows, and aspect ratio.
+- Allocate about 40–55% of the stage for a normal image/text scene and 55–75% when the image is the primary learning object.
+- If a complete image cannot remain legible, use a full-view scene followed by explicit zoom/detail scenes.
+- Never show only half of a technical image.
+- Never leave a large frame containing a tiny image with excessive unused space.
 
-## Header and Language Control
+Run image QA after fonts and all images load/decode. Verify nonzero natural dimensions, complete visibility, no ancestor clipping, readable labels, and `object-fit: contain`.
+
+A missing, half-visible, or unintentionally cropped image is a release-blocking defect.
+
+## Header and Language
 
 Header contains:
 
-- transparent Micas logo;
-- course/product title and compact subtitle;
-- selected-language dropdown;
+- integrated transparent Micas logo;
+- course/product title and compact scene subtitle;
+- selected language;
 - Video mode;
 - Fullscreen.
 
-The language dropdown displays only:
+The visible language selector shows only:
 
 - `English`
 - `简体中文`
 - `繁體中文`
 - `日本語`
 
-Do not display `Language`, `Language · English`, or `Language: English`. Keep `aria-label="Language"` for accessibility. English is the first-load default.
+Do not display a visible `Language` prefix. Keep `aria-label="Language"`.
 
-## Course Directory
+## Footer Controls
 
-- Hide the full directory by default.
-- Place Course Menu in the bottom-left footer/control rail.
-- Open it as an overlay drawer/modal.
-- Include modules, scene count, progress, search, and quick jump.
-- Close after selection, Escape, backdrop click, or close button.
-- Keep closed during normal teaching, Fullscreen, and Video mode unless explicitly opened.
+Use substantial controls on desktop.
 
-## Footer and Progress
+- Course Menu and scene count on the left;
+- a prominent progress bar;
+- labeled Previous and Next buttons in the center;
+- narration and audio settings on the right.
 
-Recommended footer:
-
-- left: Course Menu and scene counter;
-- middle-left/center: prominent progress group;
-- center: Previous and Next;
-- right: icon-only narration control and optional settings.
-
-Use a larger progress indicator:
+Recommended minimums:
 
 ```css
+.nav-button {
+  min-width: 150px;
+  min-height: 58px;
+  padding: 0 24px;
+  font-size: 18px;
+  border-radius: 18px;
+  flex-shrink: 0;
+}
+
+.icon-control {
+  width: 58px;
+  height: 58px;
+  min-width: 58px;
+  min-height: 58px;
+  flex-shrink: 0;
+}
+
 .progress-group {
-  flex: 1 1 320px;
-  min-width: 240px;
-  max-width: 520px;
+  min-width: 260px;
+  max-width: 560px;
 }
 
-.progress-track {
-  height: clamp(8px, .8vh, 12px);
-  border-radius: 999px;
-}
+.progress-track { height: 9px; }
 ```
 
-Target approximately 300–480 px width at 1600–1920 px and 220–300 px at 1366 px where practical.
+Desktop Previous/Next must use labels plus arrows. Tiny arrow-only squares are allowed only in compact/mobile mode.
 
-## Technical Image Requirements
+## Narration and Google-First Voices
 
-Technical images are primary instructional content.
+The normal footer uses an icon-only speaker/play button; detailed settings are in a popover.
 
-1. Display product images, diagrams, screenshots, and installation figures completely by default.
-2. Use `object-fit: contain`, never `cover`, for technical visuals.
-3. Preserve aspect ratio, labels, and boundaries.
-4. Do not clip the top, bottom, or sides because a frame is too small.
-5. Allocate at least about 38–45% of stage width in a two-column technical scene.
-6. Allocate 50–70% of the stage when the image itself is the learning objective.
-7. Crop page margins and irrelevant whitespace before embedding.
-8. If an image cannot remain legible, create a full-image scene followed by annotated detail scenes.
-9. Intentional zoom crops require a complete-view counterpart in the same or adjacent scene.
+For every locale, search for a matching Google voice and select it by default when available.
 
-Recommended CSS:
+Preferred fragments:
 
-```css
-.visual-frame {
-  min-width: 0;
-  min-height: 0;
-  display: grid;
-  place-items: center;
-  overflow: hidden;
-}
+- English: `Google US English`, `Google English`;
+- Simplified Chinese: `Google 普通话`, `Google Mandarin`, `Google 中文`;
+- Traditional Chinese: `Google 國語`, `Google Chinese (Taiwan)`, `Google 中文（台灣）`;
+- Japanese: `Google 日本語`, `Google Japanese`.
 
-.visual-frame img,
-.visual-frame svg,
-.visual-frame canvas {
-  display: block;
-  width: 100%;
-  height: 100%;
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-  object-position: center;
-}
-```
+Priority:
 
-`object-fit: cover` is permitted only for decorative backgrounds containing no technical information.
+1. exact-locale Google;
+2. exact-language Google;
+3. exact-locale Microsoft Natural/Neural;
+4. exact-locale Apple;
+5. best exact-locale fallback.
 
-## Four-Language Requirements
+Show no more than three curated voices. Put an available Google option first. Do not fabricate voices that the browser does not expose; record unavailable Google voices and fallback behavior in the QA Report and README.
 
-Support:
+## Assessment Introduction
 
-- `en` — English
-- `zh-CN` — 简体中文
-- `zh-TW` — 繁體中文
-- `ja` — 日本語
+Before the first final-assessment question, insert a separate transition scene with:
 
-Rules:
+- confirmation that the teaching section is complete;
+- assessment purpose;
+- number of questions;
+- estimated duration;
+- pass score or scoring method;
+- answer/feedback instructions;
+- readiness message;
+- clear `Start Assessment` button.
 
-1. English is the first-load default.
-2. The visible dropdown shows only the selected language name.
-3. Localize scene titles, body content, narration, module names, questions, answers, feedback, captions, and completion messages.
-4. Preserve product names, commands, standards, and port labels where translation reduces accuracy.
-5. Author independent language content; do not rely on runtime machine translation.
-6. Persist locale choice.
-7. Use `en-US`, `zh-CN`, `zh-TW`, and `ja-JP` narration preferences.
-8. Run viewport and image-composition QA for every locale.
+Video/Auto mode pauses and waits on this scene.
 
-## Narration UI and Voice Quality
+## Presentation Hygiene
 
-- Use a compact icon-only speaker/play button in the bottom-right.
-- Do not show a voice name or complete voice dropdown in the footer.
-- Do not use a large `Narrate`/`语音讲解` text button.
-- Open detailed settings in a small popover.
-- Show no more than three curated voices for the active locale.
-- Auto-select the highest-scoring exact-locale voice.
-- Prefer Microsoft Natural, Google, and Apple high-quality families.
-- Filter or heavily penalize `eSpeak`, `Festival`, `MBROLA`, `Compact`, `Legacy`, `Robot`, and `Desktop`.
-- If no curated voice is available, expose at most one exact-locale fallback.
+Learner pages must not show:
 
-Keep narration text in localized data and optional captions, not a permanent transcript block.
+- source mapping;
+- narration transcript accordions;
+- raw page references;
+- QA labels;
+- debug information;
+- overflow notices;
+- missing-asset placeholders;
+- generation metadata.
 
-## Interaction Requirements
+## Technical Output
 
-Include realistic work decisions such as hardware identification, procedure ordering, safest-next-action choices, symptom diagnosis, and LED/status matching.
-
-Each question must have one source-supported answer, plausible distractors, immediate explanatory feedback, and internal source mapping. Use one question per scene where possible.
-
-## Technical Requirements
-
-Generate one self-contained HTML file with embedded CSS, JavaScript, images, and course data. Do not rely on external CDNs, web fonts, scripts, or image URLs.
+Generate one self-contained HTML file with embedded CSS, JavaScript, images, and course data. Do not depend on external CDNs, web fonts, scripts, or runtime image URLs.
 
 Include:
 
-- `100dvh` PPT-like shell;
-- no vertical scrolling in normal scenes;
-- responsive scene variants;
-- hidden Course Menu triggered bottom-left;
+- fixed `100dvh` shell;
+- no normal-page scrolling;
+- English-first design and four authored languages;
+- hidden course drawer opened from bottom-left;
 - selected-language-only dropdown;
-- English default and four authored languages;
-- larger progress bar;
-- Previous/Next and keyboard navigation;
+- substantial Previous/Next and audio controls;
+- prominent progress bar;
 - Fullscreen and Video mode;
-- search in drawer or compact overlay;
-- Web Speech narration;
-- icon-only narration control;
-- curated voices in an audio popover;
-- speech cancellation on navigation/language change;
-- quizzes, score, and passing threshold;
-- `localStorage` for progress, language, and audio settings;
-- accessible controls, focus states, contrast, alt text, Escape behavior, and reduced-motion support;
-- no learner-visible mapping, transcript, QA, debug, or authoring metadata.
+- Google-first narration selection when available;
+- module checks and final scoring;
+- assessment-introduction scene;
+- `localStorage` persistence;
+- optional captions;
+- accessibility and reduced-motion support.
+
+## Mandatory Pre-Delivery QA
+
+Render and inspect every scene at:
+
+- 1920×1080;
+- 1600×900;
+- 1366×768.
+
+Run English first, then all other locales.
+
+Verify:
+
+- no page or scene overflow;
+- no visible diagnostic or QA message;
+- no header/footer clipping;
+- no horizontal clipping;
+- one obvious focal point;
+- no accidental half-empty page or blank panel;
+- no tiny desktop controls;
+- technical images are complete, large, and readable;
+- no image is half-visible or unintentionally cropped;
+- Google is selected by default when available;
+- final assessment has a transition scene;
+- English remains the strongest visual master;
+- offline assets, quizzes, navigation, persistence, narration, and accessibility work.
+
+Do not deliver until every release-blocking defect has been corrected.
 
 ## Required Deliverables
-
-Create and attach:
 
 1. `[COURSE_NAME]_Interactive_Training.html`
 2. `[COURSE_NAME]_Course_Map.md`
 3. `[COURSE_NAME]_QA_Report.md`
 4. `[COURSE_NAME]_README.md`
 
-The QA Report must verify:
+The QA Report must document viewport results, image integrity, stage utilization, control sizes, English-master review, multilingual completeness, Google voice availability/fallback, assessment transition, technical accuracy, and source issues.
 
-- source accuracy and warnings;
-- one-screen fit at all required viewports and locales;
-- strong visual hierarchy and one focal point per scene;
-- hero/key typography scale;
-- avoidance of repetitive flat card grids;
-- complete, large, uncropped technical images;
-- `object-fit: contain` for technical figures;
-- larger progress dimensions;
-- selected-language-only control;
-- `#00899F` primary color and integrated logo;
-- bottom-left hidden Course Menu;
-- bottom-right icon-only narration;
-- curated voice quality;
-- offline completeness;
-- functional and accessibility tests.
-
-Do not stop at an outline or prototype. Generate the complete artifacts and validate them before delivery.
+Do not stop at an outline or prototype. Generate the complete artifacts, validate them, fix defects, and provide the final downloadable files.
 
 ---
