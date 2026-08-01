@@ -2,7 +2,7 @@
 name: micas-doc-to-interactive-training
 display_name: Micas Doc-to-Interactive-Training Skill
 description: Convert manuals, SOPs, product guides, policies, and technical documents into source-grounded, Micas-branded, self-contained interactive training courses with PPT-like scenes, strict production QA, English-first visual design, complete technical images, curated Google-first narration, assessments, and offline delivery.
-version: 2.3.1
+version: 2.3.2
 ---
 
 # Micas Doc-to-Interactive-Training Skill
@@ -38,6 +38,7 @@ Unless explicitly overridden:
 - **Narration:** Google-first exact-locale voice selection when available; compact icon control in the bottom-right
 - **Assessment:** module checks, a dedicated assessment-introduction scene, final assessment, score, and completion scene
 - **Sequential navigation:** Next always advances through the global scene sequence; module and assessment boundaries never disable it
+- **Auto Play timing:** a narrated scene advances only after the complete narration for that scene has finished
 
 When information is incomplete, infer only nontechnical presentation details. Record assumptions in the QA Report. Never invent technical facts.
 
@@ -525,6 +526,74 @@ function goNext() {
 }
 ```
 
+## Auto Play Narration-Completion Contract
+
+When Auto Play or Video mode includes narration, the current scene must remain visible until the complete narration for that scene has finished.
+
+1. Do not advance with a fixed timer, estimated reading duration, character-count estimate, animation duration, or generic slide dwell while speech is still active.
+2. Advance only after the final `SpeechSynthesisUtterance.onend` event for the current scene's final narration chunk.
+3. If narration is split into multiple utterances, play them sequentially and resolve the scene only after the last chunk ends.
+4. While speech is paused, the page remains paused. Resume narration before any page transition.
+5. If narration errors or cannot start, stop Auto Play on the current scene; do not silently skip to the next page.
+6. Manual navigation must cancel the active utterance and invalidate its playback token so a stale `onend` callback cannot trigger an extra page advance.
+7. Existing assessment-introduction pause behavior remains unchanged.
+8. A scene with intentionally no narration may use a short configured visual dwell before advancing.
+
+Recommended implementation:
+
+```js
+let autoPlayRunId = 0;
+
+function speakSceneNarration(chunks, voice) {
+  const runId = ++autoPlayRunId;
+
+  return new Promise((resolve, reject) => {
+    let index = 0;
+
+    const speakNextChunk = () => {
+      if (runId !== autoPlayRunId) return;
+      if (index >= chunks.length) {
+        resolve();
+        return;
+      }
+
+      const utterance = new SpeechSynthesisUtterance(chunks[index++]);
+      utterance.voice = voice;
+      utterance.onend = () => {
+        if (runId === autoPlayRunId) speakNextChunk();
+      };
+      utterance.onerror = event => {
+        if (runId === autoPlayRunId) reject(event);
+      };
+      speechSynthesis.speak(utterance);
+    };
+
+    speakNextChunk();
+  });
+}
+
+async function playCurrentSceneThenAdvance() {
+  try {
+    const chunks = getCurrentSceneNarrationChunks();
+    if (chunks.length) {
+      await speakSceneNarration(chunks, selectedVoice);
+    } else {
+      await wait(NO_NARRATION_DWELL_MS);
+    }
+    if (autoPlayEnabled) goNext();
+  } catch (_) {
+    stopAutoPlay();
+  }
+}
+
+function cancelCurrentPlayback() {
+  autoPlayRunId += 1;
+  speechSynthesis.cancel();
+}
+```
+
+Advancing before the final narration `onend` is a release-blocking defect.
+
 # 10. Narration and Google-First Voice Policy
 
 The normal footer uses a compact speaker/play icon. Detailed controls live in a popover.
@@ -636,6 +705,7 @@ Required features:
 - selected-language-only dropdown;
 - large labeled desktop Previous/Next buttons;
 - global sequential navigation with no module or assessment gating;
+- Auto Play waits for the final narration completion event before advancing;
 - right-aligned control cluster ordered Previous, Next, narration, Audio settings;
 - prominent progress bar;
 - Fullscreen and Video mode;
@@ -664,7 +734,9 @@ For every scene, viewport, and locale:
 - verify no horizontal clipping;
 - verify no diagnostic badge exists in learner mode;
 - verify Next is enabled on every nonterminal scene, including module-ending scenes and unanswered assessment questions;
-- verify the right-side footer order is Previous, Next, narration, Audio settings.
+- verify the right-side footer order is Previous, Next, narration, Audio settings;
+- verify Auto Play does not call `goNext()` before the final narration chunk fires `onend`;
+- verify pause/resume, narration errors, and manual cancellation cannot cause premature or duplicate advances.
 
 ## Visual QA
 
@@ -697,6 +769,8 @@ Do not deliver when any of these occurs:
 - Next is disabled while a following scene exists;
 - module or assessment answer state blocks scene navigation;
 - footer controls are not right-aligned or are reordered;
+- Auto Play advances while narration is still speaking, paused, or before the final narration `onend`;
+- a stale narration callback causes a duplicate page advance;
 - first exam question appears without an assessment-introduction scene;
 - English layout was weakened to force identical multilingual density;
 - source mapping, transcript, or QA metadata is visible in learner mode;

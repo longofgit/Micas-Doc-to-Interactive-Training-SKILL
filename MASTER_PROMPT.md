@@ -244,6 +244,19 @@ Desktop Previous/Next must use labels plus arrows. Tiny arrow-only squares are a
 - Only the absolute final completion scene may disable or replace Next.
 - Keep the right-side control order: Previous → Next → narration → Audio settings.
 
+## Auto Play Narration Timing
+
+When Auto Play or Video mode is active:
+
+- keep the current scene visible until its complete narration finishes;
+- advance only from the final narration utterance's `onend` event;
+- never use a fixed timer or estimated reading duration to advance while speech is active;
+- if narration is split into chunks, wait until the final chunk ends;
+- pausing narration must pause the page transition;
+- narration errors must stop Auto Play on the current scene rather than skip it;
+- manual navigation must cancel and invalidate active narration so stale callbacks cannot advance again;
+- only scenes with intentionally no narration may use a short explicit visual dwell.
+
 ## Narration and Google-First Voices
 
 The normal footer uses an icon-only speaker/play button; detailed settings are in a popover.
@@ -341,6 +354,7 @@ Verify:
 - final assessment has a transition scene;
 - Next works across every module boundary and every unanswered assessment page;
 - the footer action group is right-aligned in the order Previous, Next, narration, Audio settings;
+- Auto Play advances only after the final narration completion event and never while speech is active or paused;
 - English remains the strongest visual master;
 - offline assets, quizzes, navigation, persistence, narration, and accessibility work.
 

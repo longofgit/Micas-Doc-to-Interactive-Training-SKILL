@@ -1,6 +1,6 @@
 # Micas Doc-to-Interactive-Training Skill
 
-Version: **2.3.1**
+Version: **2.3.2**
 
 This package converts manuals, SOPs, product guides, policies, and technical documents into polished, source-grounded Micas interactive training courses.
 
@@ -43,10 +43,21 @@ The earlier form `Micas Doc-to- Interactive-Training Skill` contained an uninten
 - Language selector: current language only; no visible `Language` prefix
 - Previous/Next: substantial labeled desktop buttons with uninterrupted global sequential navigation
 - Footer actions: right-aligned in the order Previous, Next, narration, Audio settings
+- Auto Play: advances only after the current scene narration has fully completed
 - Narration: compact icon controls with a curated popover
 - Voice default: matching Google voice when available
 - Final assessment: preceded by a dedicated assessment-introduction scene
 - Output: one self-contained offline HTML plus Course Map, QA Report, and README
+
+## v2.3.2 Auto Play Narration Completion
+
+- Auto Play and Video mode now wait for the complete current-scene narration before advancing.
+- The final utterance `onend` is the navigation trigger; fixed timers and estimated durations are prohibited while narration is active.
+- Multi-chunk narration advances only after the last chunk.
+- Pause/resume preserves the current scene.
+- Narration errors stop Auto Play instead of skipping the scene.
+- Manual navigation invalidates stale narration callbacks to prevent duplicate advances.
+- No other UI, navigation, image, language, voice-selection, assessment, or layout rule changed.
 
 ## v2.3.1 Navigation and Footer Fix
 
@@ -112,6 +123,7 @@ Check:
 - correct language behavior;
 - Google-first selection when available;
 - assessment transition;
+- Auto Play waits for full narration completion and does not advance early or twice;
 - navigation, audio, quizzes, scoring, persistence, fullscreen, and offline assets.
 
 ## Release-Blocking Defects

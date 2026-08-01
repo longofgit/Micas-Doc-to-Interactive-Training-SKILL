@@ -1,5 +1,21 @@
 # Changelog
 
+## 2.3.2
+
+### Auto Play Narration Completion
+
+- Required Auto Play and Video mode to remain on the current scene until its complete narration finishes.
+- Made the final narration utterance `onend` the only normal narrated-scene advance trigger.
+- Prohibited fixed timers, estimated reading durations, character-count timing, and animation timing from advancing while speech is active.
+- Required multi-chunk narration to finish every chunk before navigation.
+- Required narration pause to pause page advancement.
+- Required narration errors to stop Auto Play on the current scene instead of skipping it.
+- Required manual navigation to invalidate stale narration callbacks and prevent duplicate page advances.
+
+### Scope
+
+- Made no other UI, navigation availability, footer alignment, image, language, voice-selection, assessment, or visual-design changes.
+
 ## 2.3.1
 
 ### Sequential Navigation

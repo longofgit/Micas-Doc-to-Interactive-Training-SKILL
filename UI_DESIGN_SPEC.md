@@ -1,6 +1,6 @@
 # Micas Interactive Training UI Design Specification
 
-Version: **2.3.1**
+Version: **2.3.2**
 
 This is the mandatory visual implementation contract for courses generated with the **Micas Doc-to-Interactive-Training Skill**.
 
@@ -329,6 +329,16 @@ Rules:
 - Previous is enabled on every scene except the first global scene.
 - Visible buttons, keyboard arrows, and Video mode share the same navigation functions.
 
+## Auto Play Timing
+
+- Auto Play/Video mode must keep the current scene visible until that scene's complete narration has ended.
+- The next scene is triggered by the final utterance `onend`, not by a fixed timeout or estimated duration.
+- Multi-part narration waits for every chunk in order and advances only after the final chunk.
+- Pausing narration pauses the scene transition.
+- A narration error stops Auto Play on the current scene rather than skipping it.
+- Manual Previous/Next cancels and invalidates the active narration so stale callbacks cannot advance again.
+- Scenes with no narration may use a short explicit visual dwell.
+
 # 11. Course Menu
 
 - Trigger is bottom-left.
@@ -494,6 +504,8 @@ The course fails UI QA when any of the following is true:
 - roughly one-third or more of the stage is avoidably empty;
 - Previous/Next or audio controls are tiny on desktop;
 - Next is disabled on a nonterminal scene, at a module boundary, or on an unanswered assessment question;
+- Auto Play advances before the current scene narration finishes;
+- narration pause, error, cancellation, or stale callbacks cause premature or duplicate navigation;
 - Previous, Next, narration, and Audio settings are not grouped at the far right in the required order;
 - English visual quality was weakened for multilingual uniformity;
 - the language control displays a `Language` prefix;
