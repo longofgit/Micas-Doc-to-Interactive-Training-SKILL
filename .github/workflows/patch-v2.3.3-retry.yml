@@ -1,0 +1,232 @@
+name: Apply v2.3.3 header lockup reference retry
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/patch-v2.3.3-retry.yml
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Apply scoped header lockup rules
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          def load(path):
+              return Path(path).read_text(encoding='utf-8')
+
+          def save(path, text):
+              Path(path).write_text(text, encoding='utf-8')
+
+          # SKILL.md
+          p = 'SKILL.md'
+          s = load(p)
+          s = re.sub(r'version: 2\.3\.2', 'version: 2.3.3', s, count=1)
+          if 'assets/ui-reference/header-lockup-reference.svg' not in s:
+              s = s.replace(
+                  '- **Visual direction:** dark, premium, technical, spacious, mission-oriented\n',
+                  '- **Visual direction:** dark, premium, technical, spacious, mission-oriented\n- **Header lockup:** use `assets/ui-reference/header-lockup-reference.svg` as the approved upper-left composition reference\n',
+                  1
+              )
+          marker = '<!-- v2.3.3 header-lockup -->'
+          if marker not in s:
+              block = '''<!-- v2.3.3 header-lockup -->
+## Header Brand Lockup Contract
+
+The upper-left header must follow `assets/ui-reference/header-lockup-reference.svg`.
+
+- Build one horizontal lockup: a large transparent Micas logo on the left and a stacked text block on the right.
+- The first line is the bold white course title; the second line is the smaller muted product, platform, or module subtitle.
+- Vertically center the logo and both text lines as one unit.
+- Keep a generous 28–42 px logo-to-text gap on desktop.
+- Target a 190–250 px logo width, 30–44 px course title, and 18–28 px subtitle on wide desktop screens.
+- Keep the lockup directly on the deep-navy header background. Do not use a white box, card, or separate panel.
+- Keep a subtle cyan divider along the bottom of the header.
+- Keep language, Video, Fullscreen, and other utilities on the far right. They must not squeeze, overlap, or visually compete with the brand lockup.
+- At narrower widths, scale the whole lockup proportionally. Compact right-side utility labels or shorten the contextual subtitle before weakening the logo/title hierarchy.
+- Recreate the style with live HTML/CSS and the actual transparent Micas logo. Do not embed the reference screenshot as the generated header.
+
+Recommended CSS:
+
+```css
+.course-header {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  padding-inline: clamp(28px, 3vw, 56px);
+  border-bottom: 1px solid rgba(118, 228, 238, .24);
+}
+.brand-lockup {
+  display: flex;
+  align-items: center;
+  gap: clamp(28px, 2.4vw, 42px);
+  min-width: 0;
+}
+.brand-logo {
+  width: clamp(190px, 15vw, 250px);
+  max-height: 72px;
+  object-fit: contain;
+  flex: 0 0 auto;
+}
+.brand-copy { display: grid; gap: 4px; min-width: 0; }
+.brand-copy .course-title {
+  font-size: clamp(30px, 2.45vw, 44px);
+  line-height: 1.02;
+  font-weight: 800;
+  color: var(--micas-text);
+}
+.brand-copy .course-subtitle {
+  font-size: clamp(18px, 1.55vw, 28px);
+  line-height: 1.18;
+  color: var(--micas-text-muted);
+}
+.header-actions { margin-left: auto; flex: 0 0 auto; }
+```
+
+A tiny logo, weak title hierarchy, white logo box, misalignment, overlap, or crowding is a release-blocking UI defect.
+
+'''
+              anchor = '# 8. Technical Image Integrity Contract\n'
+              s = s.replace(anchor, block + anchor, 1) if anchor in s else s + '\n\n' + block
+          save(p, s)
+
+          # UI_DESIGN_SPEC.md
+          p = 'UI_DESIGN_SPEC.md'
+          s = load(p)
+          s = re.sub(r'Version: \*\*2\.3\.2\*\*', 'Version: **2.3.3**', s, count=1)
+          marker = '<!-- v2.3.3 header-lockup -->'
+          if marker not in s:
+              block = '''<!-- v2.3.3 header-lockup -->
+## Approved Upper-Left Brand Lockup
+
+Use `assets/ui-reference/header-lockup-reference.svg` as the visual reference.
+
+- Large transparent Micas logo on the left.
+- Bold white course title above a smaller muted product/module subtitle on the right.
+- One vertically centered horizontal unit with generous spacing.
+- Deep-navy integration, no white box or card.
+- Thin cyan divider at the header bottom.
+- Far-right utilities must not compress or overlap the brand lockup.
+- Desktop target: logo 190–250 px wide, title 30–44 px, subtitle 18–28 px, gap 28–42 px.
+- Preserve the same identity in responsive variants; compact utilities before shrinking the lockup below readable size.
+- Implement with live HTML/CSS and the real logo. The bundled screenshot is reference-only.
+
+The UI fails QA if the logo is tiny, the title hierarchy is weak, the subtitle is misaligned, a white logo rectangle appears, or header actions crowd the lockup.
+
+'''
+              anchor = 'Header content:\n'
+              s = s.replace(anchor, block + anchor, 1) if anchor in s else s + '\n\n' + block
+          save(p, s)
+
+          # MASTER_PROMPT.md
+          p = 'MASTER_PROMPT.md'
+          s = load(p)
+          marker = '<!-- v2.3.3 header-lockup -->'
+          if marker not in s:
+              block = '''<!-- v2.3.3 header-lockup -->
+## Header Brand Lockup
+
+Follow `assets/ui-reference/header-lockup-reference.svg` for the upper-left header:
+
+- large transparent Micas logo on the left;
+- bold white course title above a smaller muted product/module subtitle on the right;
+- vertically centered single-row lockup with generous spacing;
+- deep-navy background and subtle cyan bottom divider;
+- no white box, card, or separate panel;
+- right-side utilities must not squeeze or overlap the lockup;
+- desktop target: logo 190–250 px, title 30–44 px, subtitle 18–28 px;
+- recreate with live HTML/CSS and the actual logo, not the screenshot bitmap.
+
+'''
+              anchor = '## Header and Language\n'
+              s = s.replace(anchor, block + anchor, 1) if anchor in s else s + '\n\n' + block
+          save(p, s)
+
+          # QUICK_PROMPT.md
+          p = 'QUICK_PROMPT.md'
+          s = load(p)
+          marker = '<!-- v2.3.3 header-lockup -->'
+          if marker not in s:
+              block = '''<!-- v2.3.3 header-lockup -->
+## 左上角Header样式
+
+- 参考Skill内的`assets/ui-reference/header-lockup-reference.svg`。
+- 左侧放较大的透明Micas Logo，右侧上下两行分别放粗体白色课程标题和较小的产品/模块副标题。
+- Logo与两行文字作为一个整体垂直居中，并保留宽松间距。
+- 直接融合在深蓝Header背景中，不要白底、卡片或独立面板。
+- Header底部保留细青蓝分隔线。
+- 右侧语言、Video、Fullscreen等按钮不能挤压或遮挡品牌区。
+- 桌面端参考：Logo宽190–250px，标题30–44px，副标题18–28px，间距28–42px。
+- 用真实Logo和HTML/CSS重现样式，不能直接把参考截图作为Header图片。
+
+'''
+              anchor = '## UI与品牌\n'
+              s = s.replace(anchor, block + anchor, 1) if anchor in s else s + '\n\n' + block
+          save(p, s)
+
+          # README.md
+          p = 'README.md'
+          s = load(p)
+          s = re.sub(r'Version: \*\*2\.3\.2\*\*', 'Version: **2.3.3**', s, count=1)
+          if '`assets/ui-reference/header-lockup-reference.svg`' not in s:
+              s = s.replace(
+                  '- `CHANGELOG.md` — release history.\n',
+                  '- `CHANGELOG.md` — release history.\n- `assets/ui-reference/header-lockup-reference.svg` — approved upper-left header composition reference.\n- `assets/ui-reference/README.md` — instructions for using the visual reference.\n',
+                  1
+              )
+          marker = '## v2.3.3 Header Brand Lockup Reference\n'
+          if marker not in s:
+              section = '''## v2.3.3 Header Brand Lockup Reference
+
+- Bundled the approved upper-left header screenshot under `assets/ui-reference/`.
+- Required a large Micas logo with a stacked course title and product/module subtitle.
+- Added explicit sizing, spacing, vertical alignment, background integration, divider, responsive-priority, and utility-crowding rules.
+- The image is supplemental guidance; generated courses must recreate the design with live HTML/CSS and the actual logo.
+- No navigation, footer, Auto Play, narration, assessment, image, language, or other scene rules changed.
+
+'''
+              anchor = '## v2.3.2 Auto Play Narration Completion\n'
+              s = s.replace(anchor, section + anchor, 1) if anchor in s else s + '\n\n' + section
+          save(p, s)
+
+          # CHANGELOG.md
+          p = 'CHANGELOG.md'
+          s = load(p)
+          if '## 2.3.3\n' not in s:
+              section = '''## 2.3.3
+
+### Header Brand Lockup
+
+- Added `assets/ui-reference/header-lockup-reference.svg` and its usage README.
+- Required a large transparent Micas logo with a stacked course title and product/module subtitle.
+- Added sizing, spacing, vertical alignment, deep-navy integration, cyan divider, responsive-priority, and utility-crowding rules.
+- Added release blockers for tiny logos, weak hierarchy, white boxes, overlap, crowding, and misalignment.
+
+### Scope
+
+- Changed only the upper-left header visual specification and bundled reference assets.
+- Did not change navigation, footer alignment, Auto Play, narration, voice selection, assessment, image handling, language behavior, or other course UI rules.
+
+'''
+              s = s.replace('# Changelog\n\n', '# Changelog\n\n' + section, 1)
+          save(p, s)
+          PY
+
+          rm -f .github/workflows/patch-v2.3.3.yml .github/workflows/patch-v2.3.3-retry.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add SKILL.md UI_DESIGN_SPEC.md MASTER_PROMPT.md QUICK_PROMPT.md README.md CHANGELOG.md .github/workflows/patch-v2.3.3.yml .github/workflows/patch-v2.3.3-retry.yml
+          git commit -m "Release v2.3.3 header brand lockup reference"
+          git push origin main
