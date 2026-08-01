@@ -1,152 +1,103 @@
 # Micas Doc-to-Interactive-Training Skill
 
-Version: **2.3.2**
+Version: **2.3.3**
 
-This package converts manuals, SOPs, product guides, policies, and technical documents into polished, source-grounded Micas interactive training courses.
+This repository converts manuals, SOPs, product guides, policies, presentations, and technical documents into source-grounded, Micas-branded interactive training courses.
+
+## Required Reading Order
+
+For reliable execution, the AI must read:
+
+1. `SKILL.md`
+2. `core/SKILL_v2.3.2.md`
+3. `UI_DESIGN_SPEC.md`
+4. `HEADER_UI_SPEC.md`
+5. `MASTER_PROMPT.md` or `QUICK_PROMPT.md`
+
+`HEADER_UI_SPEC.md` is a focused v2.3.3 override. All non-header rules remain defined by the preserved v2.3.2 core.
 
 ## Package Contents
 
-- `SKILL.md` — complete workflow, source-grounding rules, English-first visual master, one-screen behavior, image integrity, controls, narration, assessment, and strict QA.
-- `UI_DESIGN_SPEC.md` — mandatory visual contract covering Micas colors, page utilization, image fit, control sizing, multilingual layouts, Google-first voices, and release-blocking defects.
-- `MASTER_PROMPT.md` — detailed prompt for full, formal, or safety-critical projects.
-- `QUICK_PROMPT.md` — concise Chinese prompt for routine document conversion.
-- `CHANGELOG.md` — release history.
+- `SKILL.md` — v2.3.3 entry point, load order, precedence, and completion requirements.
+- `core/SKILL_v2.3.2.md` — complete preserved production workflow and rules from v2.3.2.
+- `UI_DESIGN_SPEC.md` — general Micas visual implementation contract.
+- `HEADER_UI_SPEC.md` — mandatory upper-left header/brand-lockup specification.
+- `MASTER_PROMPT.md` — full formal-project prompt.
+- `QUICK_PROMPT.md` — concise Chinese project prompt.
+- `assets/ui-reference/header-lockup-reference.svg` — approved header composition screenshot reference.
+- `assets/ui-reference/README.md` — instructions for using the visual asset.
+- `CHANGELOG.md` — current release notes.
+- `core/CHANGELOG_v2.3.2.md` — preserved earlier release history.
+- `core/README_v2.3.2.md` — preserved earlier package documentation.
 
-## Correct Package Name
+## Can Images Be Included in a Skill?
 
-Use this exact name:
+Yes. Reference screenshots, diagrams, templates, and other visual assets can be stored inside the Skill folder.
 
-> **Micas Doc-to-Interactive-Training Skill**
+Best practice is to:
 
-The earlier form `Micas Doc-to- Interactive-Training Skill` contained an unintended space and is deprecated.
+- place them in a clearly named directory such as `assets/ui-reference/`;
+- reference their exact path from `SKILL.md` or a mandatory specification file;
+- explain what the image demonstrates and how it should be used;
+- provide a written specification as the authoritative fallback;
+- avoid making critical instructions depend only on image inspection;
+- distinguish visual reference assets from source-document images used in generated courses.
 
-## Recommended Use
+The bundled header screenshot is supplemental design guidance. Generated courses must recreate its style using live HTML/CSS, localizable text, and the actual transparent Micas logo; the screenshot itself must not be used as a flattened production header.
 
-1. Attach the source manual, SOP, policy, presentation, or product guide.
-2. Tell the AI to read and follow `SKILL.md` first.
-3. Treat `UI_DESIGN_SPEC.md` as a mandatory implementation and acceptance contract.
-4. Use `MASTER_PROMPT.md` for a full production project or `QUICK_PROMPT.md` for routine work.
-5. Provide audience, learning goal, duration, and assessment level.
-6. Require the AI to generate the complete artifacts, render/test them, fix defects, and only then deliver.
+## v2.3.3 Header Style
 
-## Fixed Defaults
+The upper-left header now requires:
 
-- Brand: Micas Networks
-- Primary color: `#00899F`
-- Visual style: dark premium technical presentation based on the successful preview design
-- Visual master locale: English
-- Default language: English
-- Required languages: English, 简体中文, 繁體中文, 日本語
-- Scene behavior: one viewport per scene, PPT-like Previous/Next navigation
-- Normal-page scrolling: disabled
-- Course directory: hidden drawer, triggered from the bottom-left footer
-- Language selector: current language only; no visible `Language` prefix
-- Previous/Next: substantial labeled desktop buttons with uninterrupted global sequential navigation
-- Footer actions: right-aligned in the order Previous, Next, narration, Audio settings
-- Auto Play: advances only after the current scene narration has fully completed
-- Narration: compact icon controls with a curated popover
-- Voice default: matching Google voice when available
-- Final assessment: preceded by a dedicated assessment-introduction scene
-- Output: one self-contained offline HTML plus Course Map, QA Report, and README
+- a large Micas logo on the left;
+- a bold white course title on the right;
+- a smaller muted product/module subtitle below the title;
+- vertical centering and generous spacing;
+- direct integration into the deep-navy header;
+- a restrained cyan bottom divider;
+- far-right utilities that do not squeeze or overlap the brand lockup.
 
-## v2.3.2 Auto Play Narration Completion
+Desktop reference ranges:
 
-- Auto Play and Video mode now wait for the complete current-scene narration before advancing.
-- The final utterance `onend` is the navigation trigger; fixed timers and estimated durations are prohibited while narration is active.
-- Multi-chunk narration advances only after the last chunk.
-- Pause/resume preserves the current scene.
-- Narration errors stop Auto Play instead of skipping the scene.
-- Manual navigation invalidates stale narration callbacks to prevent duplicate advances.
-- No other UI, navigation, image, language, voice-selection, assessment, or layout rule changed.
+- logo: `190–250px` wide;
+- title: `30–44px`;
+- subtitle: `18–28px`;
+- logo-to-text gap: `28–42px`.
 
-## v2.3.1 Navigation and Footer Fix
+See `HEADER_UI_SPEC.md` for the complete rules and QA criteria.
 
-- Next remains enabled on every scene that has a following global scene.
-- Module-ending scenes advance directly into the next module.
-- Module checks and final-assessment questions do not gate Next on answer state.
-- Unanswered questions remain revisit-able without blocking navigation.
-- Only the absolute terminal completion scene may disable or replace Next.
-- Footer actions are grouped at the far right in the fixed order: Previous, Next, narration, Audio settings.
-- No other UI, image, language, voice, or visual-design rules were changed in this release.
+## Scope of v2.3.3
 
-## v2.3.0 Production Rules
+This release changes only the upper-left header visual specification and adds the bundled visual reference.
 
-### No visible debug or overflow UI
+It does **not** change:
 
-The final learner course must never show `Layout overflow detected`, fit warnings, QA badges, source-review notices, or authoring diagnostics. Overflow is a build/QA defect that must be corrected before delivery.
+- one-screen/PPT-like behavior;
+- global Previous/Next navigation;
+- footer button order or alignment;
+- Auto Play narration-completion behavior;
+- Google-first voice selection;
+- image integrity rules;
+- multilingual behavior;
+- assessment structure;
+- source mapping or technical-accuracy requirements.
 
-### No accidental half-empty scenes
+## Standard Invocation
 
-Two-column layouts are allowed only when both columns have meaningful content. Empty image frames, blank columns, and large accidental unused regions fail visual QA.
+```text
+Please use the Micas Doc-to-Interactive-Training Skill.
+Read SKILL.md and every mandatory referenced file in its load order.
+Convert the uploaded source document into the complete production-ready interactive course.
+Do not stop at an outline or sample.
+```
 
-### Complete technical images
+## Output Standard
 
-Product images, diagrams, screenshots, and installation figures must use `object-fit: contain`, preserve aspect ratio, remain fully visible, and be large enough to teach from. Missing, half-visible, or unintentionally cropped images block release.
+The normal deliverables remain:
 
-### Substantial controls
+1. one self-contained offline interactive HTML course;
+2. Course Map;
+3. QA Report;
+4. course README.
 
-Desktop Previous/Next buttons use labels and arrows. Main controls should normally be 58–64 px tall, icon controls at least 58×58 px, and the progress bar should remain prominent.
-
-### Google-first voices
-
-When the browser exposes a matching Google voice, it is placed first and selected by default for English, Simplified Chinese, Traditional Chinese, and Japanese. Because offline HTML cannot install browser voices, unavailable Google voices must use the best fallback and be documented in the QA Report.
-
-### Assessment transition
-
-The course must insert a separate assessment-introduction scene before the first final-exam question. Auto/Video mode pauses there until the learner starts.
-
-### English-first design
-
-English is designed first as the strongest visual version. Other languages may use layout variants or additional scene splitting without weakening the English composition.
-
-## Mandatory Viewport QA
-
-At 100% browser zoom, render and inspect all scenes at:
-
-- 1920×1080
-- 1600×900
-- 1366×768
-
-Run English first, then all other locales.
-
-Check:
-
-- no page or scene overflow;
-- no visible diagnostic messages;
-- no accidental blank half-page;
-- no empty visual placeholders;
-- no clipped header/footer;
-- complete, readable technical images;
-- substantial controls;
-- Next enabled on every nonterminal scene, including module endings and unanswered assessment questions;
-- right-aligned footer actions in the required order;
-- correct language behavior;
-- Google-first selection when available;
-- assessment transition;
-- Auto Play waits for full narration completion and does not advance early or twice;
-- navigation, audio, quizzes, scoring, persistence, fullscreen, and offline assets.
-
-## Release-Blocking Defects
-
-Do not publish when any of the following exists:
-
-- visible `Layout overflow detected` or similar warning;
-- page or scene overflow;
-- missing or half-visible technical image;
-- large accidental empty region;
-- tiny/shrunken desktop controls;
-- Next disabled while a following scene exists;
-- module or assessment state blocks navigation;
-- footer actions are not right-aligned or are reordered;
-- final exam begins without an introduction scene;
-- English visual quality was weakened for multilingual uniformity;
-- source mapping, transcript, QA, or debug data appears in learner mode;
-- an offline asset is missing.
-
-## Browser Voice Note
-
-Web Speech API voices vary by operating system and browser. Google voices are common in Chrome environments but are not guaranteed by the HTML standard. The generated course must prefer Google when available, never fabricate missing voices, and report fallback behavior.
-
-## Publishing Note
-
-The generated HTML is intended for Chrome or Edge. Production deployments may replace browser TTS with prerecorded audio while retaining the same course data model and compact narration UI.
+The course must pass the preserved v2.3.2 QA requirements plus the v2.3.3 header QA before delivery.
