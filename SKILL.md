@@ -2,7 +2,7 @@
 name: micas-doc-to-interactive-training
 display_name: Micas Doc-to-Interactive-Training Skill
 description: Convert manuals, SOPs, product guides, policies, and technical documents into source-grounded, Micas-branded, self-contained interactive training courses with PPT-like scenes, strict production QA, English-first visual design, complete technical images, curated Google-first narration, assessments, and offline delivery.
-version: 2.3.0
+version: 2.3.1
 ---
 
 # Micas Doc-to-Interactive-Training Skill
@@ -37,6 +37,7 @@ Unless explicitly overridden:
 - **Language control:** selected language name only; no visible `Language` prefix
 - **Narration:** Google-first exact-locale voice selection when available; compact icon control in the bottom-right
 - **Assessment:** module checks, a dedicated assessment-introduction scene, final assessment, score, and completion scene
+- **Sequential navigation:** Next always advances through the global scene sequence; module and assessment boundaries never disable it
 
 When information is incomplete, infer only nontechnical presentation details. Record assumptions in the QA Report. Never invent technical facts.
 
@@ -445,10 +446,10 @@ Do not show a visible `Language` prefix. Keep `aria-label="Language"`.
 
 Recommended structure:
 
-- left: Course Menu and scene counter;
-- middle-left: prominent progress group;
-- center: labeled Previous and Next buttons;
-- right: narration and audio settings.
+- **left:** Course Menu, scene counter, and the prominent progress group;
+- **right:** one fixed control cluster in this exact order: Previous, Next, narration, Audio settings.
+
+Do not center, scatter, or reorder the four right-side controls.
 
 Desktop controls must feel substantial:
 
@@ -495,6 +496,34 @@ Rules:
 3. Course Menu, narration, and settings controls must not shrink below the defined minimums.
 4. At 1600–1920 px, target a 340–520 px progress bar. At 1366 px, target at least 240–320 px where practical.
 5. All controls remain visible and easy to hit.
+
+## Global Sequential Navigation Contract
+
+The full course is one globally ordered scene sequence. Module boundaries, module checks, and assessment questions do not create navigation dead ends.
+
+1. When `currentSceneIndex < scenes.length - 1`, the Next button must be enabled and must open `currentSceneIndex + 1`.
+2. The final scene of a module must advance directly to the first scene of the next module.
+3. Every module-check and final-assessment question must allow Next before or after an answer is selected. An unanswered question remains unanswered and may be revisited; it must not block navigation.
+4. Answer validation, feedback visibility, scoring state, completion state, narration state, animation state, and module progress must never control `nextButton.disabled`.
+5. Only the absolute terminal completion scene may disable, hide, or replace Next because no following scene exists.
+6. Previous is enabled whenever `currentSceneIndex > 0`.
+7. Keyboard navigation and Video mode must call the same `goNext()` / `goPrevious()` functions as the visible buttons.
+8. Do not implement per-module `isComplete`, `answered`, `submitted`, or `passed` gates on scene navigation.
+
+Recommended state logic:
+
+```js
+function updateNavigationState() {
+  previousButton.disabled = currentSceneIndex <= 0;
+  nextButton.disabled = currentSceneIndex >= scenes.length - 1;
+}
+
+function goNext() {
+  if (currentSceneIndex < scenes.length - 1) {
+    showScene(currentSceneIndex + 1);
+  }
+}
+```
 
 # 10. Narration and Google-First Voice Policy
 
@@ -606,6 +635,8 @@ Required features:
 - hidden course drawer from the bottom-left;
 - selected-language-only dropdown;
 - large labeled desktop Previous/Next buttons;
+- global sequential navigation with no module or assessment gating;
+- right-aligned control cluster ordered Previous, Next, narration, Audio settings;
 - prominent progress bar;
 - Fullscreen and Video mode;
 - icon narration and audio settings;
@@ -631,7 +662,9 @@ For every scene, viewport, and locale:
 - verify `document.documentElement.scrollHeight <= window.innerHeight + 1`;
 - verify header and footer remain visible;
 - verify no horizontal clipping;
-- verify no diagnostic badge exists in learner mode.
+- verify no diagnostic badge exists in learner mode;
+- verify Next is enabled on every nonterminal scene, including module-ending scenes and unanswered assessment questions;
+- verify the right-side footer order is Previous, Next, narration, Audio settings.
 
 ## Visual QA
 
@@ -661,6 +694,9 @@ Do not deliver when any of these occurs:
 - missing or half-visible technical image;
 - large accidental empty region or blank column;
 - tiny/shrunken primary controls;
+- Next is disabled while a following scene exists;
+- module or assessment answer state blocks scene navigation;
+- footer controls are not right-aligned or are reordered;
 - first exam question appears without an assessment-introduction scene;
 - English layout was weakened to force identical multilingual density;
 - source mapping, transcript, or QA metadata is visible in learner mode;

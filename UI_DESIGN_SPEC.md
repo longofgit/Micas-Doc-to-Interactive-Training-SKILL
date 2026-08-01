@@ -1,6 +1,6 @@
 # Micas Interactive Training UI Design Specification
 
-Version: **2.3.0**
+Version: **2.3.1**
 
 This is the mandatory visual implementation contract for courses generated with the **Micas Doc-to-Interactive-Training Skill**.
 
@@ -241,16 +241,38 @@ Keep `aria-label="Language"` and a tooltip where useful.
 
 # 10. Footer and Control Rail
 
-Recommended layout:
+Required layout:
 
-- left: Course Menu and scene count;
-- middle-left: prominent progress group;
-- center: Previous and Next;
-- right: narration and audio settings.
+- **left group:** Course Menu, scene count, and prominent progress;
+- **right group:** Previous, Next, narration, Audio settings—in that exact order.
+
+Previous/Next are no longer centered. All four action controls stay together and align to the far right.
 
 Desktop controls must remain substantial.
 
 ```css
+.footer-rail {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.footer-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 0;
+}
+
+.footer-actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  flex: 0 0 auto;
+}
+
 .footer-control,
 .nav-button {
   min-height: 58px;
@@ -293,6 +315,19 @@ Rules:
 - Course Menu, narration, and settings may not shrink below 56×56 px on desktop.
 - Progress target: 340–520 px at 1600–1920 width; 240–320 px at 1366 width where practical.
 - Controls remain visible at all required viewports.
+- The DOM and visual order must remain: Previous → Next → narration → Audio settings.
+- The entire `.footer-actions` group is right-aligned with `margin-left: auto`; none of its controls may be moved to the center or left.
+
+## Sequential Navigation Availability
+
+- Next is enabled on every scene that has a following global scene.
+- The last scene in a module advances to the first scene in the next module.
+- Module-check and final-assessment pages do not require an answer before Next becomes available.
+- Unanswered questions are stored as unanswered and may be revisited; navigation remains available.
+- Feedback, score, pass/fail, submitted state, narration, and animation must not gate Next.
+- Only the absolute final completion scene may disable or replace Next.
+- Previous is enabled on every scene except the first global scene.
+- Visible buttons, keyboard arrows, and Video mode share the same navigation functions.
 
 # 11. Course Menu
 
@@ -458,6 +493,8 @@ The course fails UI QA when any of the following is true:
 - an empty visual frame or blank column remains;
 - roughly one-third or more of the stage is avoidably empty;
 - Previous/Next or audio controls are tiny on desktop;
+- Next is disabled on a nonterminal scene, at a module boundary, or on an unanswered assessment question;
+- Previous, Next, narration, and Audio settings are not grouped at the far right in the required order;
 - English visual quality was weakened for multilingual uniformity;
 - the language control displays a `Language` prefix;
 - final assessment starts without a transition scene;

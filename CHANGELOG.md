@@ -1,5 +1,27 @@
 # Changelog
 
+## 2.3.1
+
+### Sequential Navigation
+
+- Required Next to remain enabled on every scene with a following global scene.
+- Fixed module-ending scenes so they advance directly to the next module.
+- Removed answer, submission, feedback, score, pass/fail, and module-completion gates from Next.
+- Required every module-check and final-assessment question to allow Next even when unanswered.
+- Kept unanswered questions revisit-able without blocking navigation.
+- Limited Next disabling/replacement to the absolute terminal completion scene.
+
+### Footer Alignment
+
+- Moved Previous and Next into the right-side action cluster.
+- Kept narration and Audio settings at the far right.
+- Fixed the action order as Previous → Next → narration → Audio settings.
+- Left Course Menu, scene count, and progress on the left.
+
+### Scope
+
+- Made no other UI, image, language, voice, visual hierarchy, or course-structure changes.
+
 ## 2.3.0
 
 ### Package Naming

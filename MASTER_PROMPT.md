@@ -198,10 +198,10 @@ Do not display a visible `Language` prefix. Keep `aria-label="Language"`.
 
 Use substantial controls on desktop.
 
-- Course Menu and scene count on the left;
-- a prominent progress bar;
-- labeled Previous and Next buttons in the center;
-- narration and audio settings on the right.
+- Course Menu, scene count, and the prominent progress bar on the left;
+- one far-right control cluster in this exact order: Previous, Next, narration, Audio settings.
+
+Do not center Previous/Next and do not move narration/settings away from the right edge.
 
 Recommended minimums:
 
@@ -232,6 +232,17 @@ Recommended minimums:
 ```
 
 Desktop Previous/Next must use labels plus arrows. Tiny arrow-only squares are allowed only in compact/mobile mode.
+
+## Sequential Navigation Logic
+
+- Treat all scenes as one global ordered sequence.
+- Next must be enabled whenever a following scene exists.
+- A module-ending scene must advance to the next module.
+- Module checks and final-assessment questions must allow Next even when unanswered.
+- Do not gate Next on `answered`, `submitted`, `passed`, feedback, score, or module-completion state.
+- Preserve unanswered questions as unanswered so the learner can revisit them.
+- Only the absolute final completion scene may disable or replace Next.
+- Keep the right-side control order: Previous → Next → narration → Audio settings.
 
 ## Narration and Google-First Voices
 
@@ -328,6 +339,8 @@ Verify:
 - no image is half-visible or unintentionally cropped;
 - Google is selected by default when available;
 - final assessment has a transition scene;
+- Next works across every module boundary and every unanswered assessment page;
+- the footer action group is right-aligned in the order Previous, Next, narration, Audio settings;
 - English remains the strongest visual master;
 - offline assets, quizzes, navigation, persistence, narration, and accessibility work.
 

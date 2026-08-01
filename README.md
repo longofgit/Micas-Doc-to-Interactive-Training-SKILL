@@ -1,6 +1,6 @@
 # Micas Doc-to-Interactive-Training Skill
 
-Version: **2.3.0**
+Version: **2.3.1**
 
 This package converts manuals, SOPs, product guides, policies, and technical documents into polished, source-grounded Micas interactive training courses.
 
@@ -41,11 +41,22 @@ The earlier form `Micas Doc-to- Interactive-Training Skill` contained an uninten
 - Normal-page scrolling: disabled
 - Course directory: hidden drawer, triggered from the bottom-left footer
 - Language selector: current language only; no visible `Language` prefix
-- Previous/Next: substantial labeled desktop buttons
+- Previous/Next: substantial labeled desktop buttons with uninterrupted global sequential navigation
+- Footer actions: right-aligned in the order Previous, Next, narration, Audio settings
 - Narration: compact icon controls with a curated popover
 - Voice default: matching Google voice when available
 - Final assessment: preceded by a dedicated assessment-introduction scene
 - Output: one self-contained offline HTML plus Course Map, QA Report, and README
+
+## v2.3.1 Navigation and Footer Fix
+
+- Next remains enabled on every scene that has a following global scene.
+- Module-ending scenes advance directly into the next module.
+- Module checks and final-assessment questions do not gate Next on answer state.
+- Unanswered questions remain revisit-able without blocking navigation.
+- Only the absolute terminal completion scene may disable or replace Next.
+- Footer actions are grouped at the far right in the fixed order: Previous, Next, narration, Audio settings.
+- No other UI, image, language, voice, or visual-design rules were changed in this release.
 
 ## v2.3.0 Production Rules
 
@@ -96,6 +107,8 @@ Check:
 - no clipped header/footer;
 - complete, readable technical images;
 - substantial controls;
+- Next enabled on every nonterminal scene, including module endings and unanswered assessment questions;
+- right-aligned footer actions in the required order;
 - correct language behavior;
 - Google-first selection when available;
 - assessment transition;
@@ -110,6 +123,9 @@ Do not publish when any of the following exists:
 - missing or half-visible technical image;
 - large accidental empty region;
 - tiny/shrunken desktop controls;
+- Next disabled while a following scene exists;
+- module or assessment state blocks navigation;
+- footer actions are not right-aligned or are reordered;
 - final exam begins without an introduction scene;
 - English visual quality was weakened for multilingual uniformity;
 - source mapping, transcript, QA, or debug data appears in learner mode;
