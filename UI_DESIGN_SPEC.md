@@ -1,27 +1,28 @@
 # Micas Interactive Training UI Design Specification
 
-Version: **2.2.0**
+Version: **2.3.0**
 
-This is the mandatory visual implementation contract for courses generated with the **Micas Doc-to- Interactive-Training Skill**.
+This is the mandatory visual implementation contract for courses generated with the **Micas Doc-to-Interactive-Training Skill**.
 
-## 1. Design Goal
+# 1. Design Goal
 
-Match the successful preview experience:
+The course must feel like a premium Micas presentation rather than an LMS, document reader, or debug build.
 
-- one coherent dark-blue stage;
-- Micas cyan as the primary accent;
-- large, confident titles where the content deserves emphasis;
+Required character:
+
+- coherent deep-navy stage;
+- Micas cyan `#00899F` as the primary accent;
+- English-first visual design;
+- large confident titles where emphasis is deserved;
 - one obvious focal element per scene;
-- large, complete, useful product and procedure visuals;
-- rounded, low-contrast glass or blue-tinted cards;
-- clear PPT-like navigation and progress;
-- no permanently visible course directory;
-- no vertical scrolling in normal scenes;
-- no abrupt oversized white content panel.
+- complete, large, useful product and procedure visuals;
+- substantial presentation controls;
+- PPT-like scene navigation;
+- no scrolling in normal learner scenes;
+- no visible QA, overflow, or authoring information;
+- no accidental half-empty pages.
 
-The interface should feel like a premium technical product launch and field-engineer mission console, not a generic LMS dashboard or document reader.
-
-## 2. Brand Tokens
+# 2. Brand Tokens
 
 ```css
 :root {
@@ -42,16 +43,14 @@ The interface should feel like a premium technical product launch and field-engi
   --micas-radius-lg: 24px;
   --micas-radius-md: 16px;
   --micas-shadow: 0 18px 60px rgba(0, 0, 0, .28);
-  --header-h: clamp(64px, 8vh, 86px);
-  --footer-h: clamp(68px, 8.5vh, 90px);
+  --header-h: clamp(68px, 8vh, 88px);
+  --footer-h: clamp(78px, 9vh, 96px);
 }
 ```
 
-Do not substitute a generic bright blue for `#00899F`.
+Do not substitute a generic bright blue for Micas cyan.
 
-## 3. Viewport Shell
-
-One scene must fit one viewport.
+# 3. Presentation Shell
 
 ```css
 html, body {
@@ -62,6 +61,7 @@ html, body {
 }
 
 .course-shell {
+  width: 100%;
   height: 100dvh;
   min-height: 100vh;
   display: grid;
@@ -71,67 +71,76 @@ html, body {
 
 .scene-stage,
 .scene {
+  min-width: 0;
   min-height: 0;
   overflow: hidden;
 }
+
+.scene { height: 100%; }
 ```
 
-Normal scenes may not scroll vertically. Split content into more scenes instead.
+Normal learner scenes must never use `overflow-y: auto`. Internal scrolling is allowed only inside deliberately opened drawers, settings panels, reference overlays, or reviewer tools.
 
-## 4. Page Shell
+# 4. Production vs Reviewer Mode
 
-### Header
+The production learner UI must never display:
 
-- Dark integrated background.
-- Left: transparent Micas logo, course/product title, compact scene subtitle.
-- Right: selected-language dropdown, Video mode, Fullscreen.
-- The language control shows only the selected language name.
-- Do not put Course Menu in the header.
+- `Layout overflow detected`;
+- fit or overflow warnings;
+- debug badges;
+- source-review notices;
+- raw source mapping;
+- narration transcripts;
+- QA labels;
+- missing-asset placeholders;
+- generation metadata.
 
-### Content Stage
+Reviewer diagnostics may exist only behind an explicit opt-in mode such as `?review=1` or an internal build flag. Default production state must be:
 
-- Uses the full width because navigation is not docked.
-- Maintains the dark visual environment.
-- Uses asymmetry, large typography, meaningful whitespace, and large visuals.
-- Never place the entire stage inside a plain white rectangle.
+```js
+const REVIEW_MODE = false;
+```
 
-### Footer / Control Rail
+Overflow is corrected before release, not announced to learners.
 
-- Bottom-left: Course Menu and scene counter.
-- Middle-left or center: larger progress group.
-- Center: Previous and Next.
-- Bottom-right: compact narration icon and optional settings icon/popover.
-- Remains visible at all times.
+# 5. English-First Layout System
 
-## 5. Visual Hierarchy Contract
+English is the visual master.
 
-### One Scene, One Focal Point
+- Establish the best composition, spacing, title scale, image size, and line breaks in English first.
+- Other languages may use locale-specific wording, line breaks, dimensions, or layout variants.
+- Do not weaken the English layout to make every locale occupy identical space.
+- Every locale must still pass viewport and image QA.
 
-Every scene must have one clearly dominant element:
+Recommended data model:
 
-- hero title;
+```js
+scene.layout = {
+  masterLocale: 'en',
+  defaultVariant: 'hero-58-42',
+  localeVariants: {
+    'zh-CN': 'hero-55-45',
+    'zh-TW': 'hero-55-45',
+    ja: 'hero-55-45'
+  }
+};
+```
+
+# 6. Visual Hierarchy
+
+Every scene must contain one dominant teaching element:
+
+- hero statement;
 - product image;
 - annotated diagram;
-- key specification or limit;
-- warning or decision;
-- active installation step;
-- quiz question.
+- key number;
+- warning;
+- decision;
+- current installation action.
 
-The focal element should normally occupy about 40–60% of the usable stage or have substantially greater typographic weight than support content.
+The focal element should normally occupy 40–65% of the usable stage or carry clearly greater typographic weight than supporting material.
 
-A scene fails when all cards, paragraphs, and labels look equally important.
-
-### Semantic Content Levels
-
-Design from these levels:
-
-1. **Primary message** — what must be remembered.
-2. **Supporting evidence** — two to four concise points.
-3. **Reference details** — move to another scene, drawer, Course Map, or QA report.
-
-Do not render all three levels with the same font size, card size, or visual weight.
-
-### Typography Scale
+## Typography
 
 ```css
 .hero-title {
@@ -160,72 +169,154 @@ Do not render all three levels with the same font size, card size, or visual wei
 }
 
 .card-title { font-size: clamp(20px, 1.6vw, 28px); }
-.card-body  { font-size: clamp(17px, 1.25vw, 22px); }
+.card-body { font-size: clamp(17px, 1.25vw, 22px); }
 ```
 
-Chinese and Japanese may reduce the maximum slightly, but the hierarchy must remain obvious.
+Use large typography selectively. Do not make every item large or every card identical.
 
-### Composition Rules
+# 7. Composition Rules
 
-- Prefer `58/42`, `60/40`, or `55/45` split layouts when a focal visual exists.
-- Use one dominant card or visual and smaller secondary cards.
-- Use whitespace as part of the hierarchy.
-- Avoid repeating equal-size 2×2 grids across many scenes.
-- Equal grids are reserved for genuinely equal comparisons or checklists.
-- Do not fill empty space with low-value text.
-- Do not make all scene titles the same conservative size merely for implementation convenience.
+Preferred compositions:
 
-## 6. Preferred Scene Layouts
+- 58/42 or 60/40 hero split;
+- large technical image plus short explanation;
+- one dominant card with two smaller supporting cards;
+- oversized metric plus evidence band;
+- full-width process ribbon;
+- hardware image with hotspots;
+- scenario prompt plus decision area;
+- full-stage assessment introduction.
 
-### Hero / Course Opening
+Avoid using a repeated equal-sized 2×2 grid as the default solution.
 
-- Two-column split around `55/45` or `52/48`.
-- Left: mission label, very large title, brief promise, three outcome cards.
-- Right: large product/process image with concise chips.
-- The title and image are dominant; cards are supporting.
+## Empty-Space Rule
 
-### Key Specification
+Intentional breathing room is good. A missing half-page is not.
 
-- Lead with one oversized value or statement.
-- Place secondary values in smaller cards or chips.
-- Do not turn every specification into an equal card.
+1. Do not render empty visual containers, blank columns, or placeholder panels.
+2. Use two columns only when both contain meaningful content.
+3. If a planned image is absent or unsuitable, switch to a purposeful single-column composition.
+4. Meaningful content should normally occupy about 65–90% of the usable stage.
+5. An avoidable empty region occupying roughly one-third or more of the stage fails visual QA.
+6. Do not fill space with low-value prose; redesign the page.
 
-### Hardware Identification
+# 8. Header
 
-- Large complete equipment image.
-- Numbered hotspots with accessible labels.
-- Details appear in a compact side/bottom panel after selection.
-- The equipment image should occupy at least half the stage when identification is the learning goal.
+Header content:
 
-### Procedure
+- transparent Micas logo integrated into the dark background;
+- course/product title;
+- compact scene subtitle;
+- selected language;
+- Video mode;
+- Fullscreen;
+- only necessary utilities.
 
-- One active step receives the largest space and strongest contrast.
-- Completed/upcoming steps remain smaller.
-- Use one or two large source visuals rather than several tiny images.
+Do not place Course Menu in the header.
 
-### Troubleshooting
+## Logo
 
-- Symptom → evidence → learner decision → next check.
-- The current decision or symptom is visually dominant.
-- Feedback explains why.
+- Use a transparent SVG/PNG designed for dark backgrounds.
+- Never drop a white rectangular logo image into the header.
+- Preserve aspect ratio and clear space.
+- Normal logo height: 36–58 px.
 
-### Quiz
+# 9. Language Control
 
-- One question per scene where possible.
-- Question title is large.
-- Choices are touch-friendly but visually secondary.
+Visible value is only the selected language:
 
-## 7. Technical Image Contract
+- `English`
+- `简体中文`
+- `繁體中文`
+- `日本語`
 
-Technical images are teaching content, not decoration.
+Forbidden visible labels:
 
-### Complete Display by Default
+- `Language`;
+- `Language · English`;
+- `Language: English`;
+- translated equivalents of the prefix.
 
-- Product photos, diagrams, screenshots, flowcharts, and installation figures must display completely.
-- Use `object-fit: contain`, not `cover`.
-- Preserve aspect ratio, labels, and boundaries.
-- Never clip the top or bottom because a frame height is too small.
-- Never hide part of a procedure figure inside `overflow: hidden` without an intentional zoom design.
+Keep `aria-label="Language"` and a tooltip where useful.
+
+# 10. Footer and Control Rail
+
+Recommended layout:
+
+- left: Course Menu and scene count;
+- middle-left: prominent progress group;
+- center: Previous and Next;
+- right: narration and audio settings.
+
+Desktop controls must remain substantial.
+
+```css
+.footer-control,
+.nav-button {
+  min-height: 58px;
+  padding: 0 24px;
+  border-radius: 18px;
+  font-size: 18px;
+  font-weight: 700;
+  flex: 0 0 auto;
+}
+
+.nav-button {
+  min-width: 150px;
+}
+
+.icon-control {
+  width: 58px;
+  height: 58px;
+  min-width: 58px;
+  min-height: 58px;
+  border-radius: 18px;
+  flex: 0 0 auto;
+}
+
+.progress-group {
+  flex: 1 1 360px;
+  min-width: 260px;
+  max-width: 560px;
+}
+
+.progress-track {
+  height: clamp(9px, .9vh, 13px);
+  border-radius: 999px;
+}
+```
+
+Rules:
+
+- Desktop Previous/Next use text labels plus arrows.
+- Tiny arrow-only square buttons are allowed only in compact/mobile mode.
+- Course Menu, narration, and settings may not shrink below 56×56 px on desktop.
+- Progress target: 340–520 px at 1600–1920 width; 240–320 px at 1366 width where practical.
+- Controls remain visible at all required viewports.
+
+# 11. Course Menu
+
+- Trigger is bottom-left.
+- Directory is hidden by default.
+- Opens as an overlay drawer or modal sheet.
+- Closes after selection, Escape, backdrop click, or close button.
+- Must not reserve permanent stage width.
+- May scroll internally when open.
+
+# 12. Technical Image Contract
+
+Technical visuals include products, chassis diagrams, screenshots, connector diagrams, installation figures, LED tables, and process illustrations.
+
+Required behavior:
+
+- fully visible by default;
+- `object-fit: contain`;
+- preserved aspect ratio;
+- readable labels;
+- no top/bottom/side clipping;
+- no use of `cover` for technical content;
+- source white margins and unrelated page content cropped before embedding;
+- large enough to teach from.
 
 ```css
 .visual-frame {
@@ -249,173 +340,132 @@ Technical images are teaching content, not decoration.
 }
 ```
 
-`object-fit: cover` is allowed only for decorative backgrounds containing no technical information.
+Recommended allocation:
 
-### Image Size Allocation
+- normal image/text scene: image receives 40–55% of stage;
+- image-led scene: 55–75%;
+- hardware identification: at least half the stage.
 
-- Two-column technical scene: image normally receives at least 38–45% of stage width.
-- Image-led scene: image receives 50–70% of stage.
-- Hardware identification: image should be large enough for ports, labels, or modules to be distinguished.
-- Avoid a large empty frame with a small centered image.
+If a complete visual is not legible, use a full-view scene followed by explicit zoom/detail scenes. Never solve the problem by showing only half of the technical image.
 
-### Source Asset Preparation
+# 13. Image Preflight
 
-Before embedding:
+Preflight runs after fonts and all images load.
 
-- crop page margins, headers, footers, and unrelated whitespace;
-- preserve the complete figure itself;
-- optimize the image without making labels unreadable;
-- choose a crop aligned to the teaching objective;
-- create separate full-view and zoom/detail scenes when needed.
-
-Intentional detail crops are allowed only when the complete image is available in the same or adjacent scene.
-
-## 8. Logo Handling
-
-Preferred order:
-
-1. Transparent SVG/PNG for dark backgrounds
-2. Transparent standard Micas logo with sufficient contrast
-3. Carefully cropped logo inside a deliberate compact plaque
-
-Forbidden:
-
-- stretched logo;
-- accidental white rectangle in the dark header;
-- unapproved recoloring;
-- cropping part of the mark.
-
-## 9. Course Directory
-
-- Hidden by default.
-- Trigger placed in the bottom-left footer.
-- Opens as an overlay drawer on desktop and near-full-screen sheet on mobile.
-- Includes modules, scene counts, progress, search, and quick jump.
-- Closes after selection, Escape, backdrop click, or close button.
-- Must not open automatically in Video mode or Fullscreen.
-
-## 10. Language Control
-
-The compact control displays only the selected language:
-
-- `English`
-- `简体中文`
-- `繁體中文`
-- `日本語`
-
-Do not display:
-
-- `Language`
-- `Language · English`
-- `Language: English`
-- translated equivalents of that prefix.
-
-Use `aria-label="Language"` and a tooltip for accessibility. English remains the first-load default.
-
-## 11. Progress Control
-
-The progress indicator must be easy to see and useful in presentation mode.
-
-```css
-.progress-group {
-  flex: 1 1 320px;
-  min-width: 240px;
-  max-width: 520px;
-}
-
-.progress-track {
-  height: clamp(8px, .8vh, 12px);
-  border-radius: 999px;
+```js
+async function waitForSceneAssets(scene) {
+  await document.fonts?.ready;
+  const images = [...scene.querySelectorAll('img')];
+  await Promise.all(images.map(async img => {
+    if (!img.complete) {
+      await new Promise(resolve => {
+        img.addEventListener('load', resolve, { once: true });
+        img.addEventListener('error', resolve, { once: true });
+      });
+    }
+    try { await img.decode?.(); } catch (_) {}
+  }));
+  await new Promise(requestAnimationFrame);
+  await new Promise(requestAnimationFrame);
 }
 ```
 
-Targets:
+For every technical visual, verify:
 
-- 1600–1920 px viewport: roughly 300–480 px bar width;
-- 1366 px viewport: roughly 220–300 px where practical;
-- visibly thicker than a 2–4 px decorative line;
-- current/total scene count remains legible.
+- nonzero natural dimensions;
+- meaningful rendered dimensions;
+- full intersection with scene and viewport;
+- no clipping by ancestors;
+- `object-fit: contain`;
+- acceptable source whitespace;
+- readable labels.
 
-## 12. Narration Controls
+A missing, half-visible, or unintentionally cropped image blocks release.
 
-- Bottom-right compact icon-only speaker/play button.
-- No visible voice name in the footer.
-- No large `Narrate` or `语音讲解` text button.
-- Detailed settings open in a compact popover.
-- Show no more than three curated voices for the active locale.
-- Filter low-quality and duplicate voices.
+# 14. Narration UI
 
-## 13. Presentation Hygiene
+The normal footer shows a speaker/play icon. A separate settings icon or secondary action opens a compact popover.
 
-Do not show in learner mode:
+- icon size: at least 58×58 px desktop;
+- no voice name in the footer;
+- no full voice dropdown in the footer;
+- no large text button labeled `Narrate` or `语音讲解`;
+- localized tooltip and accessible label.
 
-- Source mapping / 源内容映射;
-- narration transcript / 旁白文本 accordions;
-- authoring notes;
-- QA labels;
-- generation/debug metadata.
+# 15. Google-First Voice Selection
 
-Keep source references in internal data, Course Map, and QA Report. Offer optional captions through audio settings.
+For each locale, the curated voice list must place an available Google voice first and select it by default.
 
-## 14. Motion
+Preferred name fragments:
 
-Allowed:
+- English: `Google US English`, `Google English`;
+- Simplified Chinese: `Google 普通话`, `Google Mandarin`, `Google 中文`;
+- Traditional Chinese: `Google 國語`, `Google Chinese (Taiwan)`, `Google 中文（台灣）`;
+- Japanese: `Google 日本語`, `Google Japanese`.
 
-- 150–300 ms fades and transforms;
-- subtle card elevation;
-- progress animation;
-- hotspot pulse;
-- drawer slide.
+Priority:
 
-Avoid continuous decorative movement, bouncing, flashing, or motion competing with narration. Respect `prefers-reduced-motion`.
+1. exact-locale Google;
+2. exact-language Google;
+3. exact-locale Microsoft Natural/Neural;
+4. exact-locale Apple;
+5. best exact-locale fallback.
 
-## 15. Responsive Rules
+Show no more than three voices. Include Google whenever the browser exposes a matching voice. Never invent unavailable voices.
 
-- Wide screens retain strong hierarchy and asymmetric composition.
-- Medium screens may adjust ratios but must not flatten every item into equal cards.
-- Mobile uses alternate layouts, tabs, or additional scenes rather than a long article.
-- Minimum touch target: 44×44 px.
-- No unintended horizontal or vertical page scrolling.
+# 16. Assessment Introduction Scene
 
-## 16. UI Acceptance Checklist
+Before the first final-assessment question, show a dedicated transition scene with:
 
-A course fails UI QA when any of the following is true:
+- learning-section completion message;
+- assessment purpose;
+- question count;
+- estimated duration;
+- scoring/pass information;
+- answer/feedback instructions;
+- `Start Assessment` button;
+- calm readiness message.
 
-- a normal scene scrolls vertically;
-- all major elements look the same size or importance;
-- most scenes use repetitive equal-card grids;
-- a hero or key scene lacks a strong focal title/image/message;
-- technical images are cropped, truncated, or too small to teach from;
-- `object-fit: cover` is used for a technical figure;
-- large source whitespace remains while the useful image is tiny;
-- the progress bar is too short or thin to read comfortably;
-- the language button includes the `Language` prefix;
-- Course Menu is in the header or permanently visible;
-- the narration footer shows a voice name or full dropdown;
-- source mapping or transcript blocks appear in presentation mode;
-- the header logo appears in an accidental white rectangle;
-- the stage contains a dominant unrelated plain-white block;
-- Micas primary is not `#00899F`;
-- one of the four required locales is missing;
-- the dark visual system is inconsistent between header, body, and footer.
+Auto/Video mode pauses here until the learner starts.
 
-## 17. Required Visual QA
+# 17. Responsive Rules
 
-Review every scene at:
+- Large screens retain strong asymmetry and large visuals.
+- Medium screens may rebalance columns while preserving hierarchy.
+- Mobile uses compact controls, tabs, or additional scenes.
+- Do not turn mobile into a long article.
+- Previous/Next may become icon-only only below the defined compact breakpoint.
+- Technical images remain complete at every breakpoint.
+
+# 18. Mandatory QA Viewports
+
+At 100% browser zoom:
 
 - 1920×1080;
 - 1600×900;
-- 1366×768;
-- all four locales.
+- 1366×768.
 
-Verify:
+Run English first, then all other locales.
 
-- one dominant focal element;
-- title and key content hierarchy;
-- complete image visibility;
-- image size sufficient for instruction;
-- no clipping or overflow;
-- larger readable progress;
-- selected-language-only control;
-- stable footer controls;
-- preview-style visual quality.
+# 19. UI Acceptance Checklist
+
+The course fails UI QA when any of the following is true:
+
+- visible `Layout overflow detected` or similar diagnostic;
+- page or scene scrolls in normal learner mode;
+- header/footer is clipped;
+- an image is missing, half-visible, or unintentionally cropped;
+- an empty visual frame or blank column remains;
+- roughly one-third or more of the stage is avoidably empty;
+- Previous/Next or audio controls are tiny on desktop;
+- English visual quality was weakened for multilingual uniformity;
+- the language control displays a `Language` prefix;
+- final assessment starts without a transition scene;
+- source mapping, transcript, QA, or debug data is visible;
+- the logo has an accidental white rectangle;
+- a dominant plain-white main panel appears;
+- Micas primary color is not `#00899F`.
+
+# 20. Release Standard
+
+Generate, render, inspect, correct, and rerun QA. Do not deliver merely because the HTML opens. The final result must look presentation-ready at every required viewport, with complete images, substantial controls, balanced stage utilization, and no visible production defects.
