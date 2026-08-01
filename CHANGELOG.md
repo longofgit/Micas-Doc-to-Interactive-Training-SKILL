@@ -1,45 +1,100 @@
 # Changelog
 
+## 2.3.0
+
+### Package Naming
+
+- Corrected the display name to **Micas Doc-to-Interactive-Training Skill**.
+- Deprecated the mistaken form `Micas Doc-to- Interactive-Training Skill`.
+- Updated the name consistently in `SKILL.md`, `UI_DESIGN_SPEC.md`, `MASTER_PROMPT.md`, `QUICK_PROMPT.md`, and `README.md`.
+
+### Strict Overflow and Production QA
+
+- Made scene or page overflow a release-blocking defect.
+- Prohibited learner-visible `Layout overflow detected`, fit warnings, debug badges, QA messages, and authoring diagnostics.
+- Required overflow checks to run silently after fonts and images load.
+- Added reviewer-mode separation so diagnostics remain off in production.
+- Required correction, redesign, or scene splitting before delivery.
+
+### Stage Utilization
+
+- Prohibited empty image frames, blank columns, placeholder panels, and accidental half-empty pages.
+- Required two-column layouts to contain meaningful content on both sides.
+- Added a normal target of approximately 65–90% meaningful stage utilization.
+- Added visual QA for avoidable empty regions occupying roughly one-third or more of a scene.
+- Required purposeful single-column alternatives when a planned visual is unavailable.
+
+### Control Sizing
+
+- Restored substantial presentation controls.
+- Required labeled Previous and Next buttons on desktop.
+- Set recommended desktop control height to 58–64 px.
+- Set icon controls to at least 58×58 px.
+- Prevented footer controls from shrinking with `flex-shrink: 0`.
+- Enlarged the recommended progress bar to 340–520 px on wide screens and 240–320 px around 1366 px.
+
+### Google-First Voice Policy
+
+- Added exact-locale Google voices as the preferred default for English, Simplified Chinese, Traditional Chinese, and Japanese.
+- Required an available Google voice to appear first in the curated list.
+- Added fallback order: Google → Microsoft Natural/Neural → Apple → exact-locale fallback.
+- Kept the visible list limited to three high-quality voices.
+- Clarified that unavailable voices must not be fabricated and fallback behavior must be documented.
+
+### Technical Image Integrity
+
+- Strengthened the complete-image contract.
+- Required technical visuals to use `object-fit: contain`.
+- Prohibited half-visible, unintentionally cropped, or missing technical images.
+- Required image checks after loading and decoding.
+- Added checks for natural dimensions, ancestor clipping, viewport intersection, label readability, and excessive source whitespace.
+- Required full-view plus explicit detail scenes when one page cannot keep a visual both complete and legible.
+
+### Assessment Transition
+
+- Added a mandatory assessment-introduction scene before the first final-exam question.
+- Required question count, expected duration, scoring/pass information, instructions, readiness message, and a `Start Assessment` button.
+- Required Video/Auto mode to pause on the transition scene.
+
+### English-First Visual Master
+
+- Established English as the primary visual-reference locale.
+- Required English to be designed first for the strongest spacing, typography, image scale, and hierarchy.
+- Allowed other locales to use authored wording, line breaks, column ratios, layout variants, or additional semantic sub-scenes.
+- Prohibited weakening the English design merely to force identical multilingual density.
+
+### Documentation Updated
+
+- Replaced `SKILL.md` with the v2.3.0 production workflow and release criteria.
+- Replaced `UI_DESIGN_SPEC.md` with stricter visual, control, image, voice, and QA rules.
+- Updated `MASTER_PROMPT.md` to enforce complete production validation.
+- Updated `QUICK_PROMPT.md` with concise Chinese execution requirements.
+- Updated `README.md` with corrected naming, defaults, browser voice limitations, and release-blocking defects.
+
 ## 2.2.0
 
 ### Visual Hierarchy
 
 - Added a mandatory one-dominant-element rule for every scene.
-- Added explicit `primaryMessage`, `supportingPoints`, `referenceDetails`, and `focalVisual` planning before layout.
+- Added `primaryMessage`, `supportingPoints`, `referenceDetails`, and `focalVisual` planning before layout.
 - Increased recommended hero, scene-title, and key-metric typography scales.
 - Required clear contrast between primary and supporting content.
 - Preferred asymmetric 55/45, 58/42, and 60/40 compositions.
 - Added a rule to use one primary card larger than secondary cards.
 - Prohibited repetitive flat equal-size 2×2 card grids as the default scene pattern.
-- Required hero and key scenes to retain the impact of the successful Preview version.
 
 ### Language Control
 
 - Removed the visible `Language` prefix from the language selector.
-- The selector now displays only `English`, `简体中文`, `繁體中文`, or `日本語`.
-- Retained an English `aria-label="Language"` for accessibility.
+- The selector displays only `English`, `简体中文`, `繁體中文`, or `日本語`.
+- Retained `aria-label="Language"` for accessibility.
 
-### Progress Control
+### Progress and Images
 
 - Increased recommended progress-bar width and thickness.
-- Added target widths of roughly 300–480 px at 1600–1920 px viewports and 220–300 px at 1366 px.
-- Added a recommended 8–12 px progress-track height.
-
-### Technical Images
-
-- Added a mandatory complete-display contract for product images, diagrams, screenshots, and installation figures.
+- Added a complete-display contract for product images, diagrams, screenshots, and installation figures.
 - Required `object-fit: contain` for technical visuals.
-- Prohibited `object-fit: cover` except for nontechnical decorative backgrounds.
-- Required larger stage allocation for teaching visuals.
-- Added rules to crop source-page margins and unrelated whitespace before embedding.
-- Required full-view plus annotated-detail scenes when one image cannot remain legible.
-- Added image QA for clipping, scale, aspect ratio, labels, and viewport fit.
-
-### QA and Documentation
-
-- Added per-scene visual-hierarchy acceptance checks.
-- Added image-fit checks at all required viewports and locales.
-- Updated `SKILL.md`, `UI_DESIGN_SPEC.md`, `MASTER_PROMPT.md`, `QUICK_PROMPT.md`, and `README.md`.
+- Required larger stage allocation and source-margin cropping.
 
 ## 2.1.0
 
@@ -49,22 +104,18 @@
 - Prohibited vertical browser/page scrolling in normal learner scenes.
 - Required a `100dvh` shell with fixed header, stage, and footer regions.
 - Added viewport QA at 1920×1080, 1600×900, and 1366×768.
-- Added per-locale overflow validation for English, Simplified Chinese, Traditional Chinese, and Japanese.
-- Required long content, tables, procedures, and quizzes to be divided into more scenes.
-- Added programmatic `scrollHeight <= clientHeight` and page-fit checks.
+- Added per-locale overflow validation.
 
 ### Navigation and Narration
 
-- Moved Course Menu from the top-left header to the bottom-left footer.
-- Replaced the permanent voice selector with a compact icon-only narration control.
+- Moved Course Menu to the bottom-left footer.
+- Replaced the permanent voice selector with a compact narration control.
 - Moved detailed audio settings into a popover.
-- Limited visible voices to three curated high-quality options per locale.
-- Added filtering for low-quality and legacy voices.
+- Limited visible voices to curated high-quality options.
 
 ### Presentation Hygiene
 
-- Removed learner-visible Source mapping / 源内容映射.
-- Removed learner-visible Narration transcript / 旁白文本.
+- Removed learner-visible source mapping and narration transcript sections.
 - Kept traceability in data, Course Map, and QA Report.
 
 ## 2.0.0
@@ -74,15 +125,10 @@
 - Fixed the Micas primary color at `#00899F`.
 - Added a coherent dark navy visual system based on the Preview design.
 - Prevented accidental white logo rectangles and dominant white content panels.
-- Added hero layout, card, typography, motion, and responsive specifications.
 - Added `UI_DESIGN_SPEC.md`.
 
-### Navigation
+### Navigation and Languages
 
 - Changed the course directory from a docked sidebar to a hidden overlay drawer.
-
-### Languages
-
 - Expanded support to English, Simplified Chinese, Traditional Chinese, and Japanese.
 - Set English as the first-load default.
-- Added locale-specific TTS preferences and completeness checks.
