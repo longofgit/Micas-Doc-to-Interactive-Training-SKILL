@@ -4,7 +4,7 @@ Use this prompt for formal projects. Replace bracketed values only when needed.
 
 ---
 
-Use the **Micas Doc-to-Interactive-Training Skill v3.1**.
+Use the **Micas Doc-to-Interactive-Training Skill v3.5**.
 
 This Skill is only for creating interactive training materials. Do not use it to create executive reports, company reports, marketing campaigns, or other non-training deliverables.
 
@@ -48,6 +48,8 @@ Load exactly one training mode. Do not combine standard and gamified modes unles
 - Assessment difficulty: `[Intermediate]`
 - Additional constraints: `[OPTIONAL]`
 
+Project inputs configure authoring and delivery. Do not automatically expose duration, language count, difficulty, output format, or similar project metadata as learner-facing homepage content.
+
 ## Required Execution
 
 1. Read the complete relevant source material, including body text, tables, figures, warnings, procedures, appendices, and embedded images.
@@ -70,6 +72,7 @@ When the default configuration is used, preserve all established behavior:
 - Micas primary color `#00899F`;
 - approved Micas header lockup and references;
 - inspect and use the current implementation examples under `modules/brands/micas/example/` as concrete UI and interaction references; do not depend on a specific example filename or version because the directory contents may be replaced;
+- keep the approved top and bottom fixed control rails unchanged;
 - one-screen/PPT-like scenes with no normal-page scrolling;
 - clear Course → Module → Scene hierarchy;
 - large learner-facing text and strong visual hierarchy;
@@ -86,6 +89,31 @@ When the default configuration is used, preserve all established behavior:
 - English, Simplified Chinese, Traditional Chinese, and Japanese;
 - desktop-first design with tablet and phone adaptation;
 - self-contained offline HTML with embedded assets and search index.
+
+## Source-Grounded Homepage Requirements
+
+The first learner-facing scene must introduce the actual training subject, not the course-generation configuration.
+
+- Derive the headline, summary, and visible content anchors from the source materials.
+- Show the product, system, process, service, safety objective, workflow, architecture, or job outcome that learners actually need to understand.
+- Use one to three concise, source-supported content anchors.
+- Do not use course duration, number of languages, difficulty, `Offline HTML`, file format, output package, QA status, or similar implementation metadata as homepage teaching cards unless the user explicitly requests them or the source itself teaches them.
+- Use the most relevant authentic image from the source materials: actual product, architecture/topology, workflow/process, or real supported scenario.
+- When a relevant source image exists, do not replace it with an acronym tile, abstract placeholder, generic illustration, or empty decorative frame.
+- Crop irrelevant source-page margins and keep the meaningful visual complete and large.
+- Do not invent technical or marketing claims to make the homepage look impressive.
+
+## Normal Browser Window Fit
+
+Every scene must fit the browser's actual document viewport after tabs, address bars, bookmarks, or operating-system chrome reduce the available height.
+
+- Calculate layout from `window.innerHeight` / `100dvh` and the actual remaining scene row.
+- Do not assume the physical monitor height equals the document viewport height.
+- Test normal desktop sizes and constrained browser-content viewports including `1920×930`, `1600×780`, and `1366×650` at 100% zoom.
+- Fullscreen may improve scale but must never be required to reveal hidden content.
+- Keep the approved header and footer controls unchanged.
+- Solve fit issues by shortening copy, rebalancing the composition, reducing nonessential middle-stage padding, or splitting content into additional scenes.
+- Do not hide content, crop real images, or shrink instructional text below approved minimums.
 
 ## Delivery Package
 
