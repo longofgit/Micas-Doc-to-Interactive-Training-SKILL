@@ -1,6 +1,6 @@
 # Micas Brand Pack
 
-Version: **3.1.3**
+Version: **3.1.4**
 
 Brand ID: `micas`
 
@@ -105,19 +105,30 @@ The title/subtitle hierarchy is mandatory on normal desktop pages. Do not omit t
 
 Desktop target ranges:
 
-- logo width: `190–250px`;
-- logo height: `auto`, normally `52–72px` after proportional downscaling;
-- course title: `30–44px`;
-- subtitle: `18–28px`;
-- logo-to-text gap: `28–42px`.
+- logo width: `175–225px`;
+- logo height: `auto`, normally `48–64px` after proportional downscaling;
+- course title: `28–40px`;
+- subtitle: `17–24px`;
+- logo-to-text gap: `26–38px`.
 
 The brand lockup must not touch the viewport edges. Follow the spacing shown in `header-lockup-reference.svg`.
 
 Recommended desktop implementation:
 
 ```css
+.course-shell {
+  /* About 10px thinner than the previously approved top and bottom rails. */
+  --header-h: clamp(60px, calc(8vh - 10px), 82px);
+  --footer-h: clamp(68px, calc(9vh - 10px), 90px);
+}
+
 .course-header-inner {
-  padding-block: clamp(10px, 1.2vh, 16px);
+  padding-block: clamp(6px, .85vh, 11px);
+  padding-inline: clamp(36px, 3.4vw, 64px);
+}
+
+.course-footer-inner {
+  padding-block: clamp(5px, .7vh, 9px);
   padding-inline: clamp(28px, 3vw, 56px);
 }
 
@@ -130,9 +141,9 @@ Recommended desktop implementation:
 
 .header-brand-lockup img {
   display: block;
-  width: clamp(190px, 14vw, 250px);
+  width: clamp(175px, 12.5vw, 225px);
   height: auto;
-  max-width: 250px;
+  max-width: 225px;
   object-fit: contain;
   image-rendering: auto;
   filter: none;
@@ -140,7 +151,7 @@ Recommended desktop implementation:
 }
 
 .header-title-group {
-  margin-left: clamp(28px, 2.4vw, 42px);
+  margin-left: clamp(26px, 2.2vw, 38px);
   padding-block: 2px;
   min-width: 0;
 }
@@ -148,11 +159,26 @@ Recommended desktop implementation:
 
 Rules:
 
-- keep at least `28px` horizontal inset between the viewport edge and the logo on desktop;
-- keep at least `10px` vertical breathing room around the brand lockup;
+- keep at least `36px` horizontal inset between the viewport edge and the logo on desktop;
+- keep at least `6px` vertical breathing room around the smaller brand lockup while preserving the compact header height;
 - keep title and subtitle inside the same padded header container;
-- do not compensate for missing padding by shrinking the logo or typography;
+- make both fixed control rails approximately `10px` thinner than the previous approved version by reducing rail height and vertical padding, not by shrinking buttons, icons, or touch targets;
+- keep the footer controls vertically centered inside the thinner footer rail;
+- do not compensate for missing padding by enlarging the logo or typography;
 - do not place the logo in a white rectangle, card, or independent panel.
+
+## Compact Fixed Rail Lock
+
+For the Micas desktop shell, the top header rail and bottom fixed control rail should each be approximately `10px` thinner than the previous approved implementation.
+
+Rules:
+
+- reduce the rail height and inner vertical padding only;
+- do not shrink the approved utility buttons, navigation buttons, icon ranges, labels, progress track, or touch targets;
+- keep all controls vertically centered;
+- the footer must still reserve its own grid row and must never overlap scene content;
+- the header must still preserve the complete logo, main title, subtitle, and Language → Auto Play → Fullscreen group;
+- if the viewport becomes too compact, use the existing responsive breakpoint behavior instead of compressing desktop controls below their approved sizes.
 
 ## Header Utility Lock
 
@@ -298,6 +324,8 @@ The Micas presentation fails brand QA when:
 - a white-background, legacy, alternate, generated, recolored, cropped, stretched, or distorted Micas logo appears;
 - different Micas logo variants appear across different scenes;
 - the logo or title/subtitle group touches the viewport edge or lacks the approved breathing room;
+- the logo exceeds the approved `225px` desktop maximum or the title/subtitle exceed their reduced target ranges without a documented responsive reason;
+- the top or bottom fixed control rail remains materially thicker than the approved approximately `10px` reduction, or becomes thinner by shrinking buttons/icons instead of rail padding;
 - the desktop header omits the factual subtitle below the main course title;
 - Auto Play or Fullscreen is missing from the normal desktop header;
 - language loses its icon or the right-side control order differs from Language → Auto Play → Fullscreen;
