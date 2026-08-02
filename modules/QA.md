@@ -1,6 +1,6 @@
 # Unified QA and Release Gate
 
-Version: **3.1.1**
+Version: **3.5.0**
 
 This module validates every generated artifact after the selected Core, Mode, Brand, and UI modules have been applied.
 
@@ -14,7 +14,10 @@ Verify:
 - every graded question and answer maps to the source;
 - source conflicts and ambiguities are recorded rather than silently resolved;
 - safety-critical information is prominent and accurate;
-- source mapping exists outside the normal audience-facing pages.
+- source mapping exists outside the normal audience-facing pages;
+- the opening scene headline, summary, content anchors, and visual are derived from the actual source topic;
+- learner-facing pages do not replace source content with project configuration or delivery metadata;
+- any visible claim about capability, use case, workflow, safety, value, or outcome is supported by the source.
 
 # 2. Artifact Completeness QA
 
@@ -35,6 +38,12 @@ For presentation-style modes, test at 100% browser zoom:
 - 1600×900;
 - 1366×768.
 
+Also test representative non-Fullscreen browser-content viewports after browser chrome reduces the available document height:
+
+- 1920×930;
+- 1600×780;
+- 1366×650.
+
 Then test representative responsive sizes:
 
 - tablet landscape: 1180×820 or 1024×768;
@@ -43,14 +52,19 @@ Then test representative responsive sizes:
 
 For every required page and locale:
 
+- use the actual `window.innerWidth` and `window.innerHeight` available to the document;
 - wait for fonts and images;
 - render the page;
 - verify `scene.scrollHeight <= scene.clientHeight + 1` when the selected mode requires one-screen behavior;
 - verify the document does not scroll vertically in normal learner/presentation mode;
 - verify header and footer remain visible;
 - verify no horizontal clipping;
+- verify the lowest card row, captions, warnings, answer choices, and actions remain fully visible above the footer;
 - verify overlays scroll internally without moving the underlying page;
-- verify no visible diagnostic or overflow banner appears.
+- verify no visible diagnostic or overflow banner appears;
+- verify Fullscreen is not required to reveal hidden content.
+
+Do not pass QA by changing the approved fixed header/footer controls. Shorten, rebalance, or split the middle-scene content instead.
 
 # 4. Typography QA
 
@@ -74,7 +88,12 @@ Confirm:
 - no empty image frame, blank card, placeholder panel, or missing half-page remains;
 - meaningful composition uses the stage effectively;
 - intentional whitespace supports the focal message;
-- the selected brand's stage theme, colors, and surface rules are respected.
+- the selected brand's stage theme, colors, and surface rules are respected;
+- the opening scene communicates the real training subject rather than the course-generation framework;
+- the opening scene uses one to three meaningful, source-supported content anchors;
+- course duration, language count, difficulty, delivery format, file type, QA status, and similar configuration values are not used as homepage teaching cards unless explicitly required by the source or user;
+- the opening visual is the most relevant authentic source visual available, not a generic acronym tile, abstract placeholder, or decorative icon when a real product/process/architecture image exists;
+- opening text and visual form one balanced, attractive composition.
 
 # 6. Image Integrity QA
 
@@ -88,9 +107,10 @@ After all images load and decode, verify:
 - the complete device, diagram, labels, arrows, and callouts remain visible;
 - source margins and irrelevant page whitespace were removed;
 - labels remain readable;
-- intentional detail crops are labeled and paired with a complete view.
+- intentional detail crops are labeled and paired with a complete view;
+- the opening image is genuinely relevant to the source topic and large enough to identify the subject immediately.
 
-A missing, half-visible, or unintentionally cropped technical image blocks release.
+A missing, half-visible, unintentionally cropped, generic-placeholder, or source-irrelevant opening visual blocks release when a suitable source image was available.
 
 # 7. Header, Footer, and Icon QA
 
@@ -107,6 +127,8 @@ Verify:
 - Search is icon-only;
 - the right-side action cluster remains right-aligned;
 - progress remains prominent.
+
+For v3.5.0 content refinements, the approved Micas top and bottom control rails are regression-locked. Do not alter their established dimensions, control order, button shells, icon sizes, spacing, or typography to solve middle-scene content issues.
 
 # 8. Navigation QA
 
@@ -221,11 +243,16 @@ Do not deliver when any of these occurs:
 - unsupported or invented technical fact;
 - visible `Layout overflow detected` or similar diagnostic;
 - normal presentation page scrolls or overflows;
+- content fits only after entering Fullscreen;
+- content is clipped in a browser-content viewport such as 1366×650;
 - missing or half-visible technical image;
+- a generic or irrelevant opening visual is used while a suitable source visual exists;
+- the opening scene is dominated by duration, language count, difficulty, Offline HTML, file type, QA status, or other project metadata rather than the real training subject;
 - large accidental empty region or blank panel;
 - undersized instructional body text;
 - tiny or off-center primary controls;
 - selected brand identity is broken;
+- the approved fixed header/footer controls are altered merely to make middle-scene content fit;
 - Next is disabled while a following scene exists in interactive-training mode;
 - Auto Play advances before narration completes;
 - stale narration callback causes duplicate advance;
@@ -243,7 +270,8 @@ The QA Report must record:
 
 - source coverage and unresolved source issues;
 - selected brand and mode;
-- viewport results;
+- opening-scene content and visual source;
+- viewport results, including constrained browser-content viewports;
 - typography results;
 - image-integrity results;
 - stage-utilization review;
@@ -273,11 +301,12 @@ Mandatory checks:
 - progress/module/question counters do not replace the right-header controls;
 - the footer contains Course Menu, scene count, visible progress, Previous, Next, Search, narration, and Audio settings in the approved grouping and order;
 - the footer does not cover scene content;
-- each scene fits at 1920×1080, 1600×900, and 1366×768 without requiring Fullscreen;
+- each scene fits at 1920×1080, 1600×900, 1366×768, 1920×930, 1600×780, and 1366×650 without requiring Fullscreen;
 - cards, source previews, images, assessment results, and explanatory text remain fully visible above the footer;
 - a complete technical image is never clipped by a fixed-height container;
 - semantic highlights are restrained, attractive, and limited to brand cyan, warning amber, success green, and genuine danger red;
-- highlighted meaning remains understandable without color alone.
+- highlighted meaning remains understandable without color alone;
+- the approved header/footer rails remain unchanged by v3.5.0 homepage and fit refinements.
 
 The following are release-blocking regressions:
 
@@ -288,4 +317,6 @@ The following are release-blocking regressions:
 - footer reduced to a materially smaller or different control strip than the approved reference;
 - any page that reveals hidden content only after entering Fullscreen;
 - content, image, results panel, or captions clipped behind the footer;
+- opening-scene metadata cards unrelated to the real training topic;
+- opening scene lacks a relevant source visual when one exists;
 - excessive or visually conflicting highlight colors.
