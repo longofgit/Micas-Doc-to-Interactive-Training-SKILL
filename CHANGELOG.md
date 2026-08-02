@@ -1,5 +1,32 @@
 # Changelog
 
+## 3.5.0 — Source-Grounded Homepage and Browser-Viewport Fit
+
+### Scope Lock
+
+- Preserved the approved Micas top and bottom fixed control rails without changing their dimensions, button order, icon sizes, typography, or spacing.
+- Limited this release to learner-facing content relevance, opening-scene quality, normal browser-window fit, prompts, and QA.
+
+### Source-Grounded Homepage
+
+- Required the first learner-facing scene to introduce the actual product, system, process, service, workflow, safety objective, or job outcome supported by the source materials.
+- Prohibited filling the homepage with project metadata such as duration, language count, difficulty, `Offline HTML`, file format, QA status, or delivery-package details unless explicitly required by the user or source.
+- Required one to three concise, source-supported content anchors.
+- Required the most relevant authentic source visual when available, such as the real product, architecture/topology, workflow/process, or supported work scenario.
+- Prohibited generic acronym tiles, abstract placeholders, or decorative substitutes when a suitable real source image exists.
+
+### Normal Browser Window Fit
+
+- Required layout calculation from the actual `window.innerHeight` / `100dvh` available to the document.
+- Added constrained browser-content viewport checks for `1920×930`, `1600×780`, and `1366×650` at 100% zoom.
+- Prohibited relying on Fullscreen to reveal content hidden by browser chrome.
+- Required fit issues to be solved by copy refinement, composition changes, reduced nonessential middle-stage padding, or scene splitting—not by modifying the locked control rails or shrinking instructional text below approved minimums.
+
+### QA and Prompts
+
+- Added release-blocking checks for irrelevant homepage metadata, generic opening visuals, and browser-chrome clipping.
+- Updated `SKILL.md`, `README.md`, `QUICK_USER_GUIDE.md`, `MASTER_PROMPT.md`, and `QUICK_PROMPT.md` to version 3.5.0.
+
 ## 3.1.0 — Training-Only Simplification
 
 ### Scope
