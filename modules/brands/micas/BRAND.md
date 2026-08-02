@@ -1,6 +1,6 @@
 # Micas Brand Pack
 
-Version: **3.1.5**
+Version: **3.1.6**
 
 Brand ID: `micas`
 
@@ -227,9 +227,8 @@ Rules:
 - keep visible vertical breathing room between every header/footer control and the rail borders, normally at least `6px` at the smallest desktop rail height;
 - keep title and subtitle inside the same padded header container;
 - keep the approved thinner rail heights, but proportionally reduce the logo, header typography, button shells, labels, and footer controls so they do not visually crowd the rail borders;
-- preserve the previously approved icon glyph ranges; reduce the surrounding button shell and label scale rather than making the icons tiny again;
 - keep all controls vertically centered inside both fixed rails;
-- do not compensate for missing padding by enlarging the logo, typography, or button shells;
+- do not compensate for missing padding by enlarging the logo, typography, button shells, or icon glyphs;
 - do not place the logo in a white rectangle, card, or independent panel.
 
 ## Compact Fixed Rail Lock
@@ -240,7 +239,7 @@ Rules:
 
 - retain the approved compact rail heights;
 - reduce the internal logo, title/subtitle typography, header button shells, footer navigation buttons, Course Menu button, and icon-button shells to the ranges above;
-- preserve the approved icon glyph ranges and keep them centered;
+- use the reduced icon glyph ranges below and keep every icon centered;
 - maintain at least a small visible breathing gap between every control outline and the top/bottom rail borders;
 - do not let controls visually touch or nearly touch the rail divider lines;
 - keep all controls vertically centered;
@@ -271,53 +270,55 @@ Rules:
 
 ## Control Icon Size Lock
 
-Do not enlarge or redesign the surrounding buttons. Use the following final icon ranges and keep every glyph centered.
+Keep the surrounding buttons, labels, order, spacing, and rail dimensions unchanged. Only reduce the icon glyphs to the following ranges and keep every glyph centered.
 
 Desktop icon targets:
 
-- language globe icon: `28–30px`;
-- language dropdown chevron: `18–22px`;
-- Auto Play icon: `28–30px`;
-- Fullscreen icon: `28–30px`;
-- Previous and Next arrow icons: `26–30px`;
-- Search icon: `28–30px`;
-- narration/speaker icon: `28–30px`;
-- Audio settings icon: `28–30px`.
+- Course Menu hamburger icon: `24–26px`;
+- language globe icon: `24–26px`;
+- language dropdown chevron: `16–18px`;
+- Auto Play icon: `24–26px`;
+- Fullscreen icon: `24–26px`;
+- Previous and Next arrow icons: `22–26px`;
+- Search icon: `24–26px`;
+- narration/speaker icon: `24–26px`;
+- Audio settings icon: `24–26px`.
 
 Recommended implementation:
 
 ```css
+.course-menu-icon,
 .header-language-icon,
 .header-autoplay-icon,
 .header-fullscreen-icon,
 .footer-search-icon,
 .footer-narration-icon,
 .footer-audio-settings-icon {
-  width: clamp(28px, 1.6vw, 30px);
-  height: clamp(28px, 1.6vw, 30px);
+  width: clamp(24px, 1.4vw, 26px);
+  height: clamp(24px, 1.4vw, 26px);
   flex: 0 0 auto;
 }
 
 .nav-button .nav-arrow {
-  width: clamp(26px, 1.55vw, 30px);
-  height: clamp(26px, 1.55vw, 30px);
+  width: clamp(22px, 1.35vw, 26px);
+  height: clamp(22px, 1.35vw, 26px);
   flex: 0 0 auto;
 }
 
 .language-chevron {
-  width: clamp(18px, 1.15vw, 22px);
-  height: clamp(18px, 1.15vw, 22px);
+  width: clamp(16px, 1vw, 18px);
+  height: clamp(16px, 1vw, 18px);
   flex: 0 0 auto;
 }
 ```
 
 Rules:
 
-- do not size these icons only through `1em` when the surrounding text size makes the icons too small;
-- preserve the approved button order, spacing, and labels;
+- change only the icon glyph sizes; do not resize the company logo, button shells, labels, spacing, rail height, progress area, or control order;
+- do not size these icons through `1em` when the surrounding text makes them exceed the approved ranges;
 - retain geometric and optical centering;
-- icons must remain visually substantial in both enabled and disabled button states;
-- tablet icons may reduce to approximately `24–28px` and phone icons to approximately `22–26px` only when required by the compact breakpoint.
+- keep disabled-state icons the same physical size as enabled-state icons;
+- tablet icons may reduce to approximately `21–23px` and phone icons to approximately `19–21px` only when required by the compact breakpoint.
 
 # 5. Tone and Copy
 
@@ -400,8 +401,8 @@ The Micas presentation fails brand QA when:
 - the desktop header omits the factual subtitle below the main course title;
 - Auto Play or Fullscreen is missing from the normal desktop header;
 - language loses its icon or the right-side control order differs from Language → Auto Play → Fullscreen;
-- any required desktop control icon falls outside the approved final range without a responsive breakpoint reason;
-- the icon glyphs look materially larger or smaller than the approved control references;
+- any required desktop control icon falls outside the reduced approved ranges without a responsive breakpoint reason;
+- the icon glyphs look materially larger than the reduced control references;
 - header progress/module counters replace the required utility group;
 - the fixed footer materially differs from the reference structure without a responsive breakpoint reason;
 - the stage becomes a pale or white full-page canvas;
