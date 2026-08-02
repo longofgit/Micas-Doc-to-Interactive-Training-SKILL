@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2048" height="171" viewBox="0 0 2048 171" role="img" aria-labelledby="title desc">
+<title id="title">Micas fixed footer controls reference</title>
+<desc id="desc">Reference layout showing Course Menu, scene count, progress, Previous, Next, Search, Narration and Audio Settings in a substantial fixed footer.</desc>
+<rect width="2048" height="171" fill="#071f2b"/>
+<line x1="0" y1="1" x2="2048" y2="1" stroke="#355364" stroke-width="2"/>
+<g font-family="Arial, sans-serif" fill="#fff">
+  <g transform="translate(53,18)">
+    <rect width="255" height="82" rx="24" fill="#14394b" stroke="#2f5e70" stroke-width="2"/>
+    <path d="M38 31h20M38 41h20M38 51h20" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+    <text x="68" y="52" font-size="26" font-weight="700">Course Menu</text>
+  </g>
+  <text x="333" y="60" font-size="20" font-weight="700" fill="#d8e6ee">Scene 4 of 21</text>
+  <text x="1007" y="60" text-anchor="middle" font-size="20" font-weight="700" fill="#d8e6ee">Decode Every Segment · 1/5</text>
+  <rect x="334" y="93" width="765" height="12" rx="6" fill="#264854"/>
+  <rect x="334" y="93" width="150" height="12" rx="6" fill="#18d2e7"/>
+  <g transform="translate(1283,14)">
+    <rect width="196" height="98" rx="24" fill="#14394b" stroke="#2f5e70" stroke-width="2"/>
+    <path d="M62 49l13-13M62 49l13 13" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="90" y="57" font-size="26" font-weight="700">Previous</text>
+  </g>
+  <g transform="translate(1501,14)">
+    <rect width="196" height="98" rx="24" fill="#14394b" stroke="#2f5e70" stroke-width="2"/>
+    <text x="55" y="57" font-size="26" font-weight="700">Next</text>
+    <path d="M150 49l-13-13M150 49l-13 13" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <g transform="translate(1718,14)">
+    <rect width="82" height="98" rx="24" fill="#14394b" stroke="#2f5e70" stroke-width="2"/>
+    <circle cx="40" cy="44" r="14" stroke="#fff" stroke-width="4" fill="none"/>
+    <path d="M51 55l10 10" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+  </g>
+  <g transform="translate(1823,14)">
+    <rect width="82" height="98" rx="24" fill="#14394b" stroke="#2f5e70" stroke-width="2"/>
+    <path d="M29 58q11-6 23 0V36q-12 6-23 0z" fill="none" stroke="#fff" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M57 36q10 12 0 24" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round"/>
+  </g>
+  <g transform="translate(1928,14)">
+    <rect width="82" height="98" rx="24" fill="#14394b" stroke="#2f5e70" stroke-width="2"/>
+    <path d="M27 35h28M27 49h28M27 63h28" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+    <circle cx="27" cy="35" r="3"/><circle cx="55" cy="49" r="3"/><circle cx="40" cy="63" r="3"/>
+  </g>
+</g>
+</svg>
