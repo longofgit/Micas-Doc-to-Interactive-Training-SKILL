@@ -24,6 +24,8 @@ primary_output: self-contained offline HTML
 additional_outputs: Course Map, QA Report, README
 ```
 
+These values configure the project. They are not automatically displayed as learner-facing homepage content. The generated course homepage must prioritize the real source topic, real learning outcomes, and a relevant source image.
+
 Default module order:
 
 ```text
@@ -39,7 +41,7 @@ Default module order:
 Upload the source files, then copy this prompt:
 
 ```text
-请使用 Micas Doc-to-Interactive-Training Skill v3.1，
+请使用 Micas Doc-to-Interactive-Training Skill v3.5，
 把我刚上传的资料制作成一套完整、可直接使用的互动培训课程。
 
 配置：
@@ -70,17 +72,20 @@ training_mode: interactive-training
 3. 按Course → Module → Scene重组内容，不要逐页照搬原文档。
 4. 默认使用普通互动培训，不要自行加入积分、等级、徽章或闯关元素。
 5. 保持Micas深蓝背景、PPT式一页一屏、大正文、完整技术图片和清晰视觉层级。
-6. English先作为视觉母版；其他语言可使用独立换行、比例或布局变体。
-7. 默认使用各语言可用的Google语音；Auto Play必须等待本页全部旁白结束后再翻页。
-8. 所有正式考试题统一放在最后模块；考试前必须有过渡页；考题不自动播放或跳过。
-9. 直接生成完整成品，不要只给方案、目录或样章。
-10. 交付前执行modules/QA.md全部适用检查并修复严重缺陷。
+6. 首页必须提炼源资料中的真实培训主题、关键能力或实际工作目标，不要把时长、语言数量、难度、Offline HTML或输出格式做成正文卡片。
+7. 首页优先使用源资料中最相关的真实产品图、架构图、流程图或场景图；有真实源图时不要使用抽象占位图。
+8. 所有页面必须适配普通浏览器窗口中实际可用的`window.innerHeight`，包括浏览器导航栏压缩后的高度；不能依赖Fullscreen才能显示完整内容。
+9. English先作为视觉母版；其他语言可使用独立换行、比例或布局变体。
+10. 默认使用各语言可用的Google语音；Auto Play必须等待本页全部旁白结束后再翻页。
+11. 所有正式考试题统一放在最后模块；考试前必须有过渡页；考题不自动播放或跳过。
+12. 直接生成完整成品，不要只给方案、目录或样章。
+13. 交付前执行modules/QA.md全部适用检查并修复严重缺陷。
 ```
 
 ## 3. Minimal Daily Prompt
 
 ```text
-请使用 Micas Doc-to-Interactive-Training Skill v3.1 的默认配置，
+请使用 Micas Doc-to-Interactive-Training Skill v3.5 的默认配置，
 把我上传的资料制作成完整互动培训课程。
 
 brand_profile: micas
@@ -88,6 +93,9 @@ training_mode: interactive-training
 
 默认English，支持简体中文、繁體中文和日本語；预计30–45分钟；
 输出单文件离线HTML、Course Map、QA Report和README。
+首页只呈现源资料中的真实培训内容并使用最相关的真实源图，
+不要展示时长、语言数量、难度或Offline HTML等项目配置。
+所有页面必须适配普通浏览器窗口，不依赖Fullscreen显示完整内容。
 不要添加游戏元素。通过modules/QA.md全部检查后再交付。
 ```
 
