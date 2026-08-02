@@ -1,5 +1,61 @@
 # Changelog
 
+## 3.1.0 — Training-Only Simplification
+
+### Scope
+
+- Reconfirmed that this repository creates interactive training materials only.
+- Removed executive-report, company-report, marketing-content, campaign, and other non-training modes from the active structure.
+- Kept standard interactive training as the default.
+- Kept gamified interactive learning as the only optional alternative.
+- Explicitly disabled game mechanics by default.
+
+### Structure
+
+- Reduced `modules/modes/` to:
+  - `interactive-training.md`;
+  - `gamified-learning.md`.
+- Removed `executive-report.md`.
+- Removed `marketing-content.md`.
+- Removed `MODE_TEMPLATE.md` to prevent uncontrolled expansion into unrelated output types.
+- Replaced `prompts/MODULAR_PROMPT.md` with the clearer `prompts/MASTER_PROMPT.md`.
+- Updated `SKILL.md`, `README.md`, `QUICK_USER_GUIDE.md`, and `prompts/QUICK_PROMPT.md` to use `training_mode` terminology.
+
+### Default Configuration
+
+```text
+brand_profile: micas
+training_mode: interactive-training
+game_mode: disabled
+```
+
+The gamified mode is selected only when explicitly requested:
+
+```text
+training_mode: gamified-learning
+game_mode: enabled
+```
+
+### Compatibility
+
+The standard interactive-training logic remains unchanged, including:
+
+- Micas deep-navy visual system;
+- one-screen/PPT-like scenes;
+- large learner-facing text;
+- complete technical images;
+- global sequential navigation;
+- icon-only Search after Next;
+- Google-default voices when available;
+- narration-completion Auto Play;
+- final-only graded assessment;
+- manual assessment pages;
+- four-language delivery;
+- offline HTML output;
+- strict QA.
+
+Brand packs remain modular so another company's logo, colors, and visual references can be used without changing the training engine.
+
 ## 3.0.0 — Modular Architecture Refactor
 
 ### Structure
@@ -9,60 +65,11 @@
 - Colocated Micas brand rules and visual references under `modules/brands/micas/`.
 - Consolidated all UI-related rules into `modules/UI.md`.
 - Consolidated all release checks into `modules/QA.md`.
-- Consolidated v2.4.0 and v2.4.1 experience behavior into the authoritative default mode and UI modules.
-- Removed the redundant corrective file pattern represented by `COURSE_EXPERIENCE_FIXES_v2.4.1.md`.
-
-### Modular Brand Support
-
-- Added `modules/brands/BRAND_TEMPLATE.md`.
-- Kept Micas as the default brand pack.
-- Defined brand packs as independent containers for logo, colors, tone, references, and brand-specific QA.
-- Enabled future company changes without rewriting Core, UI, or Mode rules.
-
-### Modular Experience Modes
-
-- Preserved `interactive-training` as the default behavior.
-- Added optional starter profiles for:
-  - gamified learning;
-  - executive reports;
-  - marketing content.
-- Added `modules/modes/MODE_TEMPLATE.md` for future modes.
-- Only the selected mode is active.
-
-### Prompts
-
-- Added `prompts/MODULAR_PROMPT.md` as the recommended configurable project prompt.
-- Added `prompts/QUICK_PROMPT.md` as the concise Chinese launcher.
-- Added explicit brand and mode selection fields.
+- Removed the redundant corrective-file pattern used by earlier versions.
 
 ### Compatibility
 
-The default selection:
-
-```text
-brand_profile: micas
-experience_mode: interactive-training
-```
-
-preserves the established v2.4.1 behavior, including:
-
-- Micas deep-navy visual system;
-- one-screen/PPT-like scenes;
-- large body text;
-- complete technical images;
-- global navigation;
-- icon-only Search after Next;
-- Google-default voices when available;
-- narration-completion Auto Play;
-- final-only graded assessment;
-- manual assessment pages;
-- four languages;
-- offline HTML delivery;
-- strict QA.
-
-### Scope
-
-Version 3.0.0 is primarily an information-architecture and maintainability release. It does not intentionally change the default Micas interactive-training logic.
+The default Micas interactive-training behavior was preserved.
 
 ## 2.4.1 — Corrective UI Release
 
