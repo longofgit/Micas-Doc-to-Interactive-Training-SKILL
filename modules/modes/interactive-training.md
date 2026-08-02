@@ -150,6 +150,184 @@ In addition to the normal desktop master sizes, validate representative browser-
 
 These values represent common screens after browser chrome consumes part of the vertical space. Every normal scene must remain complete and usable at 100% zoom.
 
+## 3.4 Adaptive Scene Composition
+
+Do not turn one visual reference into a rigid template for the entire course. The common left-text/right-image split is one available pattern, not the default for every scene.
+
+Select the composition from the actual content and source visual. Use a deliberate mix of patterns such as:
+
+- text-led `60/40` or `55/45` split when the explanation is primary;
+- image-led `40/60` or `35/65` split when a product, diagram, table, or procedure visual is primary;
+- full-width technical visual with a compact title, callouts, or hotspot overlay;
+- top visual with a lower decision, warning, or comparison strip;
+- centered product hero with short supporting facts around it;
+- asymmetric metric composition with one dominant number and smaller supporting values;
+- comparison, sequence, timeline, process, or decision-path layouts;
+- card matrix only when the items are genuinely parallel and concise;
+- full-width safety or troubleshooting scene when the warning or decision must dominate.
+
+Rules:
+
+- do not use the same `50/50` split for most scenes;
+- normally avoid repeating the same major composition for more than two consecutive scenes unless the source requires it;
+- do not reserve an image column when there is no meaningful image;
+- do not create a large pale or white rectangle merely to preserve a fixed two-column template;
+- a light technical-image frame must hug the meaningful image or source excerpt and should not contain large unused blank regions;
+- crop source-page margins and unrelated blank space before placing the visual;
+- when a source page contains several useful regions, extract, enlarge, or annotate those regions rather than displaying the entire page at unreadable scale;
+- balance the scene according to information importance, not a fixed percentage inherited from an example screenshot.
+
+## 3.5 Horizontal Containment and Fixed-Shell Isolation
+
+Middle-scene content must never widen the document or push the header/footer utilities beyond the right viewport edge.
+
+The fixed header and footer are independent shell rows. Their width and control positions must not be affected by a wide image, table, card, metric, code sample, or translated string in the scene.
+
+Recommended containment foundation:
+
+```css
+html,
+body,
+.course-shell,
+.course-header,
+.scene-stage,
+.scene,
+.course-footer {
+  width: 100%;
+  max-width: 100vw;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.course-shell {
+  overflow-x: clip;
+}
+
+.scene,
+.scene-grid,
+.scene-grid > *,
+.scene-column,
+.scene-card,
+.visual-frame,
+.metric-card {
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.scene-grid--two {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+
+img,
+svg,
+video,
+canvas,
+table,
+pre {
+  max-width: 100%;
+}
+```
+
+Rules:
+
+- use `minmax(0, 1fr)` rather than bare `1fr` for flexible grid columns;
+- every flex or grid child containing long text or an image must have `min-width: 0`;
+- large visuals and tables must scale, reflow, use an internal detail view, or move to a dedicated scene;
+- do not allow scene content to create document-level horizontal scrolling;
+- do not hide an underlying overflow defect only with `overflow-x: hidden`; verify the actual child bounds;
+- after rendering, every fixed control must remain fully inside `window.innerWidth` with its approved edge inset;
+- long model names, dimensions, paths, commands, and translated strings must wrap or be reformatted within the scene without moving the fixed controls.
+
+## 3.6 Card, Metric, and Small-Panel Text Fit
+
+Do not force long values into a card size designed for short labels. Card count, card width, typography, and line breaks must respond to the actual content.
+
+Rules:
+
+- use a `2×2` metric grid only when all four values fit comfortably;
+- use two wide rows, one dominant metric plus supporting cards, or separate scenes when values are long;
+- separate units from long numeric dimensions when this improves wrapping;
+- introduce intentional line breaks at meaningful separators such as `×`, `/`, `+`, commas, or phrase boundaries;
+- do not let text cross a card border, overlap another card, or collide with adjacent values;
+- do not reduce important metric text below the approved readable floor merely to preserve a fixed grid;
+- card body copy must wrap naturally and remain vertically complete;
+- when translated content expands, allow the card layout to change by locale.
+
+Recommended responsive card typography:
+
+```css
+.metric-card,
+.compact-card {
+  container-type: inline-size;
+  min-width: 0;
+}
+
+.metric-value {
+  max-width: 100%;
+  font-size: clamp(28px, 4.5cqi, 52px);
+  line-height: 1.02;
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+}
+
+.compact-card-title {
+  font-size: clamp(22px, 3.2cqi, 32px);
+  line-height: 1.08;
+  overflow-wrap: anywhere;
+}
+
+.compact-card-body {
+  font-size: clamp(18px, 2.3cqi, 24px);
+  line-height: 1.28;
+  overflow-wrap: break-word;
+}
+```
+
+After render, verify for every learner-facing card:
+
+```js
+const fits =
+  card.scrollWidth <= card.clientWidth + 1 &&
+  card.scrollHeight <= card.clientHeight + 1;
+```
+
+If a card does not fit, change the card layout, shorten source-faithful wording, add an intentional line break, enlarge the card, reduce the number of cards, or split the scene. Do not clip the text.
+
+## 3.7 Semantic Emphasis for Critical Content
+
+The overall Micas stage remains harmonious and restrained, but safety, hazard, prohibition, exception, and critical-decision content must not disappear into an all-cyan visual system.
+
+Use semantic emphasis:
+
+- Micas cyan for primary facts, normal actions, identifiers, and key numbers;
+- warning amber for cautions, prerequisites, limits, and conditions requiring confirmation;
+- danger red for genuine hazards, prohibited actions, severe failure states, or risk of injury/equipment damage;
+- success green for verified safe/correct states and successful completion.
+
+Rules:
+
+- use color only when the source supports the semantic severity;
+- pair color with a label, icon, border, heading, or explanatory text so meaning is not color-only;
+- use a restrained tinted surface, side rule, icon, or highlighted phrase instead of flooding an entire scene with a bright color;
+- normally use no more than one dominant semantic alert color on a scene;
+- do not use red decoratively or for ordinary emphasis;
+- keep contrast and visual harmony with the deep-navy stage.
+
+## 3.8 Stable Header Subtitle
+
+The header subtitle explains the main course title. It is not a live scene caption.
+
+Default behavior:
+
+- select one concise, factual course-level subtitle derived from the source and course objective;
+- keep that subtitle stable across normal scenes;
+- do not rewrite it on every page to repeat the current scene title or body summary;
+- place scene-specific context in the body eyebrow, module label, scene title, or footer progress area;
+- an optional subtitle change is allowed at a major module boundary only when it materially improves orientation and remains concise;
+- do not use long diagnostic summaries or bullet-like text in the fixed header subtitle.
+
 # 4. Course Drawer and Progress
 
 - The Course Menu is hidden by default.
