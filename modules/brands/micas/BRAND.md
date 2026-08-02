@@ -1,6 +1,6 @@
 # Micas Brand Pack
 
-Version: **3.1.8**
+Version: **3.1.9**
 
 Brand ID: `micas`
 
@@ -149,6 +149,8 @@ Recommended desktop implementation:
   width: clamp(150px, 10.8vw, 195px);
   height: auto;
   max-width: 195px;
+  margin-left: clamp(6px, .45vw, 10px);
+  margin-top: clamp(4px, .35vh, 6px);
   object-fit: contain;
   image-rendering: auto;
   filter: none;
@@ -225,6 +227,8 @@ Recommended desktop implementation:
 Rules:
 
 - keep at least `24px` horizontal inset between the viewport edge and the logo on desktop;
+- apply the additional small intrinsic logo offset shown above so the visible logo artwork has slightly more top and left breathing room;
+- this logo-only offset must not move or resize the course title, subtitle, header utilities, or fixed control rails;
 - use the slightly larger top inset in the header so the brand lockup and utility controls do not visually hug the top viewport edge;
 - keep visible vertical breathing room between every header/footer control and the rail borders;
 - reduce the left/right rail inset only; do not change control order, button shells, labels, progress proportions, or the content-stage margins;
@@ -455,6 +459,7 @@ The Micas presentation fails brand QA when:
 - a white-background, legacy, alternate, generated, recolored, cropped, stretched, or distorted Micas logo appears;
 - different Micas logo variants appear across different scenes;
 - the logo or title/subtitle group touches the viewport edge or lacks the approved breathing room;
+- the visible logo artwork does not retain the approved small additional top and left breathing room;
 - the logo exceeds the approved `195px` desktop maximum or the title/subtitle exceed their reduced target ranges without a documented responsive reason;
 - the header lockup or utility controls visually hug the top viewport edge instead of preserving the approved top inset;
 - the top or bottom rails retain excessive left/right empty space beyond the approved compact insets;
