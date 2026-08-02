@@ -8,7 +8,7 @@
 - Removed executive-report, company-report, marketing-content, campaign, and other non-training modes from the active structure.
 - Kept standard interactive training as the default.
 - Kept gamified interactive learning as the only optional alternative.
-- Explicitly disabled game mechanics by default.
+- Explicitly prohibited adding game mechanics unless `training_mode: gamified-learning` is selected.
 
 ### Structure
 
@@ -17,23 +17,21 @@
   - `gamified-learning.md`.
 - Removed `executive-report.md`.
 - Removed `marketing-content.md`.
-- Removed `MODE_TEMPLATE.md` to prevent uncontrolled expansion into unrelated output types.
+- Removed `MODE_TEMPLATE.md` to prevent expansion into unrelated output types.
 - Replaced `prompts/MODULAR_PROMPT.md` with the clearer `prompts/MASTER_PROMPT.md`.
-- Updated `SKILL.md`, `README.md`, `QUICK_USER_GUIDE.md`, and `prompts/QUICK_PROMPT.md` to use `training_mode` terminology.
+- Updated `SKILL.md`, `README.md`, `QUICK_USER_GUIDE.md`, `modules/CORE.md`, and `prompts/QUICK_PROMPT.md` to use training-only terminology.
 
 ### Default Configuration
 
 ```text
 brand_profile: micas
 training_mode: interactive-training
-game_mode: disabled
 ```
 
-The gamified mode is selected only when explicitly requested:
+The optional game-based mode is selected only when explicitly requested:
 
 ```text
 training_mode: gamified-learning
-game_mode: enabled
 ```
 
 ### Compatibility
