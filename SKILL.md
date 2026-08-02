@@ -58,6 +58,8 @@ Do not load `gamified-learning.md` unless the user explicitly asks for game-base
 
 Do not load both training modes unless the user explicitly requests a reviewed hybrid.
 
+When `brand_profile: micas` is selected, inspect the current files under `modules/brands/micas/example/` as concrete UI and interaction references after loading the required modules. Do not depend on a specific example filename or version because the directory contents may be replaced. Source facts, explicit user constraints, and the latest Core, mode, Brand, UI, and QA rules remain authoritative.
+
 ## Module Responsibilities
 
 ### Core

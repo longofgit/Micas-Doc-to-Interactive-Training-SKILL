@@ -69,6 +69,7 @@ When the default configuration is used, preserve all established behavior:
 - unified deep-navy Micas stage with localized light cards or technical-image frames only;
 - Micas primary color `#00899F`;
 - approved Micas header lockup and references;
+- inspect and use the current implementation examples under `modules/brands/micas/example/` as concrete UI and interaction references; do not depend on a specific example filename or version because the directory contents may be replaced;
 - one-screen/PPT-like scenes with no normal-page scrolling;
 - clear Course → Module → Scene hierarchy;
 - large learner-facing text and strong visual hierarchy;
