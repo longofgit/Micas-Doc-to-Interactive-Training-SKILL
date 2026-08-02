@@ -2,7 +2,7 @@
 name: micas-doc-to-interactive-training
 display_name: Micas Doc-to-Interactive-Training Skill
 description: A source-grounded framework for converting documents into Micas-branded interactive training. Standard interactive training is the default; game-based interactive training is optional.
-version: 3.1.0
+version: 3.5.0
 ---
 
 # Micas Doc-to-Interactive-Training Skill
