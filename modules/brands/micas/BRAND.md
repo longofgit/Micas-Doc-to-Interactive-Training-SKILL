@@ -1,10 +1,10 @@
 # Micas Brand Pack
 
-Version: **3.0.0**
+Version: **3.1.1**
 
 Brand ID: `micas`
 
-This pack contains all Micas-specific identity, color, logo, tone, and visual-reference rules. It does not define source-grounding, assessment, narration, navigation, or experience-mode logic.
+This pack contains all Micas-specific identity, color, logo, tone, and visual-reference rules. It does not define source-grounding, assessment, narration, navigation, or training-mode logic.
 
 # 1. Identity
 
@@ -83,16 +83,22 @@ A white, pale-gray, or light-grid full-page content background is not part of th
 
 # 4. Header Brand Lockup
 
+The required desktop header lockup follows:
+
+`modules/brands/micas/references/header-lockup-reference.svg`
+
 Use one integrated horizontal lockup:
 
 - the official default Micas logo asset on the left;
-- bold white course title immediately to its right;
-- smaller muted product, platform, or module subtitle below the title;
-- logo and text vertically centered as one unit;
+- a bold white course title immediately to its right;
+- a smaller muted product, platform, lesson, or module subtitle directly below the title;
+- logo and the two-line text block vertically centered as one unit;
 - generous logo-to-text spacing;
 - direct integration into the deep-navy header;
 - subtle cyan divider along the header bottom;
 - utilities on the far right without squeezing or overlapping the lockup.
+
+The title/subtitle hierarchy is mandatory on normal desktop pages. Do not omit the subtitle merely to save space. When the source does not provide a subtitle, create a short factual subtitle from available project metadata, such as the product/platform plus the current lesson or module topic. Do not invent marketing claims.
 
 Desktop target ranges:
 
@@ -103,6 +109,27 @@ Desktop target ranges:
 - logo-to-text gap: `28–42px`.
 
 Do not place the logo in a white rectangle, card, or independent panel.
+
+## Header Utility Lock
+
+For standard Micas interactive training on desktop, the far-right header utility group must contain, in this order:
+
+1. selected language with a centered globe/language icon and dropdown chevron;
+2. Auto Play with a centered play icon;
+3. Fullscreen with a centered four-corner icon.
+
+Use this reference:
+
+`modules/brands/micas/references/top-right-controls-reference.svg`
+
+Rules:
+
+- do not remove Auto Play or Fullscreen from the normal desktop header;
+- do not replace the three controls with progress, module count, scene count, or assessment count;
+- progress belongs in the fixed footer control area;
+- the visible language control shows the selected language value without a `Language` prefix;
+- all icons and labels remain vertically centered and visually balanced;
+- compact responsive variants are allowed only at tablet/phone breakpoints.
 
 # 5. Tone and Copy
 
@@ -117,7 +144,21 @@ Preferred tone:
 
 Avoid unsupported superlatives and generic corporate filler.
 
-# 6. Visual Reference Assets
+# 6. Controlled Emphasis and Highlight Colors
+
+Important learning content may use restrained semantic emphasis while preserving the dark Micas visual system.
+
+Preferred emphasis:
+
+- Micas cyan or bright cyan for key numbers, required actions, product identifiers, and primary conclusions;
+- brand-soft cyan for supportive highlights and chips;
+- warning amber for exceptions, limitations, cautions, and conditions requiring verification;
+- success green for confirmed correct states or completed actions;
+- danger red only for genuine hazards, critical failures, or prohibited actions.
+
+Use emphasis selectively. A normal page should usually contain one dominant emphasis treatment and no more than two supporting accent treatments. Do not turn entire paragraphs into multiple colors, use rainbow styling, or apply bright fills that conflict with the deep-navy stage.
+
+# 7. Visual Reference Assets
 
 All Micas logo and visual-reference assets are colocated in:
 
@@ -130,6 +171,8 @@ Official logo asset:
 Current layout references:
 
 - `header-lockup-reference.svg`
+- `top-right-controls-reference.svg`
+- `footer-fixed-controls-reference.svg`
 - `content-hero-product-split-reference.svg`
 - `content-checkpoint-positioning-reference.svg`
 - `content-checkpoint-redundancy-airflow-reference.svg`
@@ -139,24 +182,31 @@ Current layout references:
 These references demonstrate:
 
 - large selective headline typography;
+- mandatory title/subtitle hierarchy in the header;
+- the fixed Language → Auto Play → Fullscreen utility group;
+- the fixed footer with substantial navigation and utility controls;
 - deep-navy page integration;
 - strong text/image balance;
 - complete technical imagery in controlled light frames;
 - three or fewer substantial support cards where appropriate;
 - oversized numbers and short labels;
 - Micas cyan chips and restrained light surfaces;
-- integrated header identity;
 - compact utility icons aligned with labels.
 
-Use the screenshots for proportion, hierarchy, spacing, and component treatment only. Recreate the result with live HTML/CSS, localizable text, the official default logo asset, and source-document visuals. Do not insert a reference screenshot as a flattened production page and do not extract or substitute a logo from a screenshot.
+Use the references for proportion, hierarchy, spacing, and component treatment only. Recreate the result with live HTML/CSS, localizable text, the official default logo asset, and source-document visuals. Do not insert a reference screenshot as a flattened production page and do not extract or substitute a logo from a screenshot.
 
-# 7. Micas Brand QA
+# 8. Micas Brand QA
 
 The Micas presentation fails brand QA when:
 
 - the official `micas-logo-default.svg` asset is not used while `brand_profile: micas` is active;
 - a white-background, legacy, alternate, generated, redrawn, recolored, cropped, stretched, or distorted Micas logo appears;
 - different Micas logo variants appear across different scenes;
+- the desktop header omits the factual subtitle below the main course title;
+- Auto Play or Fullscreen is missing from the normal desktop header;
+- language loses its icon or the right-side control order differs from Language → Auto Play → Fullscreen;
+- header progress/module counters replace the required utility group;
+- the fixed footer materially differs from the reference structure without a responsive breakpoint reason;
 - the stage becomes a pale or white full-page canvas;
 - the logo is tiny, boxed in white, or visually detached;
 - a generic bright blue replaces Micas cyan;
@@ -164,4 +214,5 @@ The Micas presentation fails brand QA when:
 - visual hierarchy is weak and every card looks equal;
 - technical pages look like a generic LMS or document viewer;
 - localized light components expand into the global page background;
+- emphasis colors are excessive, inconsistent, or decorative rather than semantic;
 - reference images are copied directly instead of recreated with live content.
