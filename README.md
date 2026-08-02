@@ -1,6 +1,6 @@
 # Micas Doc-to-Interactive-Training Skill
 
-Version: **2.3.3**
+Version: **2.4.0**
 
 This repository converts manuals, SOPs, product guides, policies, presentations, and technical documents into source-grounded, Micas-branded interactive training courses.
 
@@ -12,75 +12,70 @@ For reliable execution, the AI must read:
 2. `core/SKILL_v2.3.2.md`
 3. `UI_DESIGN_SPEC.md`
 4. `HEADER_UI_SPEC.md`
-5. `MASTER_PROMPT.md` or `QUICK_PROMPT.md`
+5. `COURSE_EXPERIENCE_SPEC.md`
+6. `MASTER_PROMPT.md` or `QUICK_PROMPT.md`
 
-`HEADER_UI_SPEC.md` is a focused v2.3.3 override. All non-header rules remain defined by the preserved v2.3.2 core.
+The preserved v2.3.2 core remains the complete production workflow. `HEADER_UI_SPEC.md` is the focused header override. `COURSE_EXPERIENCE_SPEC.md` is the focused v2.4.0 override and may change only the eight areas named in that file.
 
 ## Package Contents
 
-- `SKILL.md` — v2.3.3 entry point, load order, precedence, and completion requirements.
-- `core/SKILL_v2.3.2.md` — complete preserved production workflow and rules from v2.3.2.
+- `SKILL.md` — current entry point, mandatory load order, precedence, and completion requirements.
+- `core/SKILL_v2.3.2.md` — preserved complete production workflow and existing functional rules.
 - `UI_DESIGN_SPEC.md` — general Micas visual implementation contract.
 - `HEADER_UI_SPEC.md` — mandatory upper-left header/brand-lockup specification.
+- `COURSE_EXPERIENCE_SPEC.md` — body typography, content references, module hierarchy, responsive adaptation, header utility icons, final-only assessment, assessment Auto Play behavior, and Search.
 - `MASTER_PROMPT.md` — full formal-project prompt.
 - `QUICK_PROMPT.md` — concise Chinese project prompt.
-- `assets/ui-reference/header-lockup-reference.svg` — approved header composition screenshot reference.
-- `assets/ui-reference/README.md` — instructions for using the visual asset.
+- `assets/ui-reference/` — approved visual references and usage documentation.
 - `CHANGELOG.md` — current release notes.
-- `core/CHANGELOG_v2.3.2.md` — preserved earlier release history.
-- `core/README_v2.3.2.md` — preserved earlier package documentation.
+- `core/CHANGELOG_v2.3.2.md` and `core/README_v2.3.2.md` — preserved earlier history and documentation.
 
-## Can Images Be Included in a Skill?
+## Visual Reference Assets
 
-Yes. Reference screenshots, diagrams, templates, and other visual assets can be stored inside the Skill folder.
+Reference images can be included inside a Skill folder. This repository stores them under `assets/ui-reference/` and references them from mandatory specification files.
 
-Best practice is to:
+Current references:
 
-- place them in a clearly named directory such as `assets/ui-reference/`;
-- reference their exact path from `SKILL.md` or a mandatory specification file;
-- explain what the image demonstrates and how it should be used;
-- provide a written specification as the authoritative fallback;
-- avoid making critical instructions depend only on image inspection;
-- distinguish visual reference assets from source-document images used in generated courses.
+- `header-lockup-reference.svg`
+- `content-hero-product-split-reference.svg`
+- `content-checkpoint-positioning-reference.svg`
+- `content-checkpoint-redundancy-airflow-reference.svg`
+- `content-key-metrics-power-reference.svg`
+- `header-action-icons-reference.svg`
 
-The bundled header screenshot is supplemental design guidance. Generated courses must recreate its style using live HTML/CSS, localizable text, and the actual transparent Micas logo; the screenshot itself must not be used as a flattened production header.
+They are composition guidance. Generated courses must recreate the style with live HTML/CSS, localizable text, the actual transparent Micas logo, and authentic source-document images. Do not use a reference asset as a flattened production page.
 
-## v2.3.3 Header Style
+## v2.4.0 Targeted Refinements
 
-The upper-left header now requires:
+This release makes only the following changes:
 
-- a large Micas logo on the left;
-- a bold white course title on the right;
-- a smaller muted product/module subtitle below the title;
-- vertical centering and generous spacing;
-- direct integration into the deep-navy header;
-- a restrained cyan bottom divider;
-- far-right utilities that do not squeeze or overlap the brand lockup.
+1. Raises normal learner-facing body-copy sizes while retaining the established large-title hierarchy.
+2. Adds approved main-content references for hero, checkpoint, hardware-memory, and key-metric scenes.
+3. Requires a clear course → module → scene hierarchy and multiple logically ordered learning modules.
+4. Adds tablet and phone adaptation while preserving PC/desktop as the visual-quality priority.
+5. Requires suitable icons on language, Auto Play/Video, and Fullscreen controls.
+6. Consolidates all graded questions into the final `Review & Assessment` module; instructional modules do not end with separate graded exams.
+7. Suspends Auto Play on graded question pages so questions are not narrated, skipped, auto-submitted, or auto-advanced.
+8. Adds an icon-only full-course Search immediately before Previous in the footer action order.
 
-Desktop reference ranges:
+Detailed implementation and QA rules are in `COURSE_EXPERIENCE_SPEC.md`.
 
-- logo: `190–250px` wide;
-- title: `30–44px`;
-- subtitle: `18–28px`;
-- logo-to-text gap: `28–42px`.
+## Existing Behaviors Preserved
 
-See `HEADER_UI_SPEC.md` for the complete rules and QA criteria.
+Unless an item is explicitly listed above, v2.4.0 does not change:
 
-## Scope of v2.3.3
-
-This release changes only the upper-left header visual specification and adds the bundled visual reference.
-
-It does **not** change:
-
+- the approved upper-left header lockup;
+- Micas colors and overall visual direction;
 - one-screen/PPT-like behavior;
-- global Previous/Next navigation;
-- footer button order or alignment;
-- Auto Play narration-completion behavior;
+- global Previous/Next availability;
+- footer control sizing and right alignment;
+- narration-completion timing for normal instructional scenes;
 - Google-first voice selection;
-- image integrity rules;
-- multilingual behavior;
-- assessment structure;
-- source mapping or technical-accuracy requirements.
+- complete technical-image requirements;
+- English-first multilingual design;
+- source grounding and source mapping;
+- offline single-file HTML delivery;
+- existing production QA and release blockers.
 
 ## Standard Invocation
 
@@ -100,4 +95,4 @@ The normal deliverables remain:
 3. QA Report;
 4. course README.
 
-The course must pass the preserved v2.3.2 QA requirements plus the v2.3.3 header QA before delivery.
+The course must pass the preserved production QA, the header QA, and the targeted v2.4.0 QA before delivery.
