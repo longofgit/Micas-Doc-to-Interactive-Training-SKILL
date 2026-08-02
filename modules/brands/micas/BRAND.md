@@ -1,6 +1,6 @@
 # Micas Brand Pack
 
-Version: **3.1.1**
+Version: **3.1.2**
 
 Brand ID: `micas`
 
@@ -24,8 +24,9 @@ For every project using `brand_profile: micas`, the mandatory default company lo
 Rules:
 
 - Use this asset consistently in the course header, cover, and any other location that requires the primary Micas company logo.
+- The asset is based on the latest clear transparent artwork supplied by the user and must remain the single authoritative Micas logo asset.
 - Do not replace it with a white-background logo, legacy logo, alternate Micas lockup, text-only substitute, generated approximation, or another logo variant.
-- Do not recolor, redraw, distort, crop, stretch, simplify, or rebuild the logo.
+- Do not recolor, redraw, retrace, distort, crop, stretch, simplify, blur, sharpen, or rebuild the logo.
 - Preserve its transparent background and original aspect ratio.
 - Do not place it inside a white rectangle, white card, or unrelated background panel.
 - A different Micas logo may be used only when the user explicitly supplies and requests a replacement official asset for that project.
@@ -131,6 +132,56 @@ Rules:
 - all icons and labels remain vertically centered and visually balanced;
 - compact responsive variants are allowed only at tablet/phone breakpoints.
 
+## Control Icon Size Lock
+
+The icons inside the existing approved controls must be clearly larger than the previous undersized implementation. Do not enlarge or redesign the surrounding buttons; enlarge only the icon glyphs and keep them centered.
+
+Desktop icon targets:
+
+- language globe icon: `28–32px`;
+- language dropdown chevron: `18–22px`;
+- Auto Play icon: `28–32px`;
+- Fullscreen icon: `28–32px`;
+- Previous and Next arrow icons: `26–30px`;
+- Search icon: `28–32px`;
+- narration/speaker icon: `28–32px`;
+- Audio settings icon: `28–32px`.
+
+Recommended implementation:
+
+```css
+.header-language-icon,
+.header-autoplay-icon,
+.header-fullscreen-icon,
+.footer-search-icon,
+.footer-narration-icon,
+.footer-audio-settings-icon {
+  width: clamp(28px, 1.7vw, 32px);
+  height: clamp(28px, 1.7vw, 32px);
+  flex: 0 0 auto;
+}
+
+.nav-button .nav-arrow {
+  width: clamp(26px, 1.55vw, 30px);
+  height: clamp(26px, 1.55vw, 30px);
+  flex: 0 0 auto;
+}
+
+.language-chevron {
+  width: clamp(18px, 1.15vw, 22px);
+  height: clamp(18px, 1.15vw, 22px);
+  flex: 0 0 auto;
+}
+```
+
+Rules:
+
+- do not size these icons only through `1em` when the surrounding text size makes the icons too small;
+- preserve the approved button dimensions, order, spacing, and labels;
+- retain geometric and optical centering;
+- icons must remain visually substantial in both enabled and disabled button states;
+- tablet icons may reduce to approximately `24–28px` and phone icons to approximately `22–26px` only when required by the compact breakpoint.
+
 # 5. Tone and Copy
 
 Preferred tone:
@@ -191,7 +242,7 @@ These references demonstrate:
 - three or fewer substantial support cards where appropriate;
 - oversized numbers and short labels;
 - Micas cyan chips and restrained light surfaces;
-- compact utility icons aligned with labels.
+- clearly visible utility icons aligned with labels.
 
 Use the references for proportion, hierarchy, spacing, and component treatment only. Recreate the result with live HTML/CSS, localizable text, the official default logo asset, and source-document visuals. Do not insert a reference screenshot as a flattened production page and do not extract or substitute a logo from a screenshot.
 
@@ -200,11 +251,13 @@ Use the references for proportion, hierarchy, spacing, and component treatment o
 The Micas presentation fails brand QA when:
 
 - the official `micas-logo-default.svg` asset is not used while `brand_profile: micas` is active;
-- a white-background, legacy, alternate, generated, redrawn, recolored, cropped, stretched, or distorted Micas logo appears;
+- a white-background, legacy, alternate, generated, redrawn, recolored, cropped, stretched, blurred, or distorted Micas logo appears;
 - different Micas logo variants appear across different scenes;
 - the desktop header omits the factual subtitle below the main course title;
 - Auto Play or Fullscreen is missing from the normal desktop header;
 - language loses its icon or the right-side control order differs from Language → Auto Play → Fullscreen;
+- any of the required desktop control icons is visibly undersized, generally below `26px` except the language chevron;
+- the icon glyphs look materially smaller than the approved control references;
 - header progress/module counters replace the required utility group;
 - the fixed footer materially differs from the reference structure without a responsive breakpoint reason;
 - the stage becomes a pale or white full-page canvas;
