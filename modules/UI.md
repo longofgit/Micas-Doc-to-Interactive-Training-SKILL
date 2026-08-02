@@ -1,8 +1,8 @@
 # Unified UI System
 
-Version: **3.0.0**
+Version: **3.1.1**
 
-This is the single UI and visual implementation contract for all experience modes. Brand-specific tokens and references come from the selected brand pack.
+This is the single UI and visual implementation contract for all training modes. Brand-specific tokens and references come from the selected brand pack.
 
 # 1. Visual System Interface
 
@@ -451,3 +451,113 @@ Normal audience-facing pages must not show:
 Visual reference assets must be colocated with the selected brand pack. The UI module may inspect those references for proportion, hierarchy, spacing, and component treatment, but must recreate the design with live HTML/CSS, localizable text, the selected brand logo, and authentic source visuals.
 
 Do not use a full-page reference screenshot as the flattened production page.
+
+# 18. Default Micas Interactive-Training Regression Lock
+
+This section is a narrow compatibility lock for `brand_profile: micas` with `training_mode: interactive-training`. It restores the previously approved presentation shell without changing training logic.
+
+## 18.1 Header Lockup
+
+On desktop, the left header area must render:
+
+- the official Micas logo;
+- one large, bold primary course title;
+- one visibly smaller contextual subtitle below it.
+
+The subtitle is mandatory in normal desktop mode. It may identify the product/platform and current lesson or module context. It must remain factual and concise. Do not collapse the two-line lockup into a single title line unless a compact tablet/phone breakpoint requires it.
+
+## 18.2 Right Header Utility Group
+
+On desktop, the right header area contains exactly this primary sequence:
+
+```text
+Language → Auto Play → Fullscreen
+```
+
+Requirements:
+
+- Language includes a centered globe/language icon, current-language label, and dropdown indicator;
+- Auto Play includes a centered play icon and visible `Auto Play` label;
+- Fullscreen includes a centered four-corner icon and visible `Fullscreen` label;
+- do not remove Auto Play or Fullscreen;
+- do not replace these controls with scene progress, module progress, question count, or assessment count;
+- progress information belongs in the footer;
+- use the selected brand reference asset when available.
+
+## 18.3 Fixed Footer Contract
+
+The fixed desktop footer uses the following composition:
+
+```text
+LEFT: Course Menu → Scene count → Module/scene progress bar
+RIGHT: Previous → Next → Search → Narration → Audio settings
+```
+
+Requirements:
+
+- Course Menu remains a substantial text-and-icon button;
+- scene count and progress stay visible and readable;
+- Previous and Next remain substantial text-and-arrow buttons;
+- Search remains icon-only and immediately follows Next;
+- Narration and Audio settings follow Search;
+- the footer must not shrink into a thin strip of tiny icon buttons;
+- the footer must be part of the grid layout, not overlaid on top of scene content;
+- if `position: fixed` is used, reserve an equal content inset so no content is hidden behind it.
+
+## 18.4 Non-Fullscreen Fit Contract
+
+Every page must be designed and tested in a normal browser viewport, not only in Fullscreen.
+
+Required layout behavior:
+
+```css
+.course-shell,
+.scene-stage,
+.scene,
+.scene-inner,
+.scene-grid,
+.scene-column,
+.visual-frame {
+  box-sizing: border-box;
+  min-width: 0;
+  min-height: 0;
+}
+
+.scene-inner {
+  width: 100%;
+  height: 100%;
+  max-height: 100%;
+  overflow: hidden;
+}
+
+.scene-grid {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: stretch;
+}
+```
+
+Rules:
+
+- compute scene height from the actual remaining grid row between header and footer;
+- do not use fixed pixel scene heights copied from Fullscreen dimensions;
+- do not let cards, images, result panels, captions, or source previews extend behind the footer;
+- image and text columns must use `minmax(0, 1fr)` or an intentional ratio with both columns shrink-safe;
+- every technical image remains complete with `object-fit: contain`;
+- long content must be shortened, redesigned, or split into another scene;
+- `overflow: hidden` must never be used to conceal unreviewed learning content;
+- test every scene at 1920×1080, 1600×900, and 1366×768 at 100% zoom before release;
+- Fullscreen may improve scale but must not be required to reveal missing content.
+
+## 18.5 Controlled Semantic Highlighting
+
+Important content may receive restrained color emphasis:
+
+- brand cyan for required actions, product identifiers, key values, and main conclusions;
+- warning amber for exceptions, limitations, and conditions;
+- success green for verified correct states;
+- danger red only for genuine hazards or prohibited actions.
+
+Use emphasis to guide attention, not decorate the page. Do not color every line, use multiple competing highlight colors, or reduce contrast. A highlighted phrase must still be understandable without color alone.
