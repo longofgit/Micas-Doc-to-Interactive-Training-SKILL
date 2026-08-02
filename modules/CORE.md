@@ -1,8 +1,8 @@
 # Core Rules
 
-Version: **3.0.0**
+Version: **3.1.0**
 
-This module contains the invariant source-grounding and content-engineering rules used by every brand and experience mode.
+This module contains the invariant source-grounding and content-engineering rules used by every supported training mode and brand pack.
 
 # 1. Source Authority
 
@@ -13,7 +13,7 @@ This module contains the invariant source-grounding and content-engineering rule
 5. When the source is inconsistent, incomplete, or ambiguous, record the issue in the QA Report instead of silently choosing an answer.
 6. Preserve the source's framing and level of detail unless the user explicitly asks for expansion or outside research.
 7. Represent safety-critical content accurately and prominently.
-8. Keep source traceability for every generated section, scene, claim, and graded question.
+8. Keep source traceability for every generated module, scene, claim, interaction, and graded question.
 
 # 2. Source Audit
 
@@ -29,7 +29,7 @@ Before authoring, build an internal source map covering:
 - reference-only material;
 - contradictions, missing information, suspected errors, and unsupported claims.
 
-Do not construct a complete artifact from isolated snippets when surrounding context affects meaning.
+Do not construct a complete course from isolated snippets when surrounding context affects meaning.
 
 # 3. Content Prioritization
 
@@ -40,26 +40,26 @@ Classify source material as:
 - **Must understand:** architecture, rationale, dependencies, airflow, redundancy, tradeoffs, and decision logic
 - **Reference only:** exhaustive tables, regulations, dimensions, and rarely used appendices
 
-The selected experience mode determines how these categories are presented, but it must not remove required facts or safety boundaries.
+The selected training mode determines how these categories are taught, but it must not remove required facts or safety boundaries.
 
-# 4. Message Hierarchy
+# 4. Learning-Message Hierarchy
 
-For each generated unit, define:
+For each scene or learning unit, define:
 
-- `primaryMessage`: the one fact, action, decision, conclusion, or limit the audience should retain;
+- `primaryMessage`: the one fact, action, decision, conclusion, or limit the learner should retain;
 - `supportingPoints`: normally two to five concise supporting items;
-- `referenceDetails`: secondary content moved to another unit, appendix, overlay, or report;
-- `focalEvidence`: image, number, diagram, warning, quote, chart, or source fact that deserves the most attention;
+- `referenceDetails`: secondary content moved to another scene, reference layer, overlay, or companion file;
+- `focalEvidence`: image, number, diagram, warning, example, or source fact that deserves the most attention;
 - `sourceRefs`: exact source locations supporting the unit;
 - `localeVariants`: language-specific wording or layout changes that preserve meaning.
 
 Avoid treating all source content as equal weight.
 
-# 5. Traceability and Presentation Hygiene
+# 5. Traceability and Learner-View Hygiene
 
 Maintain source mapping in structured data and companion reports.
 
-Normal audience-facing pages must not show:
+Normal learner-facing pages must not show:
 
 - raw source mapping;
 - page-reference accordions;
@@ -69,7 +69,7 @@ Normal audience-facing pages must not show:
 - debug output;
 - internal narration scripts unless captions are intentionally enabled.
 
-Source mapping belongs in the Course Map, QA Report, data model, or dedicated reviewer mode.
+Source mapping belongs in the Course Map, QA Report, course data model, or dedicated reviewer mode.
 
 # 6. Multilingual Content
 
@@ -89,35 +89,36 @@ Rules:
 3. Preserve technical names, commands, standards, model names, and port labels when translation reduces accuracy.
 4. Other locales may use different line breaks, wording length, scene splitting, and layout variants while preserving equivalent meaning.
 5. Do not weaken the English master merely to force identical density across languages.
-6. Every supported locale must pass content, fit, image, control, and accessibility QA.
+6. Every supported locale must pass content, fit, image, control, narration, assessment, and accessibility QA.
 
 # 7. Safe Inference
 
-When the source does not specify a nontechnical presentation detail, reasonable design inference is allowed, such as:
+When the source does not specify a nontechnical presentation detail, reasonable instructional-design inference is allowed, such as:
 
+- learning sequence;
 - visual grouping;
-- page titles;
+- scene titles;
 - transition wording;
 - icon selection;
 - animation restraint;
 - navigation labels;
-- learning sequence when the source order is not pedagogically useful.
+- practice format when supported by the learning objective.
 
-Do not infer unsupported technical facts, performance claims, compliance status, warranties, customer outcomes, or safety assurances.
+Do not infer unsupported technical facts, performance claims, compliance status, warranties, customer outcomes, safety assurances, or assessment answers.
 
 # 8. Module Isolation
 
-- Core rules are brand-neutral and mode-neutral.
-- Brand packs may change identity, colors, logo, tone, and references only.
-- Experience modes may change information architecture, interaction, assessment, narration, and output type only.
+- Core rules are brand-neutral and training-mode-neutral.
+- Brand packs may change identity, colors, logo, tone, and visual references only.
+- Training modes may change learning architecture, interaction, assessment presentation, narration, and completion behavior only.
 - UI may change rendering and interface behavior only.
 - QA may add validation requirements but may not rewrite source facts.
 
-The default Micas interactive-training configuration must remain behaviorally equivalent to the established v2.4.1 course behavior.
+The default Micas `interactive-training` configuration must remain behaviorally equivalent to the established production course behavior.
 
 # 9. Artifact Integrity
 
-Generated artifacts must:
+Generated training artifacts must:
 
 - contain all required local assets;
 - avoid broken runtime dependencies;
@@ -125,15 +126,17 @@ Generated artifacts must:
 - include meaningful alt text and accessible labels;
 - separate learner-facing content from reviewer metadata;
 - document assumptions and fallbacks;
-- be complete rather than a partial prototype when the user requests a full deliverable.
+- be complete rather than a partial prototype when the user requests a full course.
 
 # 10. Required Companion Documentation
 
-Unless the selected mode explicitly defines a different package, produce:
+For standard interactive training, produce:
 
-1. primary deliverable;
-2. content or course map;
-3. QA report;
+1. interactive training HTML;
+2. Course Map;
+3. QA Report;
 4. usage README.
+
+For gamified learning, follow the selected training mode's training-specific deliverables while still providing a QA Report and README.
 
 The QA Report must identify source issues, assumptions, missing assets, fallback behavior, and any requirement that could not be completed.
