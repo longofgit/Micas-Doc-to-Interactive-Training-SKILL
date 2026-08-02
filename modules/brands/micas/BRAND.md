@@ -13,7 +13,23 @@ This pack contains all Micas-specific identity, color, logo, tone, and visual-re
 - Visual character: dark, premium, technical, spacious, confident, mission-oriented
 - Default stage: unified deep navy
 - Accent behavior: cyan highlights, restrained glows, blue-tinted translucent surfaces
-- Logo: transparent Micas Networks artwork designed for dark backgrounds
+- Official default logo: `modules/brands/micas/references/micas-logo-default.svg`
+
+## Official Default Logo Lock
+
+For every project using `brand_profile: micas`, the mandatory default company logo is:
+
+`modules/brands/micas/references/micas-logo-default.svg`
+
+Rules:
+
+- Use this asset consistently in the course header, cover, and any other location that requires the primary Micas company logo.
+- Do not replace it with a white-background logo, legacy logo, alternate Micas lockup, text-only substitute, generated approximation, or another logo variant.
+- Do not recolor, redraw, distort, crop, stretch, simplify, or rebuild the logo.
+- Preserve its transparent background and original aspect ratio.
+- Do not place it inside a white rectangle, white card, or unrelated background panel.
+- A different Micas logo may be used only when the user explicitly supplies and requests a replacement official asset for that project.
+- Visual-reference screenshots are layout references only and must never override this official logo asset.
 
 # 2. Brand Tokens
 
@@ -69,7 +85,7 @@ A white, pale-gray, or light-grid full-page content background is not part of th
 
 Use one integrated horizontal lockup:
 
-- large transparent Micas logo on the left;
+- the official default Micas logo asset on the left;
 - bold white course title immediately to its right;
 - smaller muted product, platform, or module subtitle below the title;
 - logo and text vertically centered as one unit;
@@ -103,11 +119,15 @@ Avoid unsupported superlatives and generic corporate filler.
 
 # 6. Visual Reference Assets
 
-All Micas visual references are colocated in:
+All Micas logo and visual-reference assets are colocated in:
 
 `modules/brands/micas/references/`
 
-Current references:
+Official logo asset:
+
+- `micas-logo-default.svg`
+
+Current layout references:
 
 - `header-lockup-reference.svg`
 - `content-hero-product-split-reference.svg`
@@ -128,14 +148,17 @@ These references demonstrate:
 - integrated header identity;
 - compact utility icons aligned with labels.
 
-Use them for proportion, hierarchy, spacing, and component treatment. Recreate the result with live HTML/CSS, localizable text, the real logo, and source-document visuals. Do not insert a reference screenshot as a flattened production page.
+Use the screenshots for proportion, hierarchy, spacing, and component treatment only. Recreate the result with live HTML/CSS, localizable text, the official default logo asset, and source-document visuals. Do not insert a reference screenshot as a flattened production page and do not extract or substitute a logo from a screenshot.
 
 # 7. Micas Brand QA
 
 The Micas presentation fails brand QA when:
 
+- the official `micas-logo-default.svg` asset is not used while `brand_profile: micas` is active;
+- a white-background, legacy, alternate, generated, redrawn, recolored, cropped, stretched, or distorted Micas logo appears;
+- different Micas logo variants appear across different scenes;
 - the stage becomes a pale or white full-page canvas;
-- the logo is tiny, distorted, boxed in white, or visually detached;
+- the logo is tiny, boxed in white, or visually detached;
 - a generic bright blue replaces Micas cyan;
 - header utilities overlap or compress the brand lockup;
 - visual hierarchy is weak and every card looks equal;
