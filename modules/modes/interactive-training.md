@@ -1,10 +1,10 @@
 # Experience Mode: Interactive Training
 
-Version: **3.0.0**
+Version: **3.5.0**
 
 Mode ID: `interactive-training`
 
-This is the default experience mode. It preserves the established Micas interactive-training behavior from v2.4.1 while separating it from brand and shared UI rules.
+This is the default experience mode. It preserves the established Micas interactive-training behavior while separating it from brand and shared UI rules.
 
 # 1. Purpose
 
@@ -69,6 +69,86 @@ Recommended scene patterns:
 - assessment introduction;
 - one-question assessment scene;
 - results and completion.
+
+## 3.1 Learner-Relevance Filter
+
+Every learner-facing scene must teach, reinforce, demonstrate, or assess the actual subject of the source materials.
+
+Do not place project-generation metadata into the instructional body merely because it is available in the prompt or configuration. The following items are not suitable homepage or teaching-card content unless the source itself teaches them or the user explicitly requests that they be shown to learners:
+
+- course duration or estimated minutes;
+- number of supported languages;
+- default language;
+- delivery format such as `Offline HTML`;
+- file type or packaging details;
+- assessment difficulty labels such as `Intermediate`;
+- QA status, generation settings, output names, or implementation capabilities;
+- generic statements about the course framework instead of the training topic.
+
+These values may remain in the README, Course Map, QA Report, settings, or internal metadata. They must not displace real training content on the homepage or normal instructional scenes.
+
+When selecting content for a scene, ask:
+
+1. Does this help the learner understand or perform the real job/topic?
+2. Is it supported by the source materials?
+3. Is it important enough to occupy visible screen space?
+
+If any answer is no, remove it from the learner-facing scene.
+
+## 3.2 Source-Grounded Opening Scene
+
+The first learner-facing scene must be a concise, visually strong introduction to the real training subject.
+
+Required behavior:
+
+- derive the headline, supporting statement, and visible content anchors from the source materials;
+- communicate what the product, process, service, system, or task actually is and what the learner will be able to recognize, decide, install, operate, sell, maintain, or troubleshoot;
+- use one to three source-supported content anchors, such as product positioning, major capability, real workflow, important safety condition, architecture, or field outcome;
+- prefer specific source terminology over generic phrases such as `New Product Training` when a more meaningful topic statement is available;
+- do not fill the opening scene with course duration, language count, difficulty, output format, or other delivery metadata;
+- do not invent performance claims, market positioning, customer outcomes, or technical capabilities not supported by the source.
+
+The opening visual must be the most relevant authentic visual available in the source materials, for example:
+
+- the actual product or device;
+- a real architecture or topology diagram;
+- a genuine workflow/process illustration;
+- a service-delivery scenario supported by the source;
+- a source photo or diagram that immediately identifies the training subject.
+
+Visual selection rules:
+
+- use a real source image before creating a generic decorative illustration;
+- do not substitute a generic acronym tile, abstract placeholder, empty visual frame, or decorative icon when a relevant authentic source image exists;
+- crop irrelevant page margins, headers, footers, and whitespace before embedding;
+- preserve the full meaningful image with `object-fit: contain`;
+- size the visual large enough to establish the subject immediately;
+- pair the visual and text as one balanced composition rather than two unrelated halves.
+
+If no useful source image exists, use a restrained source-grounded diagram or typographic composition and state the limitation in the QA Report. Do not fabricate a realistic product image.
+
+## 3.3 Normal Browser Window Fit
+
+The course must fit a normal browser content viewport, not only Fullscreen mode or a screenshot-sized canvas.
+
+Browsers normally reserve vertical space for tabs, the address bar, bookmarks, download bars, or operating-system chrome. Therefore:
+
+- calculate the layout from the actual `window.innerHeight` / `100dvh` available to the document;
+- keep the approved header and footer rails unchanged and fit the scene into the remaining middle grid row;
+- never assume that a 768px-tall display provides 768px of document content height;
+- do not use hard-coded scene heights derived from the physical monitor resolution;
+- do not hide the final card row, image caption, warning, result, or action behind the footer;
+- do not require Fullscreen to reveal content;
+- when the normal viewport is shorter, shorten copy, rebalance the visual/text ratio, reduce nonessential scene padding, or split the content into another scene;
+- do not solve the problem by shrinking instructional text below the approved minimums or by changing the locked header/footer controls.
+
+In addition to the normal desktop master sizes, validate representative browser-content viewports such as:
+
+- `1920×930`;
+- `1600×780`;
+- `1366×650`.
+
+These values represent common screens after browser chrome consumes part of the vertical space. Every normal scene must remain complete and usable at 100% zoom.
 
 # 4. Course Drawer and Progress
 
