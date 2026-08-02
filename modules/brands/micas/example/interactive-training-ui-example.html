@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Micas Interactive Training — Approved UI Example</title>
+<link rel="stylesheet" href="example.css" />
+</head>
+<body>
+<!-- Demo implementation: Core 3.1.0 · interactive-training 3.0.0 · Micas Brand 3.1.10 · UI/QA 3.1.1 -->
+<div class="course-shell" id="app">
+  <header class="header">
+    <div class="brand-lockup">
+      <div class="logo-wrap" aria-label="Micas Networks">
+        <img src="../references/micas-logo-default.png" width="250" height="89" alt="Micas Networks" decoding="sync" />
+      </div>
+      <div class="title-lockup">
+        <div class="course-title" id="courseTitle">Micas Interactive Training</div>
+        <div class="course-subtitle" id="courseSubtitle">UI System Preview • Welcome</div>
+      </div>
+    </div>
+    <div class="header-actions">
+      <div class="language-picker" id="languagePicker">
+        <button class="header-control language language-trigger" id="languageButton" aria-label="Language" aria-haspopup="listbox" aria-expanded="false" aria-controls="languageMenu">
+          <svg class="icon control-icon header-language-icon" data-icon="language" viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="13" cy="13" r="11.7"/><path d="M1.3 13h23.4M13 1.3c4 3.7 5.6 7.6 5.6 11.7S17 21 13 24.7M13 1.3C9 5 7.4 8.9 7.4 13S9 21 13 24.7"/></svg>
+          <span class="control-text" id="languageVisible">English</span>
+          <svg class="icon chevron control-icon language-chevron" data-icon="language-chevron" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M1.3 5.3 9 13l7.7-7.7"/></svg>
+        </button>
+        <div class="language-menu" id="languageMenu" role="listbox" aria-label="Course language" tabindex="-1">
+          <button class="language-option" role="option" data-lang="en" aria-selected="true"><span class="language-mark">EN</span><span class="language-name">English</span><svg class="language-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 4 4L19 6"/></svg></button>
+          <button class="language-option" role="option" data-lang="zh-CN" aria-selected="false"><span class="language-mark">简</span><span class="language-name">简体中文</span><svg class="language-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 4 4L19 6"/></svg></button>
+          <button class="language-option" role="option" data-lang="zh-TW" aria-selected="false"><span class="language-mark">繁</span><span class="language-name">繁體中文</span><svg class="language-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 4 4L19 6"/></svg></button>
+          <button class="language-option" role="option" data-lang="ja" aria-selected="false"><span class="language-mark">日</span><span class="language-name">日本語</span><svg class="language-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 4 4L19 6"/></svg></button>
+          <div class="language-menu-note">↑ ↓ to move · Enter to select · Esc to close</div>
+        </div>
+      </div>
+      <button class="header-control" id="autoPlayBtn" aria-pressed="false">
+        <svg class="icon control-icon header-autoplay-icon" data-icon="autoplay" viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M1.5 1.3v23.4L24.7 13 1.5 1.3z"/></svg><span class="control-text" data-ui="autoPlay">Auto Play</span>
+      </button>
+      <button class="header-control" id="fullscreenBtn">
+        <svg class="icon control-icon header-fullscreen-icon" data-icon="fullscreen" viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M1.5 9.5v-8h8M16.5 1.5h8v8M1.5 16.5v8h8M24.5 16.5v8h-8"/></svg><span class="control-text" data-ui="fullscreen">Fullscreen</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="scene-stage" id="sceneStage" aria-live="polite"></main>
+
+  <footer class="footer">
+    <div class="footer-left">
+      <button class="course-menu-button" id="menuBtn"><span class="control-content"><svg class="icon control-icon course-menu-icon" data-icon="menu" viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M1.5 4h23M1.5 13h23M1.5 22h23"/></svg><span class="control-text" data-ui="courseMenu">Course Menu</span></span></button>
+      <div class="scene-counter" id="sceneCounter">Scene 1 of 8</div>
+      <div class="progress-group">
+        <div class="progress-meta"><span id="progressModule">Welcome</span><span id="progressPercent">13%</span></div>
+        <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="13"><div class="progress-fill" id="progressFill"></div></div>
+      </div>
+    </div>
+    <div class="footer-right">
+      <button class="nav-button" id="prevBtn"><span class="control-content"><svg class="icon control-icon nav-arrow" data-icon="previous" viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M11.5 2 1.5 13l10 11M2 13h22.5"/></svg><span class="control-text" data-ui="previous">Previous</span></span></button>
+      <button class="nav-button primary" id="nextBtn"><span class="control-content"><span class="control-text" data-ui="next">Next</span><svg class="icon control-icon nav-arrow" data-icon="next" viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="m14.5 2 10 11-10 11M24 13H1.5"/></svg></span></button>
+      <button class="icon-control" id="searchBtn" aria-label="Search" title="Search"><svg class="icon control-icon footer-search-icon" data-icon="search" viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="10.8" cy="10.8" r="9.2"/><path d="m17.9 17.9 6.6 6.6"/></svg></button>
+      <button class="icon-control" id="narrationBtn" aria-label="Narration" title="Narration"><svg class="icon control-icon footer-narration-icon" data-icon="narration" viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M1.3 8.5v9h5.1l7.1 7V1.5l-7.1 7H1.3z"/><path d="M16.4 7c3.7 3.4 3.7 8.6 0 12M20.2 3.7c4.7 5.1 4.7 13.5 0 18.6"/></svg></button>
+      <button class="icon-control" id="audioBtn" aria-label="Audio settings" title="Audio settings"><svg class="icon control-icon footer-audio-settings-icon" data-icon="audio-settings" viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M1.5 4.5h23M1.5 13h23M1.5 21.5h23"/><circle cx="7" cy="4.5" r="2.5" fill="var(--stage-bg-deep)"/><circle cx="19" cy="13" r="2.5" fill="var(--stage-bg-deep)"/><circle cx="11" cy="21.5" r="2.5" fill="var(--stage-bg-deep)"/></svg></button>
+    </div>
+  </footer>
+</div>
+
+<div class="backdrop" id="backdrop"></div>
+<aside class="drawer" id="drawer" aria-hidden="true">
+  <div class="panel-head"><h2 data-ui="courseMenu">Course Menu</h2><button class="close-button" data-close aria-label="Close"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div>
+  <div class="panel-body" id="menuList"></div>
+</aside>
+<aside class="search-panel" id="searchPanel" aria-hidden="true">
+  <div class="panel-head"><h2 data-ui="search">Search</h2><button class="close-button" data-close aria-label="Close"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div>
+  <div class="panel-body">
+    <div class="search-box"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.8-3.8"/></svg><input id="searchInput" type="search" autocomplete="off" /></div>
+    <div class="search-count" id="searchCount"></div><div id="searchResults"></div>
+  </div>
+</aside>
+<div class="audio-popover" id="audioPopover" role="dialog" aria-label="Audio settings">
+  <h3 data-ui="audioSettings">Audio settings</h3>
+  <div class="setting-row"><label for="voiceSelect" data-ui="voice">Voice</label><select id="voiceSelect"></select></div>
+  <div class="setting-row"><label for="rateRange" data-ui="speed">Speed</label><input id="rateRange" type="range" min="0.75" max="1.25" step="0.05" value="1" /></div>
+  <div class="toggle-row"><span data-ui="captions">Captions</span><button class="switch" id="captionsSwitch" aria-pressed="false"></button></div>
+</div>
+<div class="status-toast" id="toast"></div>
+
+<script src="course-data.js"></script>
+<script src="example.js"></script>
+</body>
+</html>
