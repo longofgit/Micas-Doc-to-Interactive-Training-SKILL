@@ -1,6 +1,6 @@
 # Micas Brand Pack
 
-Version: **3.1.9**
+Version: **3.1.10**
 
 Brand ID: `micas`
 
@@ -151,6 +151,7 @@ Recommended desktop implementation:
   max-width: 195px;
   margin-left: clamp(6px, .45vw, 10px);
   margin-top: clamp(4px, .35vh, 6px);
+  margin-bottom: clamp(5px, .5vh, 8px);
   object-fit: contain;
   image-rendering: auto;
   filter: none;
@@ -227,7 +228,8 @@ Recommended desktop implementation:
 Rules:
 
 - keep at least `24px` horizontal inset between the viewport edge and the logo on desktop;
-- apply the additional small intrinsic logo offset shown above so the visible logo artwork has slightly more top and left breathing room;
+- apply the additional small intrinsic logo offset shown above so the visible logo artwork has slightly more top, left, and bottom breathing room;
+- keep a clearly visible gap between the bottom of the logo artwork and the header divider line;
 - this logo-only offset must not move or resize the course title, subtitle, header utilities, or fixed control rails;
 - use the slightly larger top inset in the header so the brand lockup and utility controls do not visually hug the top viewport edge;
 - keep visible vertical breathing room between every header/footer control and the rail borders;
@@ -383,11 +385,22 @@ Recommended desktop implementation:
   align-items: center;
   min-height: 1em;
   color: var(--brand-primary-soft);
-  font-size: clamp(30px, 2.1vw, 42px);
+  font-size: clamp(34px, 2.6vw, 52px);
   line-height: .95;
   font-weight: 820;
   letter-spacing: .04em;
   font-variant-numeric: tabular-nums;
+}
+
+.category-number--spacious,
+.step-number--spacious,
+.phase-number--spacious,
+.stage-number--spacious,
+.sequence-number--spacious,
+.card-index--spacious,
+.flow-index--spacious,
+.checkpoint-number--spacious {
+  font-size: clamp(40px, 3.2vw, 58px);
 }
 
 .category-label,
@@ -404,13 +417,15 @@ Recommended desktop implementation:
 
 Rules:
 
-- at `1366×768`, a primary category or sequence number should normally render at least `30px`;
+- at `1366×768`, a primary category or sequence number should normally render at least `34px`;
+- when a numbered card has clear unused vertical space, use the spacious variant and allow the number to grow toward `58px`;
+- treat roughly `20%` or more unused vertical card space as a strong signal that the larger marker can be used without harming balance;
 - the number must be visually stronger than supporting body copy and clearly visible before the learner reads the card title;
 - use Micas cyan or brand-soft cyan with strong weight and sufficient contrast;
 - keep equal-width number alignment when several cards form one row;
 - do not reduce the number to caption size, metadata size, or a tiny corner tag;
 - do not enlarge the marker by making the entire card header excessively tall; balance number size, padding, and title placement;
-- when space is insufficient, shorten the label, rebalance the card, or split the scene instead of shrinking the category number;
+- when space is insufficient, shorten the label, rebalance the card, or split the scene instead of shrinking the category number below the normal range;
 - this rule applies only to learner-facing body content and must not change the fixed header or footer control rails.
 
 # 7. Visual Reference Assets
@@ -459,7 +474,8 @@ The Micas presentation fails brand QA when:
 - a white-background, legacy, alternate, generated, recolored, cropped, stretched, or distorted Micas logo appears;
 - different Micas logo variants appear across different scenes;
 - the logo or title/subtitle group touches the viewport edge or lacks the approved breathing room;
-- the visible logo artwork does not retain the approved small additional top and left breathing room;
+- the visible logo artwork does not retain the approved small additional top, left, and bottom breathing room;
+- the bottom edge of the visible logo sits too close to the header divider line;
 - the logo exceeds the approved `195px` desktop maximum or the title/subtitle exceed their reduced target ranges without a documented responsive reason;
 - the header lockup or utility controls visually hug the top viewport edge instead of preserving the approved top inset;
 - the top or bottom rails retain excessive left/right empty space beyond the approved compact insets;
@@ -476,6 +492,7 @@ The Micas presentation fails brand QA when:
 - the fixed footer materially differs from the reference structure without a responsive breakpoint reason;
 - a learner-facing category, phase, step, or sequence number is rendered as tiny metadata rather than a prominent body marker;
 - a category marker falls below the approved desktop minimum without a responsive breakpoint reason;
+- clear unused card space exists but the category marker remains visually undersized;
 - the stage becomes a pale or white full-page canvas;
 - the logo is tiny, boxed in white, or visually detached;
 - a generic bright blue replaces Micas cyan;
