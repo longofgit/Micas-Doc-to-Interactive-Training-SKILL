@@ -1,71 +1,135 @@
 ---
 name: micas-doc-to-interactive-training
 display_name: Micas Doc-to-Interactive-Training Skill
-description: Convert technical documents into source-grounded, Micas-branded, self-contained interactive training courses with PPT-like scenes, strict production QA, multilingual narration, hierarchical modules, final assessment, responsive delivery, search, and approved Micas UI references.
-version: 2.4.1
+description: A modular, source-grounded document-to-experience framework. The default configuration generates Micas-branded interactive training, while brand and experience-mode packs can be switched independently.
+version: 3.0.0
 ---
 
 # Micas Doc-to-Interactive-Training Skill
 
-## Mandatory Load Order
+## Purpose
 
-For every document-to-training task, read and apply these files in order:
+This repository is a modular document-to-experience framework.
 
-1. `core/SKILL_v2.3.2.md` — the complete v2.3.2 production workflow and all existing content, navigation, image, language, voice, assessment, Auto Play, and QA rules.
-2. `UI_DESIGN_SPEC.md` — the complete general Micas visual implementation contract.
-3. `HEADER_UI_SPEC.md` — the mandatory v2.3.3 upper-left header override.
-4. `COURSE_EXPERIENCE_SPEC.md` — the mandatory v2.4.0 targeted override for typography, content references, module hierarchy, responsive adaptation, header utility icons, final-only assessment, assessment behavior in Auto Play, and full-course Search.
-5. `COURSE_EXPERIENCE_FIXES_v2.4.1.md` — the mandatory corrective override for dark-stage enforcement, Search placement, deterministic Google-default voices, icon centering, and larger body-text minimums.
-6. `MASTER_PROMPT.md` or `QUICK_PROMPT.md` — the task launcher selected for the project.
+The default configuration remains:
 
-Do not skip the referenced files. The preserved core rules remain fully active.
+- **Brand pack:** `micas`
+- **Experience mode:** `interactive-training`
+- **Primary output:** one self-contained offline interactive HTML course plus Course Map, QA Report, and README
+- **Default language and visual master:** English
+- **Supported languages:** English, Simplified Chinese, Traditional Chinese, and Japanese
+
+Version 3.0.0 is a structural refactor. It does not weaken or remove the established Micas interactive-training behavior.
+
+## Mandatory Module Load Order
+
+For every project, load exactly one module from each required layer:
+
+1. `modules/CORE.md`
+2. selected experience mode under `modules/modes/`
+3. selected brand pack under `modules/brands/`
+4. `modules/UI.md`
+5. `modules/QA.md`
+6. `prompts/MODULAR_PROMPT.md` or `prompts/QUICK_PROMPT.md`
+
+Default selection:
+
+```text
+core: modules/CORE.md
+mode: modules/modes/interactive-training.md
+brand: modules/brands/micas/BRAND.md
+ui: modules/UI.md
+qa: modules/QA.md
+prompt: prompts/MODULAR_PROMPT.md
+```
+
+Do not load multiple brand packs or multiple experience modes unless the user explicitly requests a hybrid and the combination is reviewed for conflicts.
+
+## Module Responsibilities
+
+### Core
+
+`modules/CORE.md` contains invariant rules:
+
+- source grounding and factual accuracy;
+- source audit and traceability;
+- content prioritization;
+- multilingual equivalence;
+- artifact integrity;
+- module precedence and safe assumptions.
+
+### Experience Mode
+
+The selected file under `modules/modes/` defines:
+
+- purpose and audience;
+- information architecture;
+- interaction model;
+- narration and playback behavior;
+- assessment or decision model;
+- output form and mode-specific deliverables.
+
+The default mode is `interactive-training.md`.
+
+### Brand
+
+The selected brand pack defines:
+
+- logo and brand identity;
+- color tokens;
+- typography and tone;
+- visual references and brand assets;
+- brand-specific UI constraints.
+
+The default brand is `modules/brands/micas/BRAND.md`.
+
+### UI
+
+`modules/UI.md` defines one consolidated interface and visual implementation contract:
+
+- viewport and no-scroll behavior;
+- layout, hierarchy, typography, imagery, controls, icons, responsive behavior, and accessibility;
+- header, stage, footer, search, and settings presentation;
+- learner-mode cleanliness and visual QA rules.
+
+### QA
+
+`modules/QA.md` is the final release gate for source accuracy, functionality, rendering, multilingual behavior, accessibility, and selected mode/brand requirements.
 
 ## Rule Precedence
 
-- Source-grounding, technical accuracy, safety, global navigation, image integrity, language, narration, one-screen behavior, and existing production QA remain defined by `core/SKILL_v2.3.2.md` and `UI_DESIGN_SPEC.md`.
-- `HEADER_UI_SPEC.md` overrides only the upper-left header/brand-lockup design where it is more specific.
-- `COURSE_EXPERIENCE_SPEC.md` overrides only its eight explicitly named v2.4.0 areas.
-- `COURSE_EXPERIENCE_FIXES_v2.4.1.md` overrides only its five explicitly named corrections and takes precedence where it is more specific than v2.4.0.
-- No other established UI or functional behavior may be changed merely because v2.4.1 was added.
+Use this precedence order:
 
-## Approved Visual References
+1. source facts, safety limits, and explicit user constraints;
+2. `modules/CORE.md` accuracy and traceability rules;
+3. selected experience mode;
+4. selected brand pack;
+5. `modules/UI.md` implementation rules;
+6. project variables in the selected prompt;
+7. stylistic inference that is not technically consequential.
 
-Inspect the reference assets under `assets/ui-reference/` before implementation:
+A brand or mode may change presentation and interaction, but it may not override source facts, safety requirements, or mandatory QA.
 
-- `header-lockup-reference.svg`
-- `content-hero-product-split-reference.svg`
-- `content-checkpoint-positioning-reference.svg`
-- `content-checkpoint-redundancy-airflow-reference.svg`
-- `content-key-metrics-power-reference.svg`
-- `header-action-icons-reference.svg`
+## Available Experience Modes
 
-The generated course must use live HTML/CSS, localizable text, the real transparent Micas logo, and authentic source-document visuals. Reference assets guide composition and hierarchy; do not insert them as flattened production pages.
+- `interactive-training.md` — default Micas interactive course behavior
+- `gamified-learning.md` — optional mission, level, points, and challenge experience
+- `executive-report.md` — optional management-report and decision-support experience
+- `marketing-content.md` — optional evidence-grounded marketing and campaign experience
 
-## v2.4.0 Targeted Requirements
+Only the selected mode is active.
 
-Apply only these refinements:
+## Available Brand Packs
 
-1. Increase learner-facing body-copy readability while preserving large-title hierarchy.
-2. Use the bundled main-content references as design guidance.
-3. Organize the course as a clear course → module → scene hierarchy.
-4. Support tablet and phone with PC/desktop visual quality as the first priority.
-5. Add appropriate icons to language, Auto Play/Video, and Fullscreen controls.
-6. Place all graded questions in the final `Review & Assessment` module; do not add per-module graded exams.
-7. Stop Auto Play on assessment questions; do not narrate or skip graded question pages.
-8. Add full-course Search to the footer.
+- `modules/brands/micas/BRAND.md` — default Micas identity and references
+- `modules/brands/BRAND_TEMPLATE.md` — copy this to create another company or product brand
 
-## v2.4.1 Corrective Requirements
-
-Apply only these corrections:
-
-1. Keep the entire learner stage deep navy; light backgrounds are allowed only inside bounded cards, metric tiles, or image frames.
-2. Make Search icon-only and place it after Next, producing the order Previous → Next → Search → narration → Audio settings.
-3. Select an available matching Google voice as the deterministic default for every locale; use fallback only when the runtime does not expose Google.
-4. Center every header and footer icon precisely in both axes.
-5. Enforce a `20px` desktop minimum for instructional body text, with important body copy normally `22px` or larger.
-
-The exact implementation and QA requirements are defined in `COURSE_EXPERIENCE_FIXES_v2.4.1.md`.
+Brand replacement should normally require only a new brand pack and its colocated reference assets. Do not rewrite core, UI, or mode logic merely to change the company identity.
 
 ## Completion Standard
 
-Generate the complete deliverables, apply the mandatory load order, inspect all bundled references, run the preserved production QA plus the v2.3.3 header QA, v2.4.0 targeted QA, and v2.4.1 corrective QA, correct every release-blocking defect, and only then deliver.
+1. Read the complete source materials.
+2. Load the selected modules in the required order.
+3. Generate the complete requested artifacts, not only an outline or sample.
+4. Run every applicable check in `modules/QA.md`.
+5. Correct all release-blocking defects before delivery.

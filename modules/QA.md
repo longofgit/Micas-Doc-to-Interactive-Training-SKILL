@@ -1,0 +1,256 @@
+# Unified QA and Release Gate
+
+Version: **3.0.0**
+
+This module validates every generated artifact after the selected Core, Mode, Brand, and UI modules have been applied.
+
+# 1. Source Accuracy QA
+
+Verify:
+
+- complete relevant source sections were read;
+- terminology, product names, commands, numerical values, warnings, and procedure order match the source;
+- every technical claim has source support;
+- every graded question and answer maps to the source;
+- source conflicts and ambiguities are recorded rather than silently resolved;
+- safety-critical information is prominent and accurate;
+- source mapping exists outside the normal audience-facing pages.
+
+# 2. Artifact Completeness QA
+
+Verify:
+
+- all requested deliverables exist;
+- the primary artifact opens and functions without missing files;
+- embedded or local assets resolve correctly;
+- no placeholder content remains;
+- no partial prototype is delivered when a complete artifact was requested;
+- README and QA Report explain usage, limitations, and fallbacks.
+
+# 3. Viewport and Overflow QA
+
+For presentation-style modes, test at 100% browser zoom:
+
+- 1920×1080;
+- 1600×900;
+- 1366×768.
+
+Then test representative responsive sizes:
+
+- tablet landscape: 1180×820 or 1024×768;
+- tablet portrait: 820×1180 or 768×1024;
+- phone portrait: 430×932 and 390×844.
+
+For every required page and locale:
+
+- wait for fonts and images;
+- render the page;
+- verify `scene.scrollHeight <= scene.clientHeight + 1` when the selected mode requires one-screen behavior;
+- verify the document does not scroll vertically in normal learner/presentation mode;
+- verify header and footer remain visible;
+- verify no horizontal clipping;
+- verify overlays scroll internally without moving the underlying page;
+- verify no visible diagnostic or overflow banner appears.
+
+# 4. Typography QA
+
+For the default interactive-training UI:
+
+- ordinary desktop instructional body text is at least `20px` at 1366×768;
+- important explanations, answer options, steps, bullets, and card body copy are normally `22px` or larger;
+- tablet instructional text is normally at least `18px`;
+- phone instructional text is normally at least `17px`;
+- useful learning content is not misclassified as metadata to shrink it;
+- overflow is solved by wording, layout, or page splitting rather than unreadably small text;
+- title hierarchy remains visually stronger than body copy.
+
+# 5. Visual Hierarchy and Stage Utilization QA
+
+Confirm:
+
+- every page has one obvious focal point;
+- the layout is not a repetitive flat grid across most pages;
+- two-column layouts contain meaningful content in both columns;
+- no empty image frame, blank card, placeholder panel, or missing half-page remains;
+- meaningful composition uses the stage effectively;
+- intentional whitespace supports the focal message;
+- the selected brand's stage theme, colors, and surface rules are respected.
+
+# 6. Image Integrity QA
+
+After all images load and decode, verify:
+
+- nonzero natural dimensions;
+- meaningful rendered dimensions;
+- full visibility inside the page and viewport;
+- no ancestor clips the image;
+- technical visuals use `object-fit: contain`;
+- the complete device, diagram, labels, arrows, and callouts remain visible;
+- source margins and irrelevant page whitespace were removed;
+- labels remain readable;
+- intentional detail crops are labeled and paired with a complete view.
+
+A missing, half-visible, or unintentionally cropped technical image blocks release.
+
+# 7. Header, Footer, and Icon QA
+
+Verify:
+
+- selected brand lockup is intact and readable;
+- utilities do not overlap or compress the brand area;
+- visible language value has no unnecessary `Language` prefix;
+- header utility icons are appropriate and accessible;
+- all icons are geometrically and optically centered;
+- desktop controls remain substantial and easy to hit;
+- the selected mode's control order is correct;
+- the default interactive-training order is Previous → Next → Search → narration → Audio settings;
+- Search is icon-only;
+- the right-side action cluster remains right-aligned;
+- progress remains prominent.
+
+# 8. Navigation QA
+
+For interactive training:
+
+- Next is enabled on every nonterminal scene;
+- module-ending scenes advance to the next module;
+- unanswered assessment questions do not block Next;
+- Previous is enabled except on the first scene;
+- visible controls, keyboard navigation, and Auto Play call the same navigation functions;
+- score, feedback, answer, narration, animation, and completion state do not gate global scene navigation;
+- only the absolute terminal completion scene disables or replaces Next.
+
+# 9. Narration and Voice QA
+
+Verify for each supported locale:
+
+- the runtime voice list is allowed to populate before default selection;
+- `voiceschanged` is handled;
+- a matching Google voice is selected by default whenever exposed by the browser/OS;
+- arbitrary OS, alphabetical, cached, Microsoft, Apple, or Samantha defaults do not override an available Google voice;
+- explicit learner voice choice is stored separately from generated default preference;
+- no more than three curated voices are shown;
+- unavailable voices are not fabricated;
+- fallback is documented when Google is unavailable.
+
+# 10. Auto Play QA
+
+For normal narrated pages:
+
+- the page remains visible until the final narration chunk completes;
+- `goNext()` is not called before the final `onend`;
+- pause/resume pauses and resumes transition correctly;
+- narration errors stop Auto Play on the current page;
+- manual navigation cancels and invalidates active narration;
+- stale callbacks cannot cause duplicate advances;
+- pages intentionally without narration use only the configured short dwell.
+
+For graded assessment pages:
+
+- Auto Play pauses at the assessment introduction;
+- questions are not narrated automatically;
+- no dwell timer, auto-submit, or auto-advance runs;
+- the learner answers and navigates manually.
+
+# 11. Assessment QA
+
+For the default interactive-training mode:
+
+- all graded questions are in the final Review & Assessment module;
+- instructional modules do not end with separate graded exams;
+- the dedicated assessment-introduction page exists;
+- question count, duration, scoring, and instructions are clear;
+- every question maps to the source;
+- correct, incorrect, and unanswered states work;
+- revisiting questions preserves state;
+- results, feedback, and completion work.
+
+# 12. Search QA
+
+Verify:
+
+- Search covers the complete active-language content;
+- module titles, scene titles, body text, warnings, procedures, keywords, and assessment content are indexed;
+- Search works offline;
+- results are grouped and localized;
+- the current page does not change until a result is selected;
+- result selection navigates correctly;
+- Escape, keyboard focus, Enter, and accessible result counts work;
+- the search panel scrolls internally only.
+
+# 13. Multilingual QA
+
+For every supported locale:
+
+- all required content is authored and complete;
+- technical meaning remains equivalent;
+- commands, model names, and standards remain accurate;
+- fit, image, control, search, narration, assessment, and accessibility checks pass;
+- English remains the strongest visual master unless another locale was explicitly selected;
+- locale-specific layout variants do not remove content.
+
+# 14. Responsive QA
+
+Confirm:
+
+- desktop quality is perfected first;
+- tablet and phone remain usable without overlap, clipped images, inaccessible controls, or missing content;
+- compact controls and stacked layouts activate only at appropriate breakpoints;
+- responsive adaptation does not shrink the desktop master unnecessarily;
+- touch targets remain large enough;
+- overlays and drawers remain usable.
+
+# 15. Accessibility QA
+
+Verify:
+
+- keyboard navigation;
+- visible focus states;
+- accessible names for icon-only controls;
+- meaningful alt text;
+- Escape behavior for overlays;
+- contrast;
+- reduced-motion support;
+- no color-only state communication;
+- screen-reader-friendly structure where applicable.
+
+# 16. Release-Blocking Defects
+
+Do not deliver when any of these occurs:
+
+- unsupported or invented technical fact;
+- visible `Layout overflow detected` or similar diagnostic;
+- normal presentation page scrolls or overflows;
+- missing or half-visible technical image;
+- large accidental empty region or blank panel;
+- undersized instructional body text;
+- tiny or off-center primary controls;
+- selected brand identity is broken;
+- Next is disabled while a following scene exists in interactive-training mode;
+- Auto Play advances before narration completes;
+- stale narration callback causes duplicate advance;
+- graded question is skipped automatically;
+- final assessment lacks its transition page;
+- per-module graded exams appear when the selected mode requires final-only assessment;
+- Search is broken or not offline;
+- source mapping, debug data, or authoring metadata is visible in normal audience mode;
+- required local asset is missing;
+- the artifact cannot be used as delivered.
+
+# 17. QA Report
+
+The QA Report must record:
+
+- source coverage and unresolved source issues;
+- selected brand and mode;
+- viewport results;
+- typography results;
+- image-integrity results;
+- stage-utilization review;
+- navigation and control review;
+- voice availability and fallback;
+- Auto Play and assessment behavior;
+- search results;
+- multilingual completeness;
+- responsive and accessibility checks;
+- any known limitation.

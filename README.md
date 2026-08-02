@@ -1,112 +1,148 @@
 # Micas Doc-to-Interactive-Training Skill
 
-Version: **2.4.1**
+Version: **3.0.0**
 
-This repository converts manuals, SOPs, product guides, policies, presentations, and technical documents into source-grounded, Micas-branded interactive training courses.
+This repository is now organized as a modular document-to-experience framework.
 
-## Required Reading Order
+The default configuration still generates the established Micas interactive training course. The structural refactor separates reusable logic from company identity and output purpose, making it easier to switch brands or experience types without rewriting the whole Skill.
 
-For reliable execution, the AI must read:
-
-1. `SKILL.md`
-2. `core/SKILL_v2.3.2.md`
-3. `UI_DESIGN_SPEC.md`
-4. `HEADER_UI_SPEC.md`
-5. `COURSE_EXPERIENCE_SPEC.md`
-6. `COURSE_EXPERIENCE_FIXES_v2.4.1.md`
-7. `MASTER_PROMPT.md` or `QUICK_PROMPT.md`
-
-The preserved v2.3.2 core remains the complete production workflow. `HEADER_UI_SPEC.md` is the focused header override. `COURSE_EXPERIENCE_SPEC.md` defines the v2.4.0 refinements. `COURSE_EXPERIENCE_FIXES_v2.4.1.md` is a narrow corrective override and changes only five explicitly named items.
-
-## Package Contents
-
-- `SKILL.md` — current entry point, mandatory load order, precedence, and completion requirements.
-- `core/SKILL_v2.3.2.md` — preserved complete production workflow and existing functional rules.
-- `UI_DESIGN_SPEC.md` — general Micas visual implementation contract.
-- `HEADER_UI_SPEC.md` — mandatory upper-left header/brand-lockup specification.
-- `COURSE_EXPERIENCE_SPEC.md` — body typography, content references, module hierarchy, responsive adaptation, header utility icons, final-only assessment, assessment Auto Play behavior, and full-course Search.
-- `COURSE_EXPERIENCE_FIXES_v2.4.1.md` — dark-stage enforcement, icon-only Search after Next, deterministic Google-default voices, icon centering, and larger body-text minimums.
-- `MASTER_PROMPT.md` — full formal-project prompt.
-- `QUICK_PROMPT.md` — concise Chinese project prompt.
-- `assets/ui-reference/` — approved visual references and usage documentation.
-- `CHANGELOG.md` — current release notes.
-- `core/CHANGELOG_v2.3.2.md` and `core/README_v2.3.2.md` — preserved earlier history and documentation.
-
-## Visual Reference Assets
-
-Reference images can be included inside a Skill folder. This repository stores them under `assets/ui-reference/` and references them from mandatory specification files.
-
-Current references:
-
-- `header-lockup-reference.svg`
-- `content-hero-product-split-reference.svg`
-- `content-checkpoint-positioning-reference.svg`
-- `content-checkpoint-redundancy-airflow-reference.svg`
-- `content-key-metrics-power-reference.svg`
-- `header-action-icons-reference.svg`
-
-They are composition guidance. Generated courses must recreate the style with live HTML/CSS, localizable text, the actual transparent Micas logo, and authentic source-document images. Do not use a reference asset as a flattened production page.
-
-## v2.4.0 Targeted Refinements
-
-Version 2.4.0 introduced:
-
-1. Larger learner-facing body-copy targets.
-2. Approved main-content visual references.
-3. A clear course → module → scene hierarchy.
-4. Tablet and phone adaptation with PC/desktop as the visual-quality priority.
-5. Icons on language, Auto Play/Video, and Fullscreen controls.
-6. All graded questions consolidated into the final `Review & Assessment` module.
-7. Manual learner control for graded questions under Auto Play.
-8. Full-course offline Search.
-
-## v2.4.1 Corrective Refinements
-
-Version 2.4.1 changes only the following five items:
-
-1. Restores and enforces the unified deep-navy learner-stage background. Light colors are limited to bounded cards, metric tiles, and image frames.
-2. Makes Search icon-only and moves it after Next. The footer action order is now Previous → Next → Search → narration → Audio settings.
-3. Makes Google the deterministic default voice provider for every locale whenever the current browser/OS exposes a matching Google voice.
-4. Requires every header and footer icon to be precisely centered in both axes.
-5. Raises the desktop instructional-body minimum to `20px`, with important body copy normally `22px` or larger.
-
-Detailed implementation and QA rules are in `COURSE_EXPERIENCE_FIXES_v2.4.1.md`.
-
-## Existing Behaviors Preserved
-
-Unless an item is explicitly listed in the relevant focused override, v2.4.1 does not change:
-
-- the approved upper-left header lockup;
-- the Micas color token system;
-- one-screen/PPT-like behavior;
-- course → module → scene hierarchy;
-- global Previous/Next availability;
-- footer button dimensions and right alignment;
-- narration-completion timing for normal instructional scenes;
-- final-only graded assessment structure;
-- assessment pause behavior under Auto Play;
-- complete technical-image requirements;
-- English-first multilingual design;
-- source grounding and source mapping;
-- offline single-file HTML delivery;
-- existing production QA and release blockers.
-
-## Standard Invocation
+# Recommended Structure
 
 ```text
-Please use the Micas Doc-to-Interactive-Training Skill.
-Read SKILL.md and every mandatory referenced file in its load order.
-Convert the uploaded source document into the complete production-ready interactive course.
+Micas-Doc-to-Interactive-Training-SKILL/
+├── SKILL.md
+├── README.md
+├── CHANGELOG.md
+├── prompts/
+│   ├── MODULAR_PROMPT.md
+│   └── QUICK_PROMPT.md
+└── modules/
+    ├── CORE.md
+    ├── UI.md
+    ├── QA.md
+    ├── brands/
+    │   ├── BRAND_TEMPLATE.md
+    │   └── micas/
+    │       ├── BRAND.md
+    │       └── references/
+    │           ├── header-lockup-reference.svg
+    │           ├── content-hero-product-split-reference.svg
+    │           ├── content-checkpoint-positioning-reference.svg
+    │           ├── content-checkpoint-redundancy-airflow-reference.svg
+    │           ├── content-key-metrics-power-reference.svg
+    │           └── header-action-icons-reference.svg
+    └── modes/
+        ├── MODE_TEMPLATE.md
+        ├── interactive-training.md
+        ├── gamified-learning.md
+        ├── executive-report.md
+        └── marketing-content.md
+```
+
+# Why This Structure Is Better
+
+## One responsibility per module
+
+- `CORE.md` contains facts, source handling, traceability, language equivalence, and safe inference.
+- `UI.md` contains all visual and interface rules in one place.
+- `QA.md` contains all release checks in one place.
+- each brand pack contains its own logo, colors, tone, and visual references together;
+- each mode contains its own purpose, information architecture, interaction, narration, assessment, and deliverables.
+
+## No patch-file accumulation
+
+Files such as `COURSE_EXPERIENCE_FIXES_v2.4.1.md` are no longer needed. Corrective rules are consolidated into the authoritative module instead of being loaded as a growing sequence of overrides.
+
+## Brand assets are colocated
+
+Micas visual references now live with the Micas brand definition under:
+
+`modules/brands/micas/`
+
+A different company can be added by copying `BRAND_TEMPLATE.md` and placing that company's logo and visual references in its own brand folder.
+
+## Modes are independently switchable
+
+The default mode is `interactive-training`, but the framework also includes optional starter profiles for:
+
+- gamified learning;
+- executive reporting;
+- marketing content.
+
+Only the selected mode is loaded.
+
+# Default Invocation
+
+```text
+Please use the Micas Doc-to-Interactive-Training Skill v3.
+
+brand_profile: micas
+experience_mode: interactive-training
+
+Read SKILL.md and the selected modules in the mandatory order.
+Convert the uploaded source files into the complete production-ready deliverables.
 Do not stop at an outline or sample.
 ```
 
-## Output Standard
+For the full configurable prompt, use:
 
-The normal deliverables remain:
+`prompts/MODULAR_PROMPT.md`
 
-1. one self-contained offline interactive HTML course;
-2. Course Map;
-3. QA Report;
-4. course README.
+For a concise Chinese prompt, use:
 
-The course must pass the preserved production QA, the header QA, the v2.4.0 targeted QA, and the v2.4.1 corrective QA before delivery.
+`prompts/QUICK_PROMPT.md`
+
+# Switching the Brand
+
+1. Copy `modules/brands/BRAND_TEMPLATE.md` to `modules/brands/<brand-id>/BRAND.md`.
+2. Add the logo and reference images under `modules/brands/<brand-id>/references/`.
+3. Define semantic color tokens, logo rules, tone, and brand QA.
+4. Select the new brand in the prompt.
+
+Do not modify Core, UI, or Mode merely to change the company identity.
+
+# Switching the Experience Mode
+
+Select one mode:
+
+```text
+experience_mode: interactive-training
+experience_mode: gamified-learning
+experience_mode: executive-report
+experience_mode: marketing-content
+```
+
+Create another mode by copying `modules/modes/MODE_TEMPLATE.md`.
+
+Do not combine modes unless the project explicitly needs a reviewed hybrid.
+
+# Current Default Behavior Preserved
+
+With `brand_profile: micas` and `experience_mode: interactive-training`, version 3.0.0 preserves the established behavior:
+
+- Micas deep-navy stage and `#00899F` primary color;
+- approved Micas header lockup and references;
+- one-screen/PPT-like scenes;
+- large body text and strong hierarchy;
+- complete technical images;
+- course → module → scene hierarchy;
+- hidden bottom-left Course Menu;
+- footer order Previous → Next → Search → narration → Audio settings;
+- icon-only Search;
+- global Next availability;
+- Google-default voices when exposed by the runtime;
+- Auto Play waits for complete narration;
+- all graded questions in the final module;
+- no narration or auto-skip on graded questions;
+- English-first four-language delivery;
+- desktop-first responsive behavior;
+- self-contained offline HTML and mandatory QA.
+
+# Architectural Recommendation
+
+For long-term reuse across many companies, consider eventually separating the generic framework and company packs into two repositories:
+
+1. a generic `Document-to-Experience-SKILL` engine;
+2. a `Micas-Experience-Pack` containing the Micas brand and default mode choices.
+
+The current v3 structure is compatible with that future separation, but keeps everything in one repository for simpler daily use today.
