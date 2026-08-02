@@ -1,20 +1,26 @@
 # Micas Doc-to-Interactive-Training Skill
 
-Version: **3.0.0**
+Version: **3.1.0**
 
-This repository is now organized as a modular document-to-experience framework.
+This repository converts source documents into complete interactive training courses.
 
-The default configuration still generates the established Micas interactive training course. The structural refactor separates reusable logic from company identity and output purpose, making it easier to switch brands or experience types without rewriting the whole Skill.
+It supports only two training modes:
 
-# Recommended Structure
+- **Standard interactive training** — default;
+- **Gamified interactive learning** — optional and used only when explicitly requested.
+
+The Skill no longer includes company-report, executive-report, marketing-content, or other non-training modes.
+
+# Current Structure
 
 ```text
 Micas-Doc-to-Interactive-Training-SKILL/
 ├── SKILL.md
 ├── README.md
+├── QUICK_USER_GUIDE.md
 ├── CHANGELOG.md
 ├── prompts/
-│   ├── MODULAR_PROMPT.md
+│   ├── MASTER_PROMPT.md
 │   └── QUICK_PROMPT.md
 └── modules/
     ├── CORE.md
@@ -32,117 +38,154 @@ Micas-Doc-to-Interactive-Training-SKILL/
     │           ├── content-key-metrics-power-reference.svg
     │           └── header-action-icons-reference.svg
     └── modes/
-        ├── MODE_TEMPLATE.md
         ├── interactive-training.md
-        ├── gamified-learning.md
-        ├── executive-report.md
-        └── marketing-content.md
+        └── gamified-learning.md
 ```
 
-# Why This Structure Is Better
+# Why This Structure Is Simpler
+
+## One clear purpose
+
+Everything in the repository now supports training creation. There are no report, marketing, campaign, or generic content-experience modes.
+
+## One default mode
+
+The normal default is always:
+
+```text
+training_mode: interactive-training
+```
+
+The Skill must not add game mechanics by itself.
+
+Use the optional game mode only when the user explicitly selects:
+
+```text
+training_mode: gamified-learning
+```
 
 ## One responsibility per module
 
-- `CORE.md` contains facts, source handling, traceability, language equivalence, and safe inference.
-- `UI.md` contains all visual and interface rules in one place.
-- `QA.md` contains all release checks in one place.
-- each brand pack contains its own logo, colors, tone, and visual references together;
-- each mode contains its own purpose, information architecture, interaction, narration, assessment, and deliverables.
+- `CORE.md` — source reading, factual accuracy, traceability, multilingual equivalence, and safe inference;
+- `interactive-training.md` — standard course structure, navigation, narration, search, assessment, and completion;
+- `gamified-learning.md` — optional missions, levels, points, badges, branching challenges, and game-specific QA;
+- `UI.md` — all interface, layout, typography, imagery, controls, responsive, and accessibility rules;
+- `QA.md` — all release checks;
+- brand packs — logo, colors, tone, and colocated visual references.
 
-## No patch-file accumulation
+## Brand switching remains independent
 
-Files such as `COURSE_EXPERIENCE_FIXES_v2.4.1.md` are no longer needed. Corrective rules are consolidated into the authoritative module instead of being loaded as a growing sequence of overrides.
+Although the Skill only creates training, the brand can still be changed without rewriting training logic.
 
-## Brand assets are colocated
+Copy:
 
-Micas visual references now live with the Micas brand definition under:
+```text
+modules/brands/BRAND_TEMPLATE.md
+```
 
-`modules/brands/micas/`
+and create:
 
-A different company can be added by copying `BRAND_TEMPLATE.md` and placing that company's logo and visual references in its own brand folder.
-
-## Modes are independently switchable
-
-The default mode is `interactive-training`, but the framework also includes optional starter profiles for:
-
-- gamified learning;
-- executive reporting;
-- marketing content.
-
-Only the selected mode is loaded.
+```text
+modules/brands/<brand-id>/
+├── BRAND.md
+└── references/
+```
 
 # Default Invocation
 
 ```text
-Please use the Micas Doc-to-Interactive-Training Skill v3.
+请使用 Micas Doc-to-Interactive-Training Skill v3.1。
 
 brand_profile: micas
-experience_mode: interactive-training
+training_mode: interactive-training
 
-Read SKILL.md and the selected modules in the mandatory order.
-Convert the uploaded source files into the complete production-ready deliverables.
-Do not stop at an outline or sample.
+把我上传的资料制作成完整互动培训课程。
+请读取SKILL.md和规定模块，直接生成完整成品，不要只给方案或样章。
 ```
 
-For the full configurable prompt, use:
-
-`prompts/MODULAR_PROMPT.md`
-
-For a concise Chinese prompt, use:
-
-`prompts/QUICK_PROMPT.md`
-
-# Switching the Brand
-
-1. Copy `modules/brands/BRAND_TEMPLATE.md` to `modules/brands/<brand-id>/BRAND.md`.
-2. Add the logo and reference images under `modules/brands/<brand-id>/references/`.
-3. Define semantic color tokens, logo rules, tone, and brand QA.
-4. Select the new brand in the prompt.
-
-Do not modify Core, UI, or Mode merely to change the company identity.
-
-# Switching the Experience Mode
-
-Select one mode:
+For the full formal prompt, use:
 
 ```text
-experience_mode: interactive-training
-experience_mode: gamified-learning
-experience_mode: executive-report
-experience_mode: marketing-content
+prompts/MASTER_PROMPT.md
 ```
 
-Create another mode by copying `modules/modes/MODE_TEMPLATE.md`.
+For the concise Chinese prompt, use:
 
-Do not combine modes unless the project explicitly needs a reviewed hybrid.
+```text
+prompts/QUICK_PROMPT.md
+```
 
-# Current Default Behavior Preserved
+For default values and daily-use examples, read:
 
-With `brand_profile: micas` and `experience_mode: interactive-training`, version 3.0.0 preserves the established behavior:
+```text
+QUICK_USER_GUIDE.md
+```
 
-- Micas deep-navy stage and `#00899F` primary color;
-- approved Micas header lockup and references;
+# Training Mode Selection
+
+## Standard interactive training — default
+
+```text
+training_mode: interactive-training
+```
+
+Suitable for:
+
+- technical product training;
+- installation and operation training;
+- service-sales training;
+- SOP and process training;
+- safety and compliance training;
+- onboarding and certification courses;
+- troubleshooting and maintenance training.
+
+## Gamified interactive learning — optional
+
+```text
+training_mode: gamified-learning
+```
+
+Suitable for explicitly requested:
+
+- mission-based learning;
+- levels and progression;
+- points or XP;
+- competency badges;
+- branching scenarios;
+- challenge-based troubleshooting;
+- final missions or game-style assessments.
+
+Game mechanics must serve learning. They must not invent technical outcomes, encourage unsafe speed, or obscure the source content.
+
+# Preserved Default Behavior
+
+With the default Micas standard mode, version 3.1.0 preserves:
+
+- Micas deep-navy stage and primary color `#00899F`;
+- approved Micas header lockup and visual references;
 - one-screen/PPT-like scenes;
-- large body text and strong hierarchy;
+- large learner-facing text and strong hierarchy;
 - complete technical images;
-- course → module → scene hierarchy;
+- Course → Module → Scene architecture;
 - hidden bottom-left Course Menu;
 - footer order Previous → Next → Search → narration → Audio settings;
 - icon-only Search;
 - global Next availability;
-- Google-default voices when exposed by the runtime;
+- matching Google voice as default when the runtime exposes one;
 - Auto Play waits for complete narration;
 - all graded questions in the final module;
 - no narration or auto-skip on graded questions;
+- assessment introduction, results, and completion;
 - English-first four-language delivery;
 - desktop-first responsive behavior;
 - self-contained offline HTML and mandatory QA.
 
-# Architectural Recommendation
+# Recommended Use
 
-For long-term reuse across many companies, consider eventually separating the generic framework and company packs into two repositories:
+For repeated use, keep the repository connected to the AI or installed in a dedicated Project or Agent. Each time:
 
-1. a generic `Document-to-Experience-SKILL` engine;
-2. a `Micas-Experience-Pack` containing the Micas brand and default mode choices.
-
-The current v3 structure is compatible with that future separation, but keeps everything in one repository for simpler daily use today.
+1. upload the source materials;
+2. use the default standard-training prompt;
+3. change audience, objective, duration, or brand only when needed;
+4. select `gamified-learning` only when game-based learning is explicitly required;
+5. require complete deliverables and QA results.
