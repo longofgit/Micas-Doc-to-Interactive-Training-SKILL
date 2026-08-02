@@ -1,6 +1,6 @@
 # Micas Brand Pack
 
-Version: **3.1.6**
+Version: **3.1.7**
 
 Brand ID: `micas`
 
@@ -105,8 +105,8 @@ The title/subtitle hierarchy is mandatory on normal desktop pages. Do not omit t
 
 Desktop target ranges:
 
-- logo width: `160–205px`;
-- logo height: `auto`, normally `44–58px` after proportional downscaling;
+- logo width: `150–195px`;
+- logo height: `auto`, normally `42–55px` after proportional downscaling;
 - course title: `26–36px`;
 - subtitle: `16–21px`;
 - logo-to-text gap: `24–34px`.
@@ -125,15 +125,16 @@ Recommended desktop implementation:
 .course-header-inner {
   display: flex;
   align-items: center;
-  padding-block: clamp(6px, .75vh, 10px);
-  padding-inline: clamp(40px, 3.6vw, 68px);
+  padding-top: clamp(9px, 1vh, 13px);
+  padding-bottom: clamp(4px, .5vh, 7px);
+  padding-inline: clamp(24px, 2.4vw, 44px);
 }
 
 .course-footer-inner {
   display: flex;
   align-items: center;
   padding-block: clamp(6px, .65vh, 10px);
-  padding-inline: clamp(28px, 3vw, 56px);
+  padding-inline: clamp(20px, 2vw, 38px);
 }
 
 .header-brand-lockup {
@@ -145,9 +146,9 @@ Recommended desktop implementation:
 
 .header-brand-lockup img {
   display: block;
-  width: clamp(160px, 11.5vw, 205px);
+  width: clamp(150px, 10.8vw, 195px);
   height: auto;
-  max-width: 205px;
+  max-width: 195px;
   object-fit: contain;
   image-rendering: auto;
   filter: none;
@@ -223,25 +224,27 @@ Recommended desktop implementation:
 
 Rules:
 
-- keep at least `40px` horizontal inset between the viewport edge and the logo on desktop;
-- keep visible vertical breathing room between every header/footer control and the rail borders, normally at least `6px` at the smallest desktop rail height;
+- keep at least `24px` horizontal inset between the viewport edge and the logo on desktop;
+- use the slightly larger top inset in the header so the brand lockup and utility controls do not visually hug the top viewport edge;
+- keep visible vertical breathing room between every header/footer control and the rail borders;
+- reduce the left/right rail inset only; do not change control order, button shells, labels, progress proportions, or the content-stage margins;
 - keep title and subtitle inside the same padded header container;
-- keep the approved thinner rail heights, but proportionally reduce the logo, header typography, button shells, labels, and footer controls so they do not visually crowd the rail borders;
+- keep the approved thinner rail heights and compact content sizing;
 - keep all controls vertically centered inside both fixed rails;
-- do not compensate for missing padding by enlarging the logo, typography, button shells, or icon glyphs;
+- do not compensate for reduced horizontal padding by enlarging the logo, typography, button shells, or icon glyphs;
 - do not place the logo in a white rectangle, card, or independent panel.
 
 ## Compact Fixed Rail Lock
 
-For the Micas desktop shell, the top header rail and bottom fixed control rail retain the previously approved approximately `10px` height reduction. Their internal content must now be proportionally compact as well.
+For the Micas desktop shell, the top header rail and bottom fixed control rail retain the previously approved approximately `10px` height reduction. Their internal content remains compact.
 
 Rules:
 
 - retain the approved compact rail heights;
-- reduce the internal logo, title/subtitle typography, header button shells, footer navigation buttons, Course Menu button, and icon-button shells to the ranges above;
 - use the reduced icon glyph ranges below and keep every icon centered;
-- maintain at least a small visible breathing gap between every control outline and the top/bottom rail borders;
-- do not let controls visually touch or nearly touch the rail divider lines;
+- give the top header slightly more top breathing room than bottom breathing room;
+- use shorter left/right padding for both rails so the control groups sit closer to the viewport edges without touching them;
+- maintain visible breathing space between every control outline and the top/bottom rail borders;
 - keep all controls vertically centered;
 - the footer must still reserve its own grid row and must never overlap scene content;
 - the header must still preserve the complete logo, main title, subtitle, and Language → Auto Play → Fullscreen group;
@@ -274,15 +277,15 @@ Keep the surrounding buttons, labels, order, spacing, and rail dimensions unchan
 
 Desktop icon targets:
 
-- Course Menu hamburger icon: `24–26px`;
-- language globe icon: `24–26px`;
-- language dropdown chevron: `16–18px`;
-- Auto Play icon: `24–26px`;
-- Fullscreen icon: `24–26px`;
-- Previous and Next arrow icons: `22–26px`;
-- Search icon: `24–26px`;
-- narration/speaker icon: `24–26px`;
-- Audio settings icon: `24–26px`.
+- Course Menu hamburger icon: `21–23px`;
+- language globe icon: `21–23px`;
+- language dropdown chevron: `14–16px`;
+- Auto Play icon: `21–23px`;
+- Fullscreen icon: `21–23px`;
+- Previous and Next arrow icons: `20–23px`;
+- Search icon: `21–23px`;
+- narration/speaker icon: `21–23px`;
+- Audio settings icon: `21–23px`.
 
 Recommended implementation:
 
@@ -294,31 +297,32 @@ Recommended implementation:
 .footer-search-icon,
 .footer-narration-icon,
 .footer-audio-settings-icon {
-  width: clamp(24px, 1.4vw, 26px);
-  height: clamp(24px, 1.4vw, 26px);
+  width: clamp(21px, 1.22vw, 23px);
+  height: clamp(21px, 1.22vw, 23px);
   flex: 0 0 auto;
 }
 
 .nav-button .nav-arrow {
-  width: clamp(22px, 1.35vw, 26px);
-  height: clamp(22px, 1.35vw, 26px);
+  width: clamp(20px, 1.18vw, 23px);
+  height: clamp(20px, 1.18vw, 23px);
   flex: 0 0 auto;
 }
 
 .language-chevron {
-  width: clamp(16px, 1vw, 18px);
-  height: clamp(16px, 1vw, 18px);
+  width: clamp(14px, .88vw, 16px);
+  height: clamp(14px, .88vw, 16px);
   flex: 0 0 auto;
 }
 ```
 
 Rules:
 
-- change only the icon glyph sizes; do not resize the company logo, button shells, labels, spacing, rail height, progress area, or control order;
+- change only the icon glyph sizes; do not resize the button shells, labels, spacing, rail height, progress area, or control order;
+- the official company logo follows only the slightly reduced header lockup range above and is not treated as a utility icon;
 - do not size these icons through `1em` when the surrounding text makes them exceed the approved ranges;
 - retain geometric and optical centering;
 - keep disabled-state icons the same physical size as enabled-state icons;
-- tablet icons may reduce to approximately `21–23px` and phone icons to approximately `19–21px` only when required by the compact breakpoint.
+- tablet icons may reduce to approximately `19–21px` and phone icons to approximately `17–19px` only when required by the compact breakpoint.
 
 # 5. Tone and Copy
 
@@ -393,7 +397,9 @@ The Micas presentation fails brand QA when:
 - a white-background, legacy, alternate, generated, recolored, cropped, stretched, or distorted Micas logo appears;
 - different Micas logo variants appear across different scenes;
 - the logo or title/subtitle group touches the viewport edge or lacks the approved breathing room;
-- the logo exceeds the approved `205px` desktop maximum or the title/subtitle exceed their reduced target ranges without a documented responsive reason;
+- the logo exceeds the approved `195px` desktop maximum or the title/subtitle exceed their reduced target ranges without a documented responsive reason;
+- the header lockup or utility controls visually hug the top viewport edge instead of preserving the approved top inset;
+- the top or bottom rails retain excessive left/right empty space beyond the approved compact insets;
 - the top or bottom rail content visually crowds or nearly touches the rail borders;
 - header utility buttons exceed the approved compact `48–54px` height range without a responsive reason;
 - footer navigation, Course Menu, or icon-button shells exceed the approved compact `50–56px` range without a responsive reason;
