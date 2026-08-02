@@ -1,6 +1,6 @@
 # Micas Doc-to-Interactive-Training Skill
 
-Version: **3.1.0**
+Version: **3.5.0**
 
 This repository converts source documents into complete interactive training courses.
 
@@ -67,7 +67,7 @@ training_mode: gamified-learning
 ## One responsibility per module
 
 - `CORE.md` — source reading, factual accuracy, traceability, multilingual equivalence, and safe inference;
-- `interactive-training.md` — standard course structure, navigation, narration, search, assessment, and completion;
+- `interactive-training.md` — standard course structure, navigation, narration, search, assessment, completion, source-grounded opening scenes, and browser-window fit;
 - `gamified-learning.md` — optional missions, levels, points, badges, branching challenges, and game-specific QA;
 - `UI.md` — all interface, layout, typography, imagery, controls, responsive, and accessibility rules;
 - `QA.md` — all release checks;
@@ -94,7 +94,7 @@ modules/brands/<brand-id>/
 # Default Invocation
 
 ```text
-请使用 Micas Doc-to-Interactive-Training Skill v3.1。
+请使用 Micas Doc-to-Interactive-Training Skill v3.5。
 
 brand_profile: micas
 training_mode: interactive-training
@@ -159,10 +159,11 @@ Game mechanics must serve learning. They must not invent technical outcomes, enc
 
 # Preserved Default Behavior
 
-With the default Micas standard mode, version 3.1.0 preserves:
+With the default Micas standard mode, version 3.5.0 preserves:
 
 - Micas deep-navy stage and primary color `#00899F`;
 - approved Micas header lockup and visual references;
+- the approved top and bottom fixed control rails without redesign;
 - one-screen/PPT-like scenes;
 - large learner-facing text and strong hierarchy;
 - complete technical images;
@@ -179,6 +180,14 @@ With the default Micas standard mode, version 3.1.0 preserves:
 - English-first four-language delivery;
 - desktop-first responsive behavior;
 - self-contained offline HTML and mandatory QA.
+
+Version 3.5.0 additionally requires:
+
+- the homepage to introduce the real source topic rather than duration, language count, difficulty, Offline HTML, or other project metadata;
+- the homepage to use concise source-supported learning anchors;
+- the most relevant authentic source image to be used when available;
+- every scene to fit normal browser-content viewports after tabs/address bars reduce vertical space;
+- Fullscreen not to be required to reveal hidden content.
 
 # Recommended Use
 
