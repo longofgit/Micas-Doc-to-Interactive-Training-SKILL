@@ -1,6 +1,6 @@
 # Unified QA and Release Gate
 
-Version: **3.0.0**
+Version: **3.1.1**
 
 This module validates every generated artifact after the selected Core, Mode, Brand, and UI modules have been applied.
 
@@ -254,3 +254,38 @@ The QA Report must record:
 - multilingual completeness;
 - responsive and accessibility checks;
 - any known limitation.
+
+# 18. Micas Approved-Shell Regression QA
+
+When `brand_profile: micas` and `training_mode: interactive-training` are active, verify every desktop build against:
+
+- `modules/brands/micas/references/header-lockup-reference.svg`;
+- `modules/brands/micas/references/top-right-controls-reference.svg`;
+- `modules/brands/micas/references/footer-fixed-controls-reference.svg`.
+
+Mandatory checks:
+
+- the left header contains the official Micas logo, a large primary title, and a visibly smaller subtitle below it;
+- the subtitle is not missing, hidden, clipped, or merged into the primary title;
+- the right header contains Language → Auto Play → Fullscreen in that order;
+- Language has an appropriate icon and dropdown indicator;
+- Auto Play and Fullscreen are visible in normal desktop mode;
+- progress/module/question counters do not replace the right-header controls;
+- the footer contains Course Menu, scene count, visible progress, Previous, Next, Search, narration, and Audio settings in the approved grouping and order;
+- the footer does not cover scene content;
+- each scene fits at 1920×1080, 1600×900, and 1366×768 without requiring Fullscreen;
+- cards, source previews, images, assessment results, and explanatory text remain fully visible above the footer;
+- a complete technical image is never clipped by a fixed-height container;
+- semantic highlights are restrained, attractive, and limited to brand cyan, warning amber, success green, and genuine danger red;
+- highlighted meaning remains understandable without color alone.
+
+The following are release-blocking regressions:
+
+- missing desktop subtitle;
+- missing Auto Play or Fullscreen button;
+- language selector without its icon;
+- progress controls moved into the right header in place of utilities;
+- footer reduced to a materially smaller or different control strip than the approved reference;
+- any page that reveals hidden content only after entering Fullscreen;
+- content, image, results panel, or captions clipped behind the footer;
+- excessive or visually conflicting highlight colors.
