@@ -1,6 +1,6 @@
 # Micas Brand Pack
 
-Version: **3.1.7**
+Version: **3.1.8**
 
 Brand ID: `micas`
 
@@ -351,6 +351,64 @@ Preferred emphasis:
 
 Use emphasis selectively. A normal page should usually contain one dominant emphasis treatment and no more than two supporting accent treatments. Do not turn entire paragraphs into multiple colors, use rainbow styling, or apply bright fills that conflict with the deep-navy stage.
 
+## Body Classification and Sequence Number Lock
+
+When the learner-facing body groups content into categories, phases, stages, steps, modules, checkpoints, priorities, outcomes, or numbered cards, the category marker must be intentionally prominent. Small eyebrow-style numbers such as `01`, `02`, `03`, or `04` must not look like secondary metadata.
+
+Apply this rule to visible body markers such as:
+
+- `01`, `02`, `03`, `04` category numbers;
+- `STEP 1`, `PHASE 2`, `STAGE 3`, or equivalent labels;
+- numbered process cards;
+- learning-flow cards;
+- outcome or capability groups;
+- sequence, priority, checkpoint, and milestone markers.
+
+Recommended desktop implementation:
+
+```css
+.category-number,
+.step-number,
+.phase-number,
+.stage-number,
+.sequence-number,
+.card-index,
+.flow-index,
+.checkpoint-number {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1em;
+  color: var(--brand-primary-soft);
+  font-size: clamp(30px, 2.1vw, 42px);
+  line-height: .95;
+  font-weight: 820;
+  letter-spacing: .04em;
+  font-variant-numeric: tabular-nums;
+}
+
+.category-label,
+.step-label,
+.phase-label,
+.stage-label,
+.sequence-label,
+.checkpoint-label {
+  font-size: clamp(24px, 1.55vw, 30px);
+  line-height: 1.1;
+  font-weight: 760;
+}
+```
+
+Rules:
+
+- at `1366×768`, a primary category or sequence number should normally render at least `30px`;
+- the number must be visually stronger than supporting body copy and clearly visible before the learner reads the card title;
+- use Micas cyan or brand-soft cyan with strong weight and sufficient contrast;
+- keep equal-width number alignment when several cards form one row;
+- do not reduce the number to caption size, metadata size, or a tiny corner tag;
+- do not enlarge the marker by making the entire card header excessively tall; balance number size, padding, and title placement;
+- when space is insufficient, shorten the label, rebalance the card, or split the scene instead of shrinking the category number;
+- this rule applies only to learner-facing body content and must not change the fixed header or footer control rails.
+
 # 7. Visual Reference Assets
 
 All Micas logo and visual-reference assets are colocated in:
@@ -411,6 +469,8 @@ The Micas presentation fails brand QA when:
 - the icon glyphs look materially larger than the reduced control references;
 - header progress/module counters replace the required utility group;
 - the fixed footer materially differs from the reference structure without a responsive breakpoint reason;
+- a learner-facing category, phase, step, or sequence number is rendered as tiny metadata rather than a prominent body marker;
+- a category marker falls below the approved desktop minimum without a responsive breakpoint reason;
 - the stage becomes a pale or white full-page canvas;
 - the logo is tiny, boxed in white, or visually detached;
 - a generic bright blue replaces Micas cyan;
