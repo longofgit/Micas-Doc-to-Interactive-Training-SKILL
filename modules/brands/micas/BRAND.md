@@ -1,6 +1,6 @@
 # Micas Brand Pack
 
-Version: **3.1.2**
+Version: **3.1.3**
 
 Brand ID: `micas`
 
@@ -13,22 +13,24 @@ This pack contains all Micas-specific identity, color, logo, tone, and visual-re
 - Visual character: dark, premium, technical, spacious, confident, mission-oriented
 - Default stage: unified deep navy
 - Accent behavior: cyan highlights, restrained glows, blue-tinted translucent surfaces
-- Official default logo: `modules/brands/micas/references/micas-logo-default.svg`
+- Official default logo: `modules/brands/micas/references/micas-logo-default.png`
 
 ## Official Default Logo Lock
 
 For every project using `brand_profile: micas`, the mandatory default company logo is:
 
-`modules/brands/micas/references/micas-logo-default.svg`
+`modules/brands/micas/references/micas-logo-default.png`
 
 Rules:
 
-- Use this asset consistently in the course header, cover, and any other location that requires the primary Micas company logo.
-- The asset is based on the latest clear transparent artwork supplied by the user and must remain the single authoritative Micas logo asset.
-- Do not replace it with a white-background logo, legacy logo, alternate Micas lockup, text-only substitute, generated approximation, or another logo variant.
-- Do not recolor, redraw, retrace, distort, crop, stretch, simplify, blur, sharpen, or rebuild the logo.
-- Preserve its transparent background and original aspect ratio.
+- Use this exact transparent PNG consistently in the course header, cover, and any other location that requires the primary Micas company logo.
+- The asset is the latest clear `415×148` artwork supplied by the user and must remain the single authoritative Micas logo asset.
+- Do not replace it with a white-background logo, legacy logo, alternate Micas lockup, text-only substitute, generated approximation, traced SVG, or another logo variant.
+- Do not recolor, redraw, retrace, vectorize, distort, crop, stretch, simplify, blur, sharpen, or rebuild the logo.
+- Preserve its transparent background, intrinsic pixels, and original aspect ratio.
 - Do not place it inside a white rectangle, white card, or unrelated background panel.
+- Do not upscale it beyond its intrinsic `415px` width. Normal header rendering is a downscale to the approved range.
+- Render it with `image-rendering: auto`, no CSS filter, no transform scaling, and no browser-generated shadow or stroke.
 - A different Micas logo may be used only when the user explicitly supplies and requests a replacement official asset for that project.
 - Visual-reference screenshots are layout references only and must never override this official logo asset.
 
@@ -104,12 +106,53 @@ The title/subtitle hierarchy is mandatory on normal desktop pages. Do not omit t
 Desktop target ranges:
 
 - logo width: `190–250px`;
-- logo height: `52–72px`;
+- logo height: `auto`, normally `52–72px` after proportional downscaling;
 - course title: `30–44px`;
 - subtitle: `18–28px`;
 - logo-to-text gap: `28–42px`.
 
-Do not place the logo in a white rectangle, card, or independent panel.
+The brand lockup must not touch the viewport edges. Follow the spacing shown in `header-lockup-reference.svg`.
+
+Recommended desktop implementation:
+
+```css
+.course-header-inner {
+  padding-block: clamp(10px, 1.2vh, 16px);
+  padding-inline: clamp(28px, 3vw, 56px);
+}
+
+.header-brand-lockup {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  margin: 0;
+}
+
+.header-brand-lockup img {
+  display: block;
+  width: clamp(190px, 14vw, 250px);
+  height: auto;
+  max-width: 250px;
+  object-fit: contain;
+  image-rendering: auto;
+  filter: none;
+  transform: none;
+}
+
+.header-title-group {
+  margin-left: clamp(28px, 2.4vw, 42px);
+  padding-block: 2px;
+  min-width: 0;
+}
+```
+
+Rules:
+
+- keep at least `28px` horizontal inset between the viewport edge and the logo on desktop;
+- keep at least `10px` vertical breathing room around the brand lockup;
+- keep title and subtitle inside the same padded header container;
+- do not compensate for missing padding by shrinking the logo or typography;
+- do not place the logo in a white rectangle, card, or independent panel.
 
 ## Header Utility Lock
 
@@ -134,18 +177,18 @@ Rules:
 
 ## Control Icon Size Lock
 
-The icons inside the existing approved controls must be clearly larger than the previous undersized implementation. Do not enlarge or redesign the surrounding buttons; enlarge only the icon glyphs and keep them centered.
+Do not enlarge or redesign the surrounding buttons. Use the following final icon ranges and keep every glyph centered.
 
 Desktop icon targets:
 
-- language globe icon: `28–32px`;
+- language globe icon: `28–30px`;
 - language dropdown chevron: `18–22px`;
-- Auto Play icon: `28–32px`;
-- Fullscreen icon: `28–32px`;
+- Auto Play icon: `28–30px`;
+- Fullscreen icon: `28–30px`;
 - Previous and Next arrow icons: `26–30px`;
-- Search icon: `28–32px`;
-- narration/speaker icon: `28–32px`;
-- Audio settings icon: `28–32px`.
+- Search icon: `28–30px`;
+- narration/speaker icon: `28–30px`;
+- Audio settings icon: `28–30px`.
 
 Recommended implementation:
 
@@ -156,8 +199,8 @@ Recommended implementation:
 .footer-search-icon,
 .footer-narration-icon,
 .footer-audio-settings-icon {
-  width: clamp(28px, 1.7vw, 32px);
-  height: clamp(28px, 1.7vw, 32px);
+  width: clamp(28px, 1.6vw, 30px);
+  height: clamp(28px, 1.6vw, 30px);
   flex: 0 0 auto;
 }
 
@@ -217,7 +260,7 @@ All Micas logo and visual-reference assets are colocated in:
 
 Official logo asset:
 
-- `micas-logo-default.svg`
+- `micas-logo-default.png`
 
 Current layout references:
 
@@ -250,14 +293,16 @@ Use the references for proportion, hierarchy, spacing, and component treatment o
 
 The Micas presentation fails brand QA when:
 
-- the official `micas-logo-default.svg` asset is not used while `brand_profile: micas` is active;
-- a white-background, legacy, alternate, generated, redrawn, recolored, cropped, stretched, blurred, or distorted Micas logo appears;
+- the official `micas-logo-default.png` asset is not used while `brand_profile: micas` is active;
+- the Logo is redrawn, retraced, vectorized, blurred, sharpened, upscaled beyond intrinsic size, or processed through CSS filters/transforms;
+- a white-background, legacy, alternate, generated, recolored, cropped, stretched, or distorted Micas logo appears;
 - different Micas logo variants appear across different scenes;
+- the logo or title/subtitle group touches the viewport edge or lacks the approved breathing room;
 - the desktop header omits the factual subtitle below the main course title;
 - Auto Play or Fullscreen is missing from the normal desktop header;
 - language loses its icon or the right-side control order differs from Language → Auto Play → Fullscreen;
-- any of the required desktop control icons is visibly undersized, generally below `26px` except the language chevron;
-- the icon glyphs look materially smaller than the approved control references;
+- any required desktop control icon falls outside the approved final range without a responsive breakpoint reason;
+- the icon glyphs look materially larger or smaller than the approved control references;
 - header progress/module counters replace the required utility group;
 - the fixed footer materially differs from the reference structure without a responsive breakpoint reason;
 - the stage becomes a pale or white full-page canvas;
